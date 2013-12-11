@@ -2,13 +2,13 @@
 // Pass 2: do the blur
 // lewis@lewissaunders.com
 // TOOD:
-// 		o Adaptive sampling based on length?
-// 		o Figure out correct calibration of length slider to pixel lengths?
-//		o Triangular or gaussian window on samples?
-// 		o Normalize gradient vector and use another input for length control?
-// 		  Currently, normalizing would give a super hard edge where the front
-// 		  image is a solid colour
-//		o Variable mix between the two algorithms would be neat
+//  o Adaptive sampling based on length?
+//  o Figure out correct calibration of length slider to pixel lengths?
+//  o Triangular or gaussian window on samples?
+//  o Normalize gradient vector and use another input for length control?
+//    Currently, normalizing would give a super hard edge where the front
+//    image is a solid colour
+//  o Variable mix between the two algorithms would be neat
 
 uniform sampler2D front, map, adsk_results_pass1;
 uniform float adsk_result_w, adsk_result_h, blength;

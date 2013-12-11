@@ -2,8 +2,8 @@
 // Pass 1: make the vectors
 // lewis@lewissaunders.com
 // TODO:
-// 		o Bigger Sobel kernels?
-//		o Pre-blur input in case of GMask kinks?
+//  o Bigger Sobel kernels?
+//  o Pre-blur input in case of GMask kinks?
 
 uniform sampler2D map;
 uniform float adsk_result_w, adsk_result_h, ksize;

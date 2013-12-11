@@ -24,16 +24,16 @@ vec4 texture2DEWA(sampler2D tex0, vec2 p0) {
 	vec2 p = scale * p0;
 
 	float ux = filterwidth * du.s * scale;
-    float vx = filterwidth * du.t * scale;
-    float uy = filterwidth * dv.s * scale;
-    float vy = filterwidth * dv.t * scale;
+	float vx = filterwidth * du.t * scale;
+	float uy = filterwidth * dv.s * scale;
+	float vy = filterwidth * dv.t * scale;
 
 	// compute ellipse coefficients 
-    // A*x*x + B*x*y + C*y*y = F.
-    float A = vx*vx+vy*vy+1.0;
-    float B = -2.0*(ux*vx+uy*vy);
-    float C = ux*ux+uy*uy+1.0;
-    float F = A*C-B*B/4.0;
+	// A*x*x + B*x*y + C*y*y = F.
+	float A = vx*vx+vy*vy+1.0;
+	float B = -2.0*(ux*vx+uy*vy);
+	float C = ux*ux+uy*uy+1.0;
+	float F = A*C-B*B/4.0;
 
 	// Compute the ellipse's (u,v) bounding box in texture space
 	float bbox_du = 2.0 / (-B*B+4.0*C*A) * sqrt((-B*B+4.0*C*A)*C*F);
@@ -49,19 +49,19 @@ vec4 texture2DEWA(sampler2D tex0, vec2 p0) {
 	}
 
 	// The ellipse bbox			    
-    int u0 = int(floor(p.s - bbox_du));
-    int u1 = int(ceil (p.s + bbox_du));
-    int v0 = int(floor(p.t - bbox_dv));
-    int v1 = int(ceil (p.t + bbox_dv));
+	int u0 = int(floor(p.s - bbox_du));
+	int u1 = int(ceil (p.s + bbox_du));
+	int v0 = int(floor(p.t - bbox_dv));
+	int v1 = int(ceil (p.t + bbox_dv));
 
-    // Heckbert MS thesis, p. 59; scan over the bounding box of the ellipse
-    // and incrementally update the value of Ax^2+Bxy*Cy^2; when this
-    // value, q, is less than F, we're inside the ellipse so we filter
-    // away...
-    vec4 num= vec4(0.0, 0.0, 0.0, 1.0);
-    float den = 0.0;
-    float ddq = 2.0 * A;
-    float U = float(u0) - p.s;
+	// Heckbert MS thesis, p. 59; scan over the bounding box of the ellipse
+	// and incrementally update the value of Ax^2+Bxy*Cy^2; when this
+	// value, q, is less than F, we're inside the ellipse so we filter
+	// away...
+	vec4 num= vec4(0.0, 0.0, 0.0, 1.0);
+	float den = 0.0;
+	float ddq = 2.0 * A;
+	float U = float(u0) - p.s;
 
 	for (int v = v0; v <= v1; ++v) {
 		float V = float(v) - p.t;
@@ -85,8 +85,8 @@ vec4 texture2DEWA(sampler2D tex0, vec2 p0) {
 }
 
 void main(void) {
-    vec2 coords = gl_FragCoord.xy / vec2(adsk_result_w, adsk_result_h);
-    vec2 uvcoords = texture2D(uv, coords).rg + offset;
-    
-    gl_FragColor = texture2DEWA(front, uvcoords);
+	vec2 coords = gl_FragCoord.xy / vec2(adsk_result_w, adsk_result_h);
+	vec2 uvcoords = texture2D(uv, coords).rg + offset;
+	
+	gl_FragColor = texture2DEWA(front, uvcoords);
 }

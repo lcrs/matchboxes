@@ -1,8 +1,8 @@
 // Tiles the inputs into a grid for impressing clients
 // lewis@lewissaunders.com
 // TODO:
-//	o Nonsquare pixels support... eek
-//	o Variable width borders look gross, how can we get a nice even spacing?
+//  o Nonsquare pixels support... eek
+//  o Variable width borders look gross, how can we get a nice even spacing?
 
 uniform sampler2D in1, in2, in3, in4, in5, in6;
 uniform int rows, cols, randomcount, seed;
@@ -12,7 +12,7 @@ uniform float adsk_result_w, adsk_result_h, adsk_time;
 
 // Mysterious dirty random number generator
 float rand(vec2 co){
-  return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+	return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
 }
 
 void main() {
