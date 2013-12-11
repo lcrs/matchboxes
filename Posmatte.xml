@@ -1,0 +1,61 @@
+<ShaderNodePreset SupportsAdaptiveDegradation="0" Description="Posmatte - pull a spherical matte from an XYZ position pass.  Make sure to pick from the Position input with the picker set to 16fp!  The matte will even stick to animated meshes if you ask your CG chaps for a 'rest position' P pass, or a 'P at frame 1' pass
+
+lewis@lewissaunders.com" Name="Posmatte">
+   <Shader OutputBitDepth="Output" Index="1">
+      <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="Front" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_NEAREST" GL_TEXTURE_MIN_FILTER="GL_NEAREST" Type="sampler2D" Name="front">
+      </Uniform>
+      <Uniform Index="1" NoInput="Error" Tooltip="" DisplayName="Matte" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_NEAREST" GL_TEXTURE_MIN_FILTER="GL_NEAREST" Type="sampler2D" Name="matte">
+      </Uniform>
+      <Uniform Index="2" NoInput="Error" Tooltip="" DisplayName="Position pass" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_NEAREST" GL_TEXTURE_MIN_FILTER="GL_NEAREST" Type="sampler2D" Name="pos">
+      </Uniform>
+      <Uniform Inc="0.01" Tooltip="Pick from the position pass" Row="0" Col="0" Page="0" DisplayName="Pick centre" ValueType="Colour" Type="vec3" Name="pick">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.5">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.5">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.5">
+         </SubUniform>
+      </Uniform>
+      <Uniform ResDependent="None" Max="1000000.0" Min="0.0" Default="0.1" Inc="0.01" Tooltip="" Row="1" Col="0" Page="0" DisplayName="Tolerance" Type="float" Name="tolerance">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1000000.0" Min="0.001" Default="1.0" Inc="0.01" Tooltip="" Row="2" Col="0" Page="0" DisplayName="Softness" Type="float" Name="softness">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="" Row="3" Col="0" Page="0" DisplayName="Edge swoop" Type="float" Name="falloffswoop">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0" Inc="0.01" Tooltip="" Row="0" Col="1" Page="0" DisplayName="Offset X" Type="float" Name="offsetx">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0" Inc="0.01" Tooltip="" Row="1" Col="1" Page="0" DisplayName="Offset Y" Type="float" Name="offsety">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0" Inc="0.01" Tooltip="" Row="2" Col="1" Page="0" DisplayName="Offset Z" Type="float" Name="offsetz">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0" Inc="0.01" Tooltip="" Row="0" Col="2" Page="0" DisplayName="Scale X" Type="float" Name="scalex">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0" Inc="0.01" Tooltip="" Row="1" Col="2" Page="0" DisplayName="Scale Y" Type="float" Name="scaley">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0" Inc="0.01" Tooltip="" Row="2" Col="2" Page="0" DisplayName="Scale Z" Type="float" Name="scalez">
+      </Uniform>
+      <Uniform Inc="0.01" Tooltip="" Row="2" Col="3" Page="0" DisplayName="Tint" ValueType="Colour" Type="vec3" Name="overlaycol">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.98">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.00">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.43">
+         </SubUniform>
+      </Uniform>
+      <Uniform Row="3" Col="3" Page="0" Default="True" Tooltip="" DisplayName="Overlay" Type="bool" Name="overlay">
+      </Uniform>
+      <Uniform Row="4" Col="3" Page="0" Default="False" Tooltip="" DisplayName="Crosshatch" Type="bool" Name="hatch">
+      </Uniform>
+   </Shader>
+   <Page Name="Posmatte" Page="0">
+      <Col Name="Key" Col="0" Page="0">
+      </Col>
+      <Col Name="Offset" Col="1" Page="0">
+      </Col>
+      <Col Name="Scale" Col="2" Page="0">
+      </Col>
+      <Col Name="Output" Col="3" Page="0">
+      </Col>
+   </Page>
+</ShaderNodePreset>
+

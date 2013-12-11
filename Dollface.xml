@@ -1,0 +1,42 @@
+<ShaderNodePreset SupportsAdaptiveDegradation="0" Description="Dollface - blend similar colours with a bilateral filter whilst preserving edges, to remove grain or wrinkles
+
+lewis@lewissaunders.com" Name="Dollface">
+   <Shader OutputBitDepth="Output" Index="1">
+      <Uniform ResDependent="None" Max="100.0" Min="0.0" Default="2.5" Inc="0.01" Tooltip="Amount of softening in similar areas" Row="1" Col="1" Page="0" DisplayName="Sigma" Type="float" Name="sigma">
+      </Uniform>
+      <Uniform ResDependent="None" Max="100.0" Min="0.001" Default="20.0" Inc="0.1" Tooltip="Increase to keep more edges - if this is quite high you may want to blur the result a little because edges can get very hard" Row="2" Col="1" Page="0" DisplayName="Edge preservation" Type="float" Name="threshold">
+      </Uniform>
+      <Uniform Max="3" Min="0" Default="2" Inc="1" Tooltip="Increase to remove artifacts" Row="2" Col="2" Page="0" DisplayName="Quality" Type="int" Name="quality">
+      </Uniform>
+      <Uniform Row="3" Col="2" Page="0" Default="False" Tooltip="Use very slow but accurate algorithm" DisplayName="Precise blending" Type="bool" Name="slow">
+      </Uniform>
+      <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="Front" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="Front">
+      </Uniform>
+   </Shader>
+   <Shader OutputBitDepth="Output" Index="2">
+      <Uniform Type="float" Name="sigma">
+         <Duplicate>
+         </Duplicate>
+      </Uniform>
+      <Uniform Type="bool" Name="slow">
+         <Duplicate>
+         </Duplicate>
+      </Uniform>
+      <Uniform Type="int" Name="quality">
+         <Duplicate>
+         </Duplicate>
+      </Uniform>
+      <Uniform Type="float" Name="threshold">
+         <Duplicate>
+         </Duplicate>
+      </Uniform>
+      <Uniform Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass1">
+      </Uniform>
+   </Shader>
+   <Page Name="Dollface" Page="0">
+      <Col Name="Blur" Col="1" Page="0">
+      </Col>
+      <Col Name="Quality" Col="2" Page="0">
+      </Col>
+   </Page>
+</ShaderNodePreset>

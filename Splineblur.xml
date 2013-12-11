@@ -1,0 +1,38 @@
+<ShaderNodePreset SupportsAdaptiveDegradation="0" Description="Splineblur - directional blur along the edges of a shape. Image on front input, shape with a big soft edge on map input
+
+lewis@lewissaunders.com" Name="Splineblur">
+   <Shader OutputBitDepth="Output" Index="1">
+      <Uniform Index="1" NoInput="Error" Tooltip="" DisplayName="Map" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="map">
+      </Uniform>
+      <Uniform Row="4" Col="0" Page="0" Default="False" Tooltip="Enable to use the map input red and green channels as XY vectors directly, instead of calulating gradients" DisplayName="Use map as vectors directly" Type="bool" Name="directvectors">
+      </Uniform>
+      <Uniform Row="2" Col="1" Page="0" Default="False" Tooltip="Blur into and out of the map instead of along the edges" DisplayName="Radial" Type="bool" Name="radial">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1024.0" Min="0.5" Default="5.0" Inc="0.1" Tooltip="Size of Sobel kernels used to detect gradients; increase to remove artifacts at the expense of accuracy" Row="3" Col="1" Page="0" DisplayName="Sobel kernel size" Type="float" Name="ksize">
+      </Uniform>
+   </Shader>
+   <Shader OutputBitDepth="Output" Index="2">
+      <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="Front" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="front">
+      </Uniform>
+      <Uniform Mipmaps="False" GL_TEXTURE_WRAP_T="GL_REPEAT" GL_TEXTURE_WRAP_S="GL_REPEAT" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass1">
+      </Uniform>
+      <Uniform ResDependent="Width" Max="2048.0" Min="0.0" Default="8.0" Inc="0.1" Tooltip="Amount to blur by" Row="0" Col="1" Page="0" DisplayName="Length" Type="float" Name="blength">
+      </Uniform>
+      <Uniform Max="2048" Min="1" Default="32" Inc="1" Tooltip="Number of samples, increase for smoothness" Row="1" Col="1" Page="0" DisplayName="Samples" Type="int" Name="samples">
+      </Uniform>
+      <Uniform Row="4" Col="1" Page="0" Default="True" Tooltip="Use a slower algorithm which gives much smoother corners" DisplayName="Accurate cornering" Type="bool" Name="pathy">
+      </Uniform>
+      <Uniform Row="1" Col="2" Page="0" Default="False" Tooltip="Output gradient vectors from map input instead of blurring, for use with MotionBlur et al" DisplayName="Output vectors" Type="bool" Name="vectors">
+      </Uniform>
+      <Uniform Row="2" Col="2" Page="0" Default="False" Tooltip="Normalize vector output around 0.5 instead of 0.0, for use with PixelSpread's Vector Warp mode" DisplayName="Output normalized" Type="bool" Name="normalize">
+      </Uniform>
+   </Shader>
+   <Page Name="Splineblur" Page="0">
+      <Col Name="" Col="0" Page="0">
+      </Col>
+      <Col Name="" Col="1" Page="0">
+      </Col>
+      <Col Name="" Col="2" Page="0">
+      </Col>
+   </Page>
+</ShaderNodePreset>

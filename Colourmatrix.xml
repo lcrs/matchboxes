@@ -1,0 +1,88 @@
+<ShaderNodePreset SupportsAdaptiveDegradation="0" Description="Colourmatrix - apply 3x3 matrices to RGB for white balance, colourspace conversion or well disco grades
+
+lewis@lewissaunders.com" Name="Colourmatrix">
+   <Shader OutputBitDepth="Output" Index="1">
+      <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="Front" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_REPEAT" GL_TEXTURE_WRAP_S="GL_REPEAT" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="input1">
+      </Uniform>
+      <Uniform ResDependent="None" Max="5.0" Min="-5.0" Default="1.0" Inc="0.01" Tooltip="" Row="0" Col="0" Page="0" DisplayName="Input R" Type="float" Name="r2r">
+      </Uniform>
+      <Uniform ResDependent="None" Max="5.0" Min="-5.0" Default="0.0" Inc="0.01" Tooltip="" Row="1" Col="0" Page="0" DisplayName="Input G" Type="float" Name="g2r">
+      </Uniform>
+      <Uniform ResDependent="None" Max="5.0" Min="-5.0" Default="0.0" Inc="0.01" Tooltip="" Row="2" Col="0" Page="0" DisplayName="Input B" Type="float" Name="b2r">
+      </Uniform>
+      <Uniform Inc="0.01" Tooltip="" Row="3" Col="0" Page="0" DisplayName="Push R into my:" ValueType="Colour" Type="vec3" Name="or">
+          <SubUniform Max="5.0" Min="-5.0" Default="1.0">
+          </SubUniform>
+          <SubUniform Max="5.0" Min="-5.0" Default="0.0">
+          </SubUniform>
+          <SubUniform Max="5.0" Min="-5.0" Default="0.0">
+          </SubUniform>
+      </Uniform>
+      <Uniform ResDependent="None" Max="5.0" Min="-5.0" Default="0.0" Inc="0.01" Tooltip="" Row="0" Col="1" Page="0" DisplayName="" Type="float" Name="r2g">
+      </Uniform>
+      <Uniform ResDependent="None" Max="5.0" Min="-5.0" Default="1.0" Inc="0.01" Tooltip="" Row="1" Col="1" Page="0" DisplayName="" Type="float" Name="g2g">
+      </Uniform>
+      <Uniform ResDependent="None" Max="5.0" Min="-5.0" Default="0.0" Inc="0.01" Tooltip="" Row="2" Col="1" Page="0" DisplayName="" Type="float" Name="b2g">
+      </Uniform>
+      <Uniform Inc="0.01" Tooltip="" Row="3" Col="1" Page="0" DisplayName="Push G into my:" ValueType="Colour" Type="vec3" Name="og">
+          <SubUniform Max="5.0" Min="-5.0" Default="0.0">
+          </SubUniform>
+          <SubUniform Max="5.0" Min="-5.0" Default="1.0">
+          </SubUniform>
+          <SubUniform Max="5.0" Min="-5.0" Default="0.0">
+          </SubUniform>
+      </Uniform>
+      <Uniform ResDependent="None" Max="5.0" Min="-5.0" Default="0.0" Inc="0.01" Tooltip="" Row="0" Col="2" Page="0" DisplayName="" Type="float" Name="r2b">
+      </Uniform>
+      <Uniform ResDependent="None" Max="5.0" Min="-5.0" Default="0.0" Inc="0.01" Tooltip="" Row="1" Col="2" Page="0" DisplayName="" Type="float" Name="g2b">
+      </Uniform>
+      <Uniform ResDependent="None" Max="5.0" Min="-5.0" Default="1.0" Inc="0.01" Tooltip="" Row="2" Col="2" Page="0" DisplayName="" Type="float" Name="b2b">
+      </Uniform>
+      <Uniform Inc="0.01" Tooltip="" Row="3" Col="2" Page="0" DisplayName="Push B into my:" ValueType="Colour" Type="vec3" Name="ob">
+          <SubUniform Max="5.0" Min="-5.0" Default="0.0">
+          </SubUniform>
+          <SubUniform Max="5.0" Min="-5.0" Default="0.0">
+          </SubUniform>
+          <SubUniform Max="5.0" Min="-5.0" Default="1.0">
+          </SubUniform>
+      </Uniform>
+       <Uniform Inc="0.01" Tooltip="" Row="0" Col="3" Page="0" DisplayName="R becomes:" ValueType="Colour" Type="vec3" Name="ir">
+           <SubUniform Max="5.0" Min="-5.0" Default="1.0">
+           </SubUniform>
+           <SubUniform Max="5.0" Min="-5.0" Default="0.0">
+           </SubUniform>
+           <SubUniform Max="5.0" Min="-5.0" Default="0.0">
+           </SubUniform>
+       </Uniform>
+       <Uniform Inc="0.01" Tooltip="" Row="1" Col="3" Page="0" DisplayName="G becomes:" ValueType="Colour" Type="vec3" Name="ig">
+           <SubUniform Max="5.0" Min="-5.0" Default="0.0">
+           </SubUniform>
+           <SubUniform Max="5.0" Min="-5.0" Default="1.0">
+           </SubUniform>
+           <SubUniform Max="5.0" Min="-5.0" Default="0.0">
+           </SubUniform>
+       </Uniform>
+       <Uniform Inc="0.01" Tooltip="" Row="2" Col="3" Page="0" DisplayName="B becomes:" ValueType="Colour" Type="vec3" Name="ib">
+           <SubUniform Max="5.0" Min="-5.0" Default="0.0">
+           </SubUniform>
+           <SubUniform Max="5.0" Min="-5.0" Default="0.0">
+           </SubUniform>
+           <SubUniform Max="5.0" Min="-5.0" Default="1.0">
+           </SubUniform>
+       </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="-10.0" Default="1.0" Inc="0.01" Tooltip="" Row="4" Col="0" Page="0" DisplayName="Multiply effect" Type="float" Name="effect">
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="" Row="4" Col="1" Page="0" DisplayName="RGB Gain" Type="float" Name="gain">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="" Row="4" Col="2" Page="0" DisplayName="Mix" Type="float" Name="mix">
+      </Uniform>
+   </Shader>
+   <Page Name="Colourmatrix" Page="0">
+      <Col Name="Output R made from:" Col="0" Page="0">
+      </Col>
+      <Col Name="Output G made from:" Col="1" Page="0">
+      </Col>
+      <Col Name="Output B made from:" Col="2" Page="0">
+      </Col>
+   </Page>
+</ShaderNodePreset>
