@@ -2,6 +2,7 @@
 // Use to stick down floating CG, by nailing from a track on the CG to a track on the BG
 // lewis@lewissaunders.com
 // TODO:
+//  o Overlay to show track positions and matte area
 //  o Rotate, scale, shear?
 //  o Better filtering probably.  Not sure if EWA would work because no dFdx?
 
