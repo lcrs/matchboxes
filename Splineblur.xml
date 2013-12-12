@@ -1,4 +1,4 @@
-<ShaderNodePreset SupportsAdaptiveDegradation="0" Description="Splineblur - directional blur along the edges of a shape. Image on front input, shape with a big soft edge on map input
+<ShaderNodePreset SupportsAdaptiveDegradation="0" Description="Splineblur - directional blur along the edges of a shape. Image on front input, shape with a big soft edge on map input. Make sure all inputs are 16-bit fp!
 
 lewis@lewissaunders.com" Name="Splineblur">
    <Shader OutputBitDepth="Output" Index="1">
