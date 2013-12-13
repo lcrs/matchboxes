@@ -1,5 +1,7 @@
 <ShaderNodePreset SupportsAdaptiveDegradation="0" Description="Nail - warp an area of the Front and Matte to follow a track, for nailing down floaty CG.  Paste XY tracks from the FG and the BG on the From and To channels, and input a matte for the area to affect
 
+Demo: http://youtube.com/watch?v=GOQAAb9NqAM
+
 lewis@lewissaunders.com" Name="Nail">
    <Shader OutputBitDepth="Output" Index="1">
       <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="Front" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="front">
