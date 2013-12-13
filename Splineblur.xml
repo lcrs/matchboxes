@@ -1,5 +1,7 @@
 <ShaderNodePreset SupportsAdaptiveDegradation="0" Description="Splineblur - directional blur along the edges of a shape. Image on front input, shape with a big soft edge on map input. Make sure all inputs are 16-bit fp!
 
+Demo: http://youtube.com/watch?v=CRUa3zv1t1M
+
 lewis@lewissaunders.com" Name="Splineblur">
    <Shader OutputBitDepth="Output" Index="1">
       <Uniform Index="1" NoInput="Error" Tooltip="" DisplayName="Map" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="map">
