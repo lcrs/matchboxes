@@ -34,10 +34,20 @@ lewis@lewissaunders.com" Name="Nail">
       </Uniform>
       <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="" Row="1" Col="2" Page="0" DisplayName="Nail strength" Type="float" Name="amount">
       </Uniform>
-      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.0" Inc="0.01" Tooltip="" Row="3" Col="2" Page="0" DisplayName="Edge swoop" Type="float" Name="edgeswoop">
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.70" Inc="0.01" Tooltip="" Row="3" Col="2" Page="0" DisplayName="Edge swoop" Type="float" Name="edgeswoop">
       </Uniform>
       <Uniform Row="4" Col="2" Page="0" Default="True" Tooltip="" DisplayName="Matte is target, not source" Type="bool" Name="matteistarget">
       </Uniform>
+      <Uniform Row="1" Col="3" Page="0" Default="False" Tooltip="" DisplayName="Draw workings" Type="bool" Name="overlay">
+      </Uniform>
+      <Uniform Inc="0.01" Tooltip="" Row="2" Col="3" Page="0" DisplayName="Nail area tint" ValueType="Colour" Type="vec3" Name="areatint">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.33">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.27">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.00">
+         </SubUniform>
+      </Uniform>      
    </Shader>
    <Page Name="Nail" Page="0">
       <Col Name="Paste tracks here" Col="0" Page="0">
@@ -45,6 +55,8 @@ lewis@lewissaunders.com" Name="Nail">
       <Col Name="Manual track" Col="1" Page="0">
       </Col>
       <Col Name="Amount" Col="2" Page="0">
+      </Col>
+      <Col Name="Overlay" Col="3" Page="0">
       </Col>
    </Page>
 </ShaderNodePreset>
