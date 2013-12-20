@@ -1,0 +1,39 @@
+<ShaderNodePreset SupportsAdaptiveDegradation="0" Description="Tinyplanet - stereographic reprojection of 360 panoramas.  Tried to work this into title sequences a couple times but so far no takers :)  Input a latlong 360x180 image, or use Map Convert to make a Cartesian map. 
+
+For examples see:
+http://youtube.com/watch?v=mYlk0oeYjds
+https://www.google.com/search?q=tiny+planets+photography&tbm=isch
+
+lewis@lewissaunders.com" Name="Tinyplanet">
+   <Shader OutputBitDepth="Output" Index="1">
+      <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="Front" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_REPEAT" GL_TEXTURE_WRAP_S="GL_REPEAT" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="front">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="-0.70666666666" Inc="0.01" Tooltip="" Row="0" Col="0" Page="0" DisplayName="Rotate Y" Type="float" Name="lat1">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.25333333333" Inc="0.01" Tooltip="" Row="1" Col="0" Page="0" DisplayName="Rotate X" Type="float" Name="long0">
+      </Uniform>
+      <Uniform ResDependent="None" Max="2.0" Min="-1.0" Default="0.17" Inc="0.001" Tooltip="" Row="3" Col="0" Page="0" DisplayName="Zoom" Type="float" Name="r">
+      </Uniform>
+      <Uniform ResDependent="None" Max="2.0" Min="-2.0" Default="0.5" Inc="0.01" Tooltip="" Row="0" Col="1" Page="0" DisplayName="X Centre" Type="float" Name="xo">
+      </Uniform>
+      <Uniform ResDependent="None" Max="2.0" Min="-2.0" Default="0.5" Inc="0.01" Tooltip="" Row="1" Col="1" Page="0" DisplayName="Y Centre" Type="float" Name="yo">
+      </Uniform>
+      <Uniform ResDependent="None" Max="30.0" Min="-30.0" Default="0.31830988618379069" Inc="0.01" Tooltip="" Row="0" Col="2" Page="0" DisplayName="Lat mult" Type="float" Name="latm">
+      </Uniform>
+      <Uniform ResDependent="None" Max="30.0" Min="-30.0" Default="0.15915494309189535" Inc="0.001" Tooltip="" Row="1" Col="2" Page="0" DisplayName="Long mult" Type="float" Name="longm">
+      </Uniform>
+      <Uniform ResDependent="None" Max="30.0" Min="-30.0" Default="-1.5707963267948966" Inc="0.01" Tooltip="" Row="2" Col="2" Page="0" DisplayName="Lat offset" Type="float" Name="lato">
+      </Uniform>
+      <Uniform ResDependent="None" Max="30.0" Min="-30.0" Default="-3.1415926535897932" Inc="0.01" Tooltip="" Row="3" Col="2" Page="0" DisplayName="Long offset" Type="float" Name="longo">
+      </Uniform>
+   </Shader>
+   <Page Name="Tinyplanet" Page="0">
+	   <Col Name="Camera" Col="0" Page="0">
+	   </Col>
+	   <Col Name="Transform" Col="1" Page="0">
+	   </Col>
+	   <Col Name="Map" Col="2" Page="0">
+	   </Col>
+   </Page>
+</ShaderNodePreset>
+
