@@ -1,8 +1,8 @@
 <ShaderNodePreset SupportsAdaptiveDegradation="0" Description="Tinyplanet - stereographic reprojection of 360 panoramas.  Tried to work this into title sequences a couple times but so far no takers :)  Input a latlong 360x180 image, or use Map Convert to make a Cartesian map. 
 
 For examples see:
-http://youtube.com/watch?v=mYlk0oeYjds
 http://images.google.com/images?q=tiny+planets+photography
+http://youtube.com/watch?v=mYlk0oeYjds
 
 lewis@lewissaunders.com" Name="Tinyplanet">
    <Shader OutputBitDepth="Output" Index="1">
