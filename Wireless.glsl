@@ -1,16 +1,15 @@
 // Wireless - removes wires, and other straight-ish things
 // lewis@lewissaunders.com
 // TODO:
-//  o work in pixels internally
-//  o restore detail along axis of wire by blurringa along it, differencing and... something
+//  o restore detail along axis of wire by blurring along it, differencing and... something
 //  o offset sample points along image gradients
 //  o bendy wire
-//  o generally everything
+//  o soft edge
 
 uniform sampler2D front;
 uniform float adsk_result_w, adsk_result_h;
-uniform vec2 start, end;
-uniform float thickness;
+uniform vec2 starttrack, endtrack, startoffset, endoffset;
+uniform float radius, restoreSize, restoreMix;
 uniform bool overlay;
 
 vec2 closestPointOnLine(vec2 p0, vec2 p1, vec2 p) {
@@ -35,40 +34,58 @@ float distanceToLine(vec2 p0, vec2 p1, vec2 p) {
 
 void main() {
 	vec2 res = vec2(adsk_result_w, adsk_result_h);
-	vec2 coords = gl_FragCoord.xy / res;
+	vec2 coords = gl_FragCoord.xy;
 
-	vec2 grad, tangent;
-	grad = end - start;
-	grad /= length(grad);
-	tangent = vec2(-grad.y, grad.x);
+	vec2 start = starttrack + (startoffset * res);
+	vec2 end = endtrack + (endoffset * res);
 
-	vec2 closest;
-	vec3 sample1, sample2;
-	float thicknessn = thickness / res.x;
-	closest = closestPointOnLine(start, end, coords);
-	sample1 = texture2D(front, closest + (tangent * (thicknessn/2.0))).rgb;
-	sample2 = texture2D(front, closest - (tangent * (thicknessn/2.0))).rgb;
+	vec2 grad = (end - start) / length(end - start);
+	vec2 tangent = vec2(-grad.y, grad.x);
+
+	vec2 closest = closestPointOnLine(start, end, coords);
+	vec2 sample1 = closest + (tangent * radius);
+	vec2 sample2 = closest - (tangent * radius);
+	vec3 color1 = texture2D(front, sample1 / res).rgb;
+	vec3 color2 = texture2D(front, sample2 / res).rgb;
 
 	vec3 o;
-	float blend;
-	if(distanceToLine(start, end, coords) > thicknessn/2.0) {
-		o = texture2D(front, coords).rgb;
+	float m;
+	if(distanceToLine(start, end, coords) > radius) {
+		o = texture2D(front, coords / res).rgb;
+		m = 0.0;
 	} else {
-		blend = length(coords - (closest + (tangent * (thicknessn/2.0)))) / thicknessn;
-		o = mix(sample1, sample2, blend);
+		// Interpolate between the two points
+		float blend = length(coords - (closest + (tangent * radius)));
+		blend /= radius * 2.0;
+		o = mix(color1, color2, blend);
+
+		// Blur along the line
+		vec3 blurred = vec3(0.0);
+		float samples = 0.0;
+		for(float i = -restoreSize; i < restoreSize; i += 0.333333) {
+			vec2 p = coords + i * grad;
+			blurred += texture2D(front, p / res).rgb;
+			samples++;
+		}
+		blurred /= samples;
+
+		vec3 front = texture2D(front, coords / res).rgb;
+		o += restoreMix * (front - blurred);
+		m = 1.0;
 	}
 
 	if(overlay) {
-		if(length(coords - start) < 5.0/res.x)
+		if(length(coords - start) < 3.0)
 			o = vec3(0.8, 0.2, 0.2);
 
-		if(length(coords - end) < 5.0/res.x)
+		if(length(coords - end) < 3.0)
 			o = vec3(0.2, 0.8, 0.2);
 
-		if(distanceToLine(start, end, coords) < thicknessn/2.0) {
-			o = vec3(0.4, 0.4, 0.8);
+		if(distanceToLine(start, end, coords) < 1.0) {
+			if(mod(length(start - coords), 8.0) < 4.0)
+				o = vec3(0.4, 0.4, 0.8);
 		}
 	}
 
-	gl_FragColor = vec4(o, 1.0);
+	gl_FragColor = vec4(o, m);
 }
