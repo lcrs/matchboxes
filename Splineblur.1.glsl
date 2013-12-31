@@ -4,6 +4,7 @@
 // TODO:
 //  o Bigger Sobel kernels?
 //  o Pre-blur input in case of GMask kinks?
+//  o Could probably use dfdx,dfdy instead of manual convolution
 
 uniform sampler2D map;
 uniform float adsk_result_w, adsk_result_h, ksize;
