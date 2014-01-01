@@ -30,8 +30,9 @@ vec2 uvinterp(vec2 p, vec2 v1, vec2 v2, vec2 v3, vec2 u1, vec2 u2, vec2 u3) {
 	return b.x*u1 + b.y*u2 + b.z*u3;
 }
 
-// Return value at p of quadratic B-spline with control points v1,v2,v3
-float quadbspline(vec2 p, vec2 v1, vec2 v2, vec2 v3) {
+// Return value at p of implicit quadratic spline function with control points v1,v2,v3
+// As per Loop & Blinn 2005, GPU Gems 3
+float splineimplicit(vec2 p, vec2 v1, vec2 v2, vec2 v3) {
 	vec2 u1 = vec2(0.0, 0.0);
 	vec2 u2 = vec2(0.5, 0.0);
 	vec2 u3 = vec2(1.0, 1.0);
@@ -39,10 +40,22 @@ float quadbspline(vec2 p, vec2 v1, vec2 v2, vec2 v3) {
 	return uv.x*uv.x - uv.y;
 }
 
-// Return signed distance to zero of quadratic B-spline with control points v1,v2,v3
-float sdf(vec2 p, vec2 v1, vec2 v2, vec2 v3) {
-	float f = quadbspline(p, v1, v2, v3);
+// Return signed distance to zero of implicit spline function with control points v1,v2,v3
+float splinesdf(vec2 p, vec2 v1, vec2 v2, vec2 v3) {
+	float f = splineimplicit(p, v1, v2, v3);
 	return f / sqrt(dFdx(f)*dFdx(f) + dFdy(f)*dFdy(f));
+}
+
+// Return coordinates of point at t on spline v1,v2,v3
+vec2 spline(float t, vec2 v1, vec2 v2, vec2 v3) {
+	float it = 1.0 - t;
+	return it * (it*v1 + t*v2) + t * (it*v2 + t*v3);
+}
+
+// Return approximate [0-1] parameter for point p on spline v1,v2,v3
+float splinet(vec2 p, vec2 v1, vec2 v2, vec2 v3) {
+	float t = 0.5;
+	
 }
 
 void main() {
@@ -62,10 +75,10 @@ void main() {
 	// Grad of the scalar field f is tangent to the wire
 	// We're taking the grad and tangent at the current pixel rather than at
 	// the closest point on the wire, which isn't totally accurate
-	float f = quadbspline(coords, start, bend, end);
+	float f = splineimplicit(coords, start, bend, end);
 	vec2 tangent = normalize(vec2(dFdx(f), dFdy(f)));
 	vec2 grad = vec2(-tangent.y, tangent.x);
-	vec2 closest = coords - sdf(coords, start, bend, end) * tangent;
+	vec2 closest = coords - splinesdf(coords, start, bend, end) * tangent;
 
 	// Take samples from either side of the closest point on the wire
 	vec2 sample1 = closest + (tangent * radius);
@@ -75,7 +88,7 @@ void main() {
 
 	vec3 o;
 	float m;
-	if(abs(sdf(coords, start, bend, end)) > radius) {
+	if(abs(splinesdf(coords, start, bend, end)) > radius) {
 		// Miles away from the wire, get outta here
 		o = texture2D(front, coords / res).rgb;
 		m = 0.0;
@@ -105,6 +118,7 @@ void main() {
 		vec3 frontpix = texture2D(front, coords / res).rgb;
 		o = mix(o, o + (frontpix - blurred), restoremix);
 		m = 1.0;
+
 	}
 
 	if(overlay) {
@@ -116,8 +130,8 @@ void main() {
 			float a = smoothstep(0.0, 1.0, 3.0 - length(coords - end));
 			o = mix(o, vec3(0.2, 0.8, 0.2), a);
 		}
-		if(abs(sdf(coords, start, bend, end)) < 2.0) {
-			float a = smoothstep(0.0, 1.0, 1.0 - abs(sdf(coords, start, bend, end)));
+		if(abs(splinesdf(coords, start, bend, end)) < 2.0) {
+			float a = smoothstep(0.0, 1.0, 1.0 - abs(splinesdf(coords, start, bend, end)));
 			o = mix(o, vec3(0.8, 0.4, 0.8), a);
 		}
 	}
