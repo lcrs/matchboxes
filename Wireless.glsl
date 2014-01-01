@@ -1,15 +1,18 @@
 // Wireless - removes wires, and other straight-ish things
 // lewis@lewissaunders.com
 // TODO:
-//  o restore detail along axis of wire by blurring along it, differencing and... something
+//	o trim wire at start/end
+//	o bugs out when curve is 0
+//	o detail restore seems not quite right
 //  o offset sample points along image gradients
-//  o bendy wire
-//  o soft edge
+//	o offset start/end, with fade in/out?
+//  o soft edge to wire or at least alpha?
+//	o overlay colours
 
 uniform sampler2D front;
 uniform float adsk_result_w, adsk_result_h;
-uniform vec2 starttrack, endtrack, startoffset, endoffset, bendoffset, t;
-uniform float radius, restoresize, restoremix;
+uniform vec2 starttrack, endtrack, startoffset, endoffset;
+uniform float radius, restoresize, restoremix, curve, hook;
 uniform bool overlay;
 
 // Return barycentric coordinates for p in triangle v1,v2,v3
@@ -46,9 +49,15 @@ void main() {
 	vec2 res = vec2(adsk_result_w, adsk_result_h);
 	vec2 coords = gl_FragCoord.xy;
 
+	// Combine pixel tracks and 0-1 offsets
 	vec2 start = starttrack + (startoffset * res);
 	vec2 end = endtrack + (endoffset * res);
-	vec2 bend = bendoffset * res;
+
+	// Figure out bend, our actual b-spline control point
+	vec2 slope = normalize(end - start);
+	vec2 across = vec2(-slope.y, slope.x);
+	vec2 midpoint = (start + end) / 2.0;
+	vec2 bend = midpoint + 10.0 * curve * across + 30.0 * hook * slope;
 
 	// Grad of the scalar field f is tangent to the wire
 	// We're taking the grad and tangent at the current pixel rather than at
@@ -58,7 +67,7 @@ void main() {
 	vec2 grad = vec2(-tangent.y, tangent.x);
 	vec2 closest = coords - sdf(coords, start, bend, end) * tangent;
 
-	// Take samples from pixels on either side of the wire
+	// Take samples from either side of the closest point on the wire
 	vec2 sample1 = closest + (tangent * radius);
 	vec2 sample2 = closest - (tangent * radius);
 	vec3 color1 = texture2D(front, sample1 / res).rgb;
@@ -76,7 +85,8 @@ void main() {
 		blend /= radius * 2.0;
 		o = mix(color1, color2, blend);
 
-		// Blur along the line
+		// Blur along the line, which should give an approximation of the wire we're removing
+		// Then we can subtract that from the original to get some detail to mix back
 		vec3 blurred = vec3(0.0);
 		float energy = 0.0;
 		for(float i = -restoresize; i < restoresize; i += 0.333333) {
@@ -85,7 +95,8 @@ void main() {
 			blurred += weight * texture2D(front, p / res).rgb;
 			energy += weight;
 		}
-		if(energy == 0.0) {
+		if(energy < 0.001) {
+			// We ain't gonna see that shit
 			blurred = o;
 		} else {
 			blurred /= energy;
@@ -97,18 +108,17 @@ void main() {
 	}
 
 	if(overlay) {
-		if(length(coords - start) < 3.0)
-			o = vec3(0.8, 0.2, 0.2);
-
-		if(length(coords - end) < 3.0)
-			o = vec3(0.2, 0.8, 0.2);
-
-		if(length(coords - bend) < 3.0)
-			o = vec3(0.2, 0.2, 0.8);
-
+		if(length(coords - start) < 3.0) {
+			float a = smoothstep(0.0, 1.0, 3.0 - length(coords - start));
+			o = mix(o, vec3(0.8, 0.2, 0.2), a);
+		}
+		if(length(coords - end) < 3.0) {
+			float a = smoothstep(0.0, 1.0, 3.0 - length(coords - end));
+			o = mix(o, vec3(0.2, 0.8, 0.2), a);
+		}
 		if(abs(sdf(coords, start, bend, end)) < 2.0) {
-				float a = smoothstep(0.0, 1.0, 1.0 - abs(sdf(coords, start, bend, end)));
-				o = mix(o, vec3(0.8, 0.4, 0.8), a);
+			float a = smoothstep(0.0, 1.0, 1.0 - abs(sdf(coords, start, bend, end)));
+			o = mix(o, vec3(0.8, 0.4, 0.8), a);
 		}
 	}
 
