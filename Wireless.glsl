@@ -1,10 +1,10 @@
 // Wireless - removes wires, and other straight-ish things
 // lewis@lewissaunders.com
 // TODO:
-//	o trim wire at start/end
-//	o bugs out when curve is 0
+//	o bugs out when curve is 0, esp with hook
+//  o bugs out when start == end
 //	o detail restore seems not quite right
-//  o offset sample points along image gradients
+//  o offset sample points along image gradients w/manual offset
 //	o offset start/end, with fade in/out?
 //  o soft edge to wire or at least alpha?
 //	o overlay colours
@@ -44,18 +44,6 @@ float splineimplicit(vec2 p, vec2 v1, vec2 v2, vec2 v3) {
 float splinesdf(vec2 p, vec2 v1, vec2 v2, vec2 v3) {
 	float f = splineimplicit(p, v1, v2, v3);
 	return f / sqrt(dFdx(f)*dFdx(f) + dFdy(f)*dFdy(f));
-}
-
-// Return coordinates of point at t on spline v1,v2,v3
-vec2 spline(float t, vec2 v1, vec2 v2, vec2 v3) {
-	float it = 1.0 - t;
-	return it * (it*v1 + t*v2) + t * (it*v2 + t*v3);
-}
-
-// Return approximate [0-1] parameter for point p on spline v1,v2,v3
-float splinet(vec2 p, vec2 v1, vec2 v2, vec2 v3) {
-	float t = 0.5;
-	
 }
 
 void main() {
@@ -117,8 +105,15 @@ void main() {
 
 		vec3 frontpix = texture2D(front, coords / res).rgb;
 		o = mix(o, o + (frontpix - blurred), restoremix);
-		m = 1.0;
 
+		// Check if we're off the start or end
+		vec3 b = barycentrics(closest, start, bend, end);
+		m = 1.0;
+		if(b.y < 0.0) {
+			m = 0.0;
+		}
+
+		o = mix(frontpix, o, m);
 	}
 
 	if(overlay) {
@@ -130,7 +125,7 @@ void main() {
 			float a = smoothstep(0.0, 1.0, 3.0 - length(coords - end));
 			o = mix(o, vec3(0.2, 0.8, 0.2), a);
 		}
-		if(abs(splinesdf(coords, start, bend, end)) < 2.0) {
+		if((abs(splinesdf(coords, start, bend, end)) < 2.0) && barycentrics(closest, start, bend, end).y > 0.0) {
 			float a = smoothstep(0.0, 1.0, 1.0 - abs(splinesdf(coords, start, bend, end)));
 			o = mix(o, vec3(0.8, 0.4, 0.8), a);
 		}
