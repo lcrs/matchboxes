@@ -1,11 +1,11 @@
 // Wireless - removes wires, and other straight-ish things
 // lewis@lewissaunders.com
 // TODO:
-//	o detail restore seems not quite right
+//  o detail restore seems not quite right
 //  o offset sample points along image gradients w/manual offset?
-//	o offset start/end, with fade in/out?
+//  o offset start/end, with fade in/out?
 //  o soft edge to wire or at least alpha?
-//	o overlay colours
+//  o overlay colours
 
 uniform sampler2D front;
 uniform float adsk_result_w, adsk_result_h;
@@ -105,7 +105,7 @@ void main() {
 			energy += weight;
 		}
 		if(energy < 0.001) {
-			// We ain't gonna see that shit
+			// We ain't gon' don' see that
 			blurred = o;
 		} else {
 			blurred /= energy;
