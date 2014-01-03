@@ -1,10 +1,8 @@
 // Wireless - removes wires, and other straight-ish things
 // lewis@lewissaunders.com
 // TODO:
-//	o bugs out when curve is 0, esp with hook
-//  o bugs out when start == end
 //	o detail restore seems not quite right
-//  o offset sample points along image gradients w/manual offset
+//  o offset sample points along image gradients w/manual offset?
 //	o offset start/end, with fade in/out?
 //  o soft edge to wire or at least alpha?
 //	o overlay colours
@@ -49,16 +47,27 @@ float splinesdf(vec2 p, vec2 v1, vec2 v2, vec2 v3) {
 void main() {
 	vec2 res = vec2(adsk_result_w, adsk_result_h);
 	vec2 coords = gl_FragCoord.xy;
+	vec3 frontpix = texture2D(front, coords / res).rgb;
 
 	// Combine pixel tracks and 0-1 offsets
 	vec2 start = starttrack + (startoffset * res);
 	vec2 end = endtrack + (endoffset * res);
-
+	
 	// Figure out bend, our actual b-spline control point
 	vec2 slope = normalize(end - start);
 	vec2 across = vec2(-slope.y, slope.x);
 	vec2 midpoint = (start + end) / 2.0;
-	vec2 bend = midpoint + 10.0 * curve * across + 30.0 * hook * slope;
+	float safecurve = curve;
+	if(curve == 0.0) {
+		// Shy away from curve being 0, causes mad freakouts
+		safecurve = 0.001;
+	}
+	float safehook = hook;
+	if(abs(curve) < 1.0) {
+		// Extreme hooking when curve is small is problematic
+		safehook = mix(hook, 0.0, 1.0 - abs(curve));
+	}
+	vec2 bend = midpoint + 10.0 * safecurve * across + 30.0 * safehook * slope;
 
 	// Grad of the scalar field f is tangent to the wire
 	// We're taking the grad and tangent at the current pixel rather than at
@@ -82,8 +91,7 @@ void main() {
 		m = 0.0;
 	} else {
 		// Interpolate between the two samples
-		float blend = length(coords - (closest + (tangent * radius)));
-		blend /= radius * 2.0;
+		float blend = length(coords - sample1) / (radius * 2.0);
 		o = mix(color1, color2, blend);
 
 		// Blur along the line, which should give an approximation of the wire we're removing
@@ -102,8 +110,6 @@ void main() {
 		} else {
 			blurred /= energy;
 		}
-
-		vec3 frontpix = texture2D(front, coords / res).rgb;
 		o = mix(o, o + (frontpix - blurred), restoremix);
 
 		// Check if we're off the start or end
@@ -112,8 +118,12 @@ void main() {
 		if(b.y < 0.0) {
 			m = 0.0;
 		}
-
 		o = mix(frontpix, o, m);
+	}
+
+	if(length(start - end) < 2.0) {
+		// That is an awfully short wire
+		o = frontpix;
 	}
 
 	if(overlay) {
