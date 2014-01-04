@@ -7,11 +7,15 @@
 
 // TODO:
 //  o Distort a matte input also
+//  o Linear filtering for magnification a la Action's EWA + Linear
+//  o Overall transform mult
 //  o Option to remove messy edges from UV map
 
 uniform sampler2D front, uv;
 uniform float adsk_result_w, adsk_result_h;
 uniform float filterwidth, filtersharpness;
+uniform float lin4mag;
+uniform bool outputdfdx;
 uniform int texellimit;
 uniform vec2 offset;
 
@@ -87,8 +91,18 @@ vec4 texture2DEWA(sampler2D tex0, vec2 p0) {
 void main(void) {
 	vec2 coords = gl_FragCoord.xy / vec2(adsk_result_w, adsk_result_h);
 	vec2 uvcoords = texture2D(uv, coords).rg + offset;
+
+	vec4 ewa = texture2DEWA(front, uvcoords);
+	vec4 lin = texture2D(front, uvcoords);
+	vec4 df = vec4(dFdx(uvcoords.x), dFdy(uvcoords.x), dFdx(uvcoords.y), dFdy(uvcoords.y));
+
+	vec4 o = ewa;
+
+	if(outputdfdx) {
+		o = vec4(length(df) * 10.0);
+	}
 	
-	gl_FragColor = texture2DEWA(front, uvcoords);
+	gl_FragColor = o;
 }
 
 

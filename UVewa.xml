@@ -2,27 +2,35 @@
 
 lewis@lewissaunders.com" Name="UVewa">
    <Shader OutputBitDepth="Output" Index="1">
-      <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="Front" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_NEAREST" GL_TEXTURE_MIN_FILTER="GL_NEAREST" Type="sampler2D" Name="front">
+      <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="Front" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="front">
       </Uniform>
-      <Uniform Index="1" NoInput="Error" Tooltip="" DisplayName="UV Map" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_NEAREST" GL_TEXTURE_MIN_FILTER="GL_NEAREST" Type="sampler2D" Name="uv">
+      <Uniform Index="1" NoInput="Error" Tooltip="" DisplayName="UV Map" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="uv">
       </Uniform>
-      <Uniform Inc="0.1" Tooltip="" Row="1" Col="1" Page="0" DisplayName="Offset" Type="vec2" Name="offset">
+      <Uniform Inc="0.1" Tooltip="" Row="1" Col="0" Page="0" DisplayName="Offset" Type="vec2" Name="offset">
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
          </SubUniform>
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
          </SubUniform>
       </Uniform>
-      <Uniform ResDependent="None" Max="4096" Min="1" Default="128" Inc="1" Tooltip="" Row="1" Col="2" Page="0" DisplayName="Samples" Type="int" Name="texellimit">
+      <Uniform ResDependent="None" Max="4096" Min="1" Default="128" Inc="1" Tooltip="" Row="1" Col="1" Page="0" DisplayName="Samples" Type="int" Name="texellimit">
       </Uniform>
-      <Uniform ResDependent="None" Max="32.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="" Row="2" Col="2" Page="0" DisplayName="Filter width" Type="float" Name="filterwidth">
+      <Uniform ResDependent="None" Max="32.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="" Row="2" Col="1" Page="0" DisplayName="Filter width" Type="float" Name="filterwidth">
       </Uniform>
-      <Uniform ResDependent="None" Max="32.0" Min="0.0" Default="2.0" Inc="0.01" Tooltip="" Row="3" Col="2" Page="0" DisplayName="Sharpness" Type="float" Name="filtersharpness">
+      <Uniform ResDependent="None" Max="32.0" Min="0.0" Default="2.0" Inc="0.01" Tooltip="" Row="3" Col="1" Page="0" DisplayName="Sharpness" Type="float" Name="filtersharpness">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.0" Inc="0.01" Tooltip="" Row="1" Col="2" Page="0" DisplayName="Linear for mag" Type="float" Name="lin4mag">
+      </Uniform>
+      <Uniform Row="2" Col="3" Page="0" Default="False" Tooltip="" DisplayName="Output scale factor" Type="bool" Name="outputdfdx">
       </Uniform>
    </Shader>
    <Page Name="UVewa" Page="0">
-      <Col Name="Transform" Col="1" Page="0">
+      <Col Name="Transform" Col="0" Page="0">
       </Col>
-      <Col Name="EWA Filtering" Col="2" Page="0">
+      <Col Name="EWA Filtering" Col="1" Page="0">
+      </Col>
+      <Col Name="Extra Filtering" Col="2" Page="0">
+      </Col>
+      <Col Name="Options" Col="3" Page="0">
       </Col>
    </Page>
 </ShaderNodePreset>
