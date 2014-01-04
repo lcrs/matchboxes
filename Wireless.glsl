@@ -1,10 +1,12 @@
 // Wireless - removes wires, and other straight-ish things
 // lewis@lewissaunders.com
 // TODO:
-//  o detail restore seems not quite right
+//  o de-stripe by blurring sample points along wire direction
+//  o detail restore seems not quite right somehow, looks sharpened
 //  o offset start/end, with fade in/out?
 //  o soft edge to wire or at least alpha?
 //  o overlay colours
+//  o respond to image contours/gradients/edges somehow... somehow?
 
 uniform sampler2D front;
 uniform float adsk_result_w, adsk_result_h;
@@ -79,42 +81,30 @@ void main() {
 	}
 	vec2 bend = midpoint + 10.0 * safecurve * across + 30.0 * safehook * slope;
 
+	// Grad of the scalar field f is tangent to the wire
+	// We're taking the grad and tangent at the current pixel rather than at
+	// the closest point on the wire, which isn't totally accurate
+	float f = splineimplicit(coords, start, bend, end);
+	vec2 tangent = vec2(dFdx(f), dFdy(f));
+	vec2 grad = vec2(-tangent.y, tangent.x);
+	grad = normalize(grad);
+	tangent = rotation(deg2rad(angle)) * tangent;
+	tangent = normalize(tangent);
+	float tiltedradius = radius / cos(deg2rad(angle));
+
+	// Find the closest point on the wire along our tangent
+	// We assume the wire is straight here, without much damage it seems
+	vec2 closest = coords - splinesdf(coords, start, bend, end) * (tangent / cos(deg2rad(angle)));
+	vec2 closestdirect = coords - splinesdf(coords, start, bend, end) * normalize(vec2(dFdx(f), dFdy(f)));
+	
 	vec3 o;
 	float m;
-	vec2 closest;
-
+	
 	if(abs(splinesdf(coords, start, bend, end)) > radius) {
 		// Miles away from the wire, get outta here
 		o = frontpix;
 		m = 0.0;
 	} else {
-		// Grad of the scalar field f is tangent to the wire
-		// We're taking the grad and tangent at the current pixel rather than at
-		// the closest point on the wire, which isn't totally accurate
-		float f = splineimplicit(coords, start, bend, end);
-		vec2 tangent = vec2(dFdx(f), dFdy(f));
-		tangent = rotation(deg2rad(angle)) * tangent;
-		tangent = normalize(tangent);
-		vec2 grad = vec2(-tangent.y, tangent.x);
-		float tiltedradius = radius / cos(deg2rad(angle));
-
-		// Find the closest point on the wire along our tangent
-		float i;
-		float previous = 999.0;
-		float current = 999.0;
-		float epsilon = 0.2;
-		for(i = -tiltedradius-epsilon; i < tiltedradius+epsilon; i += 0.01) {
-			closest = coords - i * tangent;
-			current = splineimplicit(closest, start, bend, end);
-			if(previous * current < 0.0) {
-				// Sign changed!
-				break;
-			}
-			previous = current;
-		}
-		
-		//closest = coords - splinesdf(coords, start, bend, end) * (tangent / cos(deg2rad(angle)));
-		
 		// Take samples from either side of the closest point on the wire
 		vec2 sample1 = closest + (tangent * tiltedradius);
 		vec2 sample2 = closest - (tangent * tiltedradius);
@@ -166,7 +156,7 @@ void main() {
 			float a = smoothstep(0.0, 1.0, 3.0 - length(coords - end));
 			o = mix(o, vec3(0.2, 0.8, 0.2), a);
 		}
-		if((abs(splinesdf(coords, start, bend, end)) < 2.0) && barycentrics(closest, start, bend, end).y > 0.0) {
+		if((abs(splinesdf(coords, start, bend, end)) < 2.0) && barycentrics(closestdirect, start, bend, end).y > 0.0) {
 			float a = smoothstep(0.0, 1.0, 1.0 - abs(splinesdf(coords, start, bend, end)));
 			o = mix(o, vec3(0.8, 0.4, 0.8), a);
 		}
