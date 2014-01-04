@@ -2,7 +2,6 @@
 // lewis@lewissaunders.com
 // TODO:
 //  o detail restore seems not quite right
-//  o offset sample points along image gradients w/manual offset?
 //  o offset start/end, with fade in/out?
 //  o soft edge to wire or at least alpha?
 //  o overlay colours
@@ -10,8 +9,19 @@
 uniform sampler2D front;
 uniform float adsk_result_w, adsk_result_h;
 uniform vec2 starttrack, endtrack, startoffset, endoffset;
-uniform float radius, restoresize, restoremix, curve, hook;
+uniform float radius, restoresize, restoremix, curve, hook, angle;
 uniform bool overlay;
+
+// Angles
+#define pi 3.14159265358979
+float deg2rad(float degrees) {
+	return degrees/(180.0/pi);
+}
+
+// Return a matrix to rotate about origin
+mat2 rotation(float rads) {
+	return mat2(cos(rads), sin(rads), -sin(rads), cos(rads));
+}
 
 // Return barycentric coordinates for p in triangle v1,v2,v3
 vec3 barycentrics(vec2 p, vec2 v1, vec2 v2, vec2 v3) {
@@ -58,9 +68,9 @@ void main() {
 	vec2 across = vec2(-slope.y, slope.x);
 	vec2 midpoint = (start + end) / 2.0;
 	float safecurve = curve;
-	if(curve == 0.0) {
+	if(abs(curve) < 0.01) {
 		// Shy away from curve being 0, causes mad freakouts
-		safecurve = 0.001;
+		safecurve = 0.01;
 	}
 	float safehook = hook;
 	if(abs(curve) < 1.0) {
@@ -69,29 +79,50 @@ void main() {
 	}
 	vec2 bend = midpoint + 10.0 * safecurve * across + 30.0 * safehook * slope;
 
-	// Grad of the scalar field f is tangent to the wire
-	// We're taking the grad and tangent at the current pixel rather than at
-	// the closest point on the wire, which isn't totally accurate
-	float f = splineimplicit(coords, start, bend, end);
-	vec2 tangent = normalize(vec2(dFdx(f), dFdy(f)));
-	vec2 grad = vec2(-tangent.y, tangent.x);
-	vec2 closest = coords - splinesdf(coords, start, bend, end) * tangent;
-
-	// Take samples from either side of the closest point on the wire
-	vec2 sample1 = closest + (tangent * radius);
-	vec2 sample2 = closest - (tangent * radius);
-	vec3 color1 = texture2D(front, sample1 / res).rgb;
-	vec3 color2 = texture2D(front, sample2 / res).rgb;
-
 	vec3 o;
 	float m;
+	vec2 closest;
+
 	if(abs(splinesdf(coords, start, bend, end)) > radius) {
 		// Miles away from the wire, get outta here
-		o = texture2D(front, coords / res).rgb;
+		o = frontpix;
 		m = 0.0;
 	} else {
+		// Grad of the scalar field f is tangent to the wire
+		// We're taking the grad and tangent at the current pixel rather than at
+		// the closest point on the wire, which isn't totally accurate
+		float f = splineimplicit(coords, start, bend, end);
+		vec2 tangent = vec2(dFdx(f), dFdy(f));
+		tangent = rotation(deg2rad(angle)) * tangent;
+		tangent = normalize(tangent);
+		vec2 grad = vec2(-tangent.y, tangent.x);
+		float tiltedradius = radius / cos(deg2rad(angle));
+
+		// Find the closest point on the wire along our tangent
+		float i;
+		float previous = 999.0;
+		float current = 999.0;
+		float epsilon = 0.2;
+		for(i = -tiltedradius-epsilon; i < tiltedradius+epsilon; i += 0.01) {
+			closest = coords - i * tangent;
+			current = splineimplicit(closest, start, bend, end);
+			if(previous * current < 0.0) {
+				// Sign changed!
+				break;
+			}
+			previous = current;
+		}
+		
+		//closest = coords - splinesdf(coords, start, bend, end) * (tangent / cos(deg2rad(angle)));
+		
+		// Take samples from either side of the closest point on the wire
+		vec2 sample1 = closest + (tangent * tiltedradius);
+		vec2 sample2 = closest - (tangent * tiltedradius);
+		vec3 color1 = texture2D(front, sample1 / res).rgb;
+		vec3 color2 = texture2D(front, sample2 / res).rgb;
+
 		// Interpolate between the two samples
-		float blend = length(coords - sample1) / (radius * 2.0);
+		float blend = length(coords - sample1) / length(sample2 - sample1);
 		o = mix(color1, color2, blend);
 
 		// Blur along the line, which should give an approximation of the wire we're removing

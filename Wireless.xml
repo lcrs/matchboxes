@@ -32,13 +32,15 @@ lewis@lewissaunders.com" Name="Wireless">
       </Uniform>
       <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0" Inc="0.01" Tooltip="" Row="1" Col="2" Page="0" DisplayName="Hook" Type="float" Name="hook">
       </Uniform>
-      <Uniform Row="2" Col="2" Page="0" Default="True" Tooltip="" DisplayName="Draw workings" Type="bool" Name="overlay">
+      <Uniform Row="2" Col="2" Page="0" Default="False" Tooltip="" DisplayName="Draw workings" Type="bool" Name="overlay">
       </Uniform>
-      <Uniform ResDependent="None" Max="1000.0" Min="0.0" Default="0.0" Inc="0.01" Tooltip="" Row="3" Col="2" Page="0" DisplayName="Radius" Type="float" Name="radius">
+      <Uniform ResDependent="None" Max="1000.0" Min="0.0" Default="20.0" Inc="0.01" Tooltip="" Row="3" Col="2" Page="0" DisplayName="Radius" Type="float" Name="radius">
       </Uniform>
       <Uniform ResDependent="None" Max="1000.0" Min="0.0" Default="5.0" Inc="0.01" Tooltip="" Row="0" Col="3" Page="0" DisplayName="Restore size" Type="float" Name="restoresize">
       </Uniform>
-      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.5" Inc="0.01" Tooltip="" Row="1" Col="3" Page="0" DisplayName="Restore mix" Type="float" Name="restoremix">
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.0" Inc="0.01" Tooltip="" Row="1" Col="3" Page="0" DisplayName="Restore mix" Type="float" Name="restoremix">
+      </Uniform>
+      <Uniform ResDependent="None" Max="360.0" Min="-360.0" Default="0.0" Inc="0.1" Tooltip="" Row="3" Col="3" Page="0" DisplayName="Angle" Type="float" Name="angle">
       </Uniform>
    </Shader>
    <Page Name="Wireless" Page="0">
