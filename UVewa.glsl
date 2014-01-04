@@ -11,11 +11,11 @@
 //  o Overall transform mult
 //  o Option to remove messy edges from UV map
 
-uniform sampler2D front, uv;
+uniform sampler2D front, uv, matte;
 uniform float adsk_result_w, adsk_result_h;
 uniform float filterwidth, filtersharpness;
-uniform float lin4mag;
-uniform bool outputdfdx;
+uniform float lin4mag, emult;
+uniform bool flin, outputdfdx;
 uniform int texellimit;
 uniform vec2 offset;
 
@@ -90,19 +90,30 @@ vec4 texture2DEWA(sampler2D tex0, vec2 p0) {
 
 void main(void) {
 	vec2 coords = gl_FragCoord.xy / vec2(adsk_result_w, adsk_result_h);
-	vec2 uvcoords = texture2D(uv, coords).rg + offset;
+	vec2 uvcoords = mix(coords, texture2D(uv, coords).rg + offset, emult);
 
-	vec4 ewa = texture2DEWA(front, uvcoords);
-	vec4 lin = texture2D(front, uvcoords);
 	vec4 df = vec4(dFdx(uvcoords.x), dFdy(uvcoords.x), dFdx(uvcoords.y), dFdy(uvcoords.y));
 
-	vec4 o = ewa;
+	vec4 ewa = texture2DEWA(front, uvcoords);
+	vec4 ewa_matte = texture2DEWA(matte, uvcoords);
+	vec4 lin = texture2D(front, uvcoords);
+	vec4 lin_matte = texture2D(matte, uvcoords);
+	
+	float linblend = smoothstep(1.0, 0.1/lin4mag * 4000.0, 1.0/length(df));
+	vec4 o = mix(ewa, lin, linblend);
+	vec4 m = mix(ewa_matte, lin_matte, linblend);
 
-	if(outputdfdx) {
-		o = vec4(length(df) * 10.0);
+	if(flin) {
+		o = lin;
+		m = lin_matte;
 	}
 	
-	gl_FragColor = o;
+	if(outputdfdx) {
+		o = vec4(length(df) * 10.0);
+		m = vec4(length(df) * 10.0);
+	}
+	
+	gl_FragColor = vec4(o.rgb, m.g);
 }
 
 
