@@ -1,4 +1,4 @@
-<ShaderNodePreset SupportsAdaptiveDegradation="0" Description="Wireless - removes wires or other straight-ish things
+<ShaderNodePreset SupportsAdaptiveDegradation="0" Description="Wireless - removes wires, or other straight-ish things
 
 lewis@lewissaunders.com" Name="Wireless">
    <Shader OutputBitDepth="Output" Index="1">
