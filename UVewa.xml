@@ -1,5 +1,7 @@
 <ShaderNodePreset SupportsAdaptiveDegradation="0" Description="UVewa - UV mapping with EWA filtering, which is a little soft but copes well with extreme distortions like mapping an image to a floor plane.  Fellow shader nerds can borrow the EWA function for other things which need strong filtering
 
+Comparison video, sadly not done justice by compression: http://youtube.com/watch?v=iEVb7tVxaP0
+
 lewis@lewissaunders.com" Name="UVewa">
    <Shader OutputBitDepth="Output" Index="1">
       <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="Front" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="front">
