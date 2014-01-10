@@ -7,6 +7,7 @@
 //  o soft edge to wire or at least alpha?
 //  o overlay colours
 //  o respond to image contours/gradients/edges somehow... somehow?
+//  o try adaptive median a la IRank - pull in pixels that are most different to the wire colour
 
 uniform sampler2D front;
 uniform float adsk_result_w, adsk_result_h;
