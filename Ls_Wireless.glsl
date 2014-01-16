@@ -1,6 +1,7 @@
 // Wireless - removes wires, and other straight-ish things
 // lewis@lewissaunders.com
 // TODO:
+//  o width offset for one end of wire
 //  o de-stripe by blurring sample points along wire direction
 //  o detail restore seems not quite right somehow, looks sharpened
 //  o offset start/end, with fade in/out?
