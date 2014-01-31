@@ -1,15 +1,19 @@
 // Pass 2: do the displace
+// TODO:
+//  o Extra per-step transform controls?
+//  o Spread samples out along normal to path direction?
 // lewis@lewissaunders.com
 
 uniform sampler2D front, map, adsk_results_pass1;
-uniform float adsk_result_w, adsk_result_h, blength;
-uniform int samples;
+uniform float adsk_result_w, adsk_result_h, blength, spacing;
+uniform int samples, oversamples;
+uniform vec2 bl, tr;
 uniform bool radial, vectors, normalize, adsk_degrade;
 
 void main() {
 	vec2 xy = gl_FragCoord.xy;
 
-	// Factor to convert [0,1] texture coords to pixels
+	// Factor to convert pixels to [0,1] texture coords
 	vec2 px = vec2(1.0) / vec2(adsk_result_w, adsk_result_h);
 
 	// Get vectors from previous pass
@@ -28,6 +32,17 @@ void main() {
 		return;
 	}
 
+	// Crop
+	vec2 xyn = xy * px;
+	if((xyn.x < bl.x) || (xyn.x > tr.x)) {
+		gl_FragColor = texture2D(front, xyn);
+		return;
+	}
+	if((xyn.y < bl.y) || (xyn.y > tr.y)) {
+		gl_FragColor = texture2D(front, xyn);
+		return;
+	}
+
 	if(length(d) == 0.0) {
 		// No gradient at this point in the map, early out
 		gl_FragColor = texture2D(front, xy * px);
@@ -39,12 +54,21 @@ void main() {
 		sam /= 4.0;
 	}
 
-	// Walk along the path...
-	for(float i = 0.0; i < sam; i++) {
-		d = texture2D(adsk_results_pass1, xy * px).xy;
-		xy += d * (blength/sam);
+	vec4 acc = vec4(0.0);
+	for(int j = 0; j < oversamples; j++) {
+		for(int k = 0; k < oversamples; k++) {
+			// Starting point for this sample
+			xy = gl_FragCoord.xy + spacing * vec2(float(j) / (float(oversamples) + 1.0), float(k) / (float(oversamples) + 1.0));
+			// Walk along path by sampling vector image, moving, sampling, moving...
+			for(float i = 0.0; i < sam; i++) {
+				d = texture2D(adsk_results_pass1, xy * px).xy;
+				xy += d * (blength/sam);
+			}
+			// Sample front image where our walk ended up
+			acc += texture2D(front, xy * px);
+		}
 	}
+	acc /= oversamples * oversamples;
 
-	// ...and sample where we ended up
-	gl_FragColor = texture2D(front, xy * px);
+	gl_FragColor = acc; 
 }

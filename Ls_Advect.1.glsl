@@ -12,7 +12,7 @@ uniform bool radial, directvectors;
 void main() {
 	vec2 xy = gl_FragCoord.xy;
 
-	// Factor to convert [0,1] texture coords to pixels
+	// Factor to convert pixels to [0,1] texture coords
 	vec2 px = vec2(1.0) / vec2(adsk_result_w, adsk_result_h);
 
 	vec2 d = vec2(0.0);
