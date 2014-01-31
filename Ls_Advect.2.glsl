@@ -68,7 +68,7 @@ void main() {
 			acc += texture2D(front, xy * px);
 		}
 	}
-	acc /= oversamples * oversamples;
+	acc /= float(oversamples * oversamples);
 
 	gl_FragColor = acc; 
 }
