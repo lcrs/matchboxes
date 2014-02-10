@@ -18,6 +18,10 @@ lewis@lewissaunders.com" Name="Advect">
       </Uniform>
       <Uniform ResDependent="Width" Max="2048.0" Min="-2048.0" Default="8.0" Inc="0.2" Tooltip="Distance to move by" Row="1" Col="1" Page="0" DisplayName="Length" Type="float" Name="blength">
       </Uniform>
+      <Uniform Row="3" Col="1" Page="0" Default="False" Tooltip="Darken samples the further they move" DisplayName="Fade away" Type="bool" Name="fade">
+      </Uniform>
+      <Uniform ResDependent="Width" Max="2048.0" Min="0.0" Default="8.0" Inc="0.2" Tooltip="Distance by which brightness dies" Row="4" Col="1" Page="0" DisplayName="Dist. to black" Type="float" Name="maxlength">
+      </Uniform>
       <Uniform Max="2048" Min="1" Default="64" Inc="1" Tooltip="Number of steps along path, increase to get correct path shape" Row="1" Col="2" Page="0" DisplayName="Path segments" Type="int" Name="samples">
       </Uniform>
       <Uniform Max="64" Min="1" Default="4" Inc="1" Tooltip="Number of pixel samples, carefully increase for smoothness" Row="2" Col="2" Page="0" DisplayName="Oversampling" Type="int" Name="oversamples">

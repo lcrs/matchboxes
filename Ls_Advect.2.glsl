@@ -5,10 +5,10 @@
 // lewis@lewissaunders.com
 
 uniform sampler2D front, map, adsk_results_pass1;
-uniform float adsk_result_w, adsk_result_h, blength, spacing;
+uniform float adsk_result_w, adsk_result_h, blength, spacing, maxlength;
 uniform int samples, oversamples;
 uniform vec2 bl, tr;
-uniform bool radial, vectors, normalize, adsk_degrade;
+uniform bool radial, vectors, normalize, adsk_degrade, fade;
 
 void main() {
 	vec2 xy = gl_FragCoord.xy;
@@ -59,13 +59,19 @@ void main() {
 		for(int k = 0; k < oversamples; k++) {
 			// Starting point for this sample
 			xy = gl_FragCoord.xy + spacing * vec2(float(j) / (float(oversamples) + 1.0), float(k) / (float(oversamples) + 1.0));
+			float dist = 0.0;
 			// Walk along path by sampling vector image, moving, sampling, moving...
 			for(float i = 0.0; i < sam; i++) {
 				d = texture2D(adsk_results_pass1, xy * px).xy;
 				xy += d * (blength/sam);
+				dist += length(d * (blength/sam));
 			}
 			// Sample front image where our walk ended up
 			acc += texture2D(front, xy * px);
+			// Darken it if it came from miles away
+			if(fade) {
+				acc *= 1.0 - clamp(abs(dist)/maxlength, 0.0, 1.0);
+			}
 		}
 	}
 	acc /= float(oversamples * oversamples);
