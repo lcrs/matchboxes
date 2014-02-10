@@ -2,6 +2,7 @@
 // TODO:
 //  o Extra per-step transform controls?
 //  o Spread samples out along normal to path direction?
+//  o Fade away distance interacts with oversample factor
 // lewis@lewissaunders.com
 
 uniform sampler2D front, map, adsk_results_pass1;
