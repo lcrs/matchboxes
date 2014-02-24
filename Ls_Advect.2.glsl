@@ -2,7 +2,7 @@
 // TODO:
 //  o Extra per-step transform controls?
 //  o Spread samples out along normal to path direction?
-//  o Fade away distance interacts with oversample factor
+//  o Fade away distance interacts with oversample factor?
 // lewis@lewissaunders.com
 
 uniform sampler2D front, map, adsk_results_pass1;
@@ -71,7 +71,7 @@ void main() {
 			acc += texture2D(front, xy * px);
 			// Darken it if it came from miles away
 			if(fade) {
-				acc *= 1.0 - clamp(abs(dist)/maxlength, 0.0, 1.0);
+				acc *= 1.0 - (clamp(abs(dist)/maxlength, 0.0, 1.0) / float(oversamples * oversamples));
 			}
 		}
 	}
