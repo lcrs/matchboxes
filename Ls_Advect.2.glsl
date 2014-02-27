@@ -37,16 +37,19 @@ void main() {
 	vec2 xyn = xy * px;
 	if((xyn.x < bl.x) || (xyn.x > tr.x)) {
 		gl_FragColor = texture2D(front, xyn);
+		gl_FragColor.a = 0.0;
 		return;
 	}
 	if((xyn.y < bl.y) || (xyn.y > tr.y)) {
 		gl_FragColor = texture2D(front, xyn);
+		gl_FragColor.a = 0.0;
 		return;
 	}
 
 	if(length(d) == 0.0) {
 		// No gradient at this point in the map, early out
 		gl_FragColor = texture2D(front, xy * px);
+		gl_FragColor.a = 0.0;
 		return;
 	}
 	
@@ -68,10 +71,12 @@ void main() {
 				dist += length(d * (blength/sam));
 			}
 			// Sample front image where our walk ended up
-			acc += texture2D(front, xy * px);
+			acc.rgb += texture2D(front, xy * px).rgb;
+			// Length we've travelled to the matte output
+			acc.a += dist;
 			// Darken it if it came from miles away
 			if(fade) {
-				acc *= 1.0 - (clamp(abs(dist)/maxlength, 0.0, 1.0) / float(oversamples * oversamples));
+				acc.rgb *= 1.0 - (clamp(abs(dist)/maxlength, 0.0, 1.0) / float(oversamples * oversamples));
 			}
 		}
 	}
