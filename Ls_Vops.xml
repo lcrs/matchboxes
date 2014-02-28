@@ -1,4 +1,4 @@
-<ShaderNodePreset SupportsAdaptiveDegradation="0" Description="Vector operations - Normalize, multiply, add, compute lengths of and combine vector passes.
+<ShaderNodePreset SupportsAdaptiveDegradation="0" Description="Vector operations - normalize, scale, rotate, translate, compute lengths of and combine vector passes.
 
 lewis@lewissaunders.com" Name="Vops">
    <Shader OutputBitDepth="Output" Index="1">
@@ -170,16 +170,17 @@ lewis@lewissaunders.com" Name="Vops">
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform>
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform></Uniform>
  
-      <Uniform Row="0" Col="0" Page="6" Default="True" Tooltip="" DisplayName="Add" Type="bool" Name="add"></Uniform>
-      <Uniform Row="1" Col="0" Page="6" Default="False" Tooltip="" DisplayName="Subtract" Type="bool" Name="subtract"></Uniform>
-      <Uniform Row="2" Col="0" Page="6" Default="False" Tooltip="" DisplayName="Screen" Type="bool" Name="screen"></Uniform>
-      <Uniform Row="0" Col="1" Page="6" Default="False" Tooltip="" DisplayName="A dot B" Type="bool" Name="adotb"></Uniform>
-      <Uniform Row="1" Col="1" Page="6" Default="False" Tooltip="" DisplayName="A cross B" Type="bool" Name="acrossb"></Uniform>
+      <Uniform Row="0" Col="0" Page="6" Default="True" Tooltip="o = a+b+c+d+e+f" DisplayName="Add" Type="bool" Name="add"></Uniform>
+      <Uniform Row="1" Col="0" Page="6" Default="False" Tooltip="o = a-b-c-d-e-f" DisplayName="Subtract" Type="bool" Name="subtract"></Uniform>
+      <Uniform Row="2" Col="0" Page="6" Default="False" Tooltip="o = 1-((1-a)*(1-b)*(1-c)*(1-d)*(1-e)*(1-f)), which if the inputs are grayscale mattes is the same as comping them all together" DisplayName="Screen" Type="bool" Name="screen"></Uniform>
+      <Uniform Row="3" Col="0" Page="6" Default="False" Tooltip="o = a*(1-b)*(1-c)*(1-d)*(1-e)*(1-f), which if the inputs are grayscale mattes, removes areas b through f from a" DisplayName="Outside" Type="bool" Name="outside"></Uniform>
+      <Uniform Row="0" Col="1" Page="6" Default="False" Tooltip="Vector dot product of A and B, which if A is a normals pass and B is a constant direction gives you Lambert diffuse shading" DisplayName="A dot B" Type="bool" Name="adotb"></Uniform>
+      <Uniform Row="1" Col="1" Page="6" Default="False" Tooltip="Vector cross product of A and B, which gives you a vector at right angles to both" DisplayName="A cross B" Type="bool" Name="acrossb"></Uniform>
       <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0" Inc="0.01" Tooltip="" Row="0" Col="2" Page="6" DisplayName="Mix" Type="float" Name="mixa"></Uniform>
-      <Uniform Inc="0.01" Tooltip="" Row="4" Col="3" Page="6" DisplayName="Inspect" ValueType="Colour" Type="vec3" Name="picker">
-	 <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.5"></SubUniform>
-	 <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.5"></SubUniform>
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.5"></SubUniform></Uniform>
+      <Uniform Inc="0.01" Tooltip="" Row="0" Col="3" Page="6" DisplayName="Inspect" ValueType="Colour" Type="vec3" Name="picker">
+	 <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.25"></SubUniform>
+	 <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.75"></SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.125"></SubUniform></Uniform>
    </Shader>
    <Page Name="A" Page="0">
       <Col Name="Input A Scale" Col="0" Page="0"></Col>

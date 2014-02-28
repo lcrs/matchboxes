@@ -1,5 +1,5 @@
 // Vector operations
-// Normalize, multiply, add, compute lengths of and combine vector passes
+// Normalize, scale, rotate, translate, compute lengths of and combine vector passes
 // lewis@lewissaunders.com
 // TODO:
 //  o Gamma?
@@ -16,7 +16,7 @@ uniform vec3 Aadd, Badd, Cadd, Dadd, Eadd, Fadd, Oadd;
 uniform vec3 Aadd2, Badd2, Cadd2, Dadd2, Eadd2, Fadd2, Oadd2;
 uniform bool Alen, Blen, Clen, Dlen, Elen, Flen, Olen;
 
-uniform bool add, subtract, screen, adotb, acrossb;
+uniform bool add, subtract, screen, outside, adotb, acrossb;
 uniform float mixa;
 
 uniform vec3 picker;
@@ -78,6 +78,7 @@ void main() {
 	if(subtract) o = a - b - c - d - e - f;
 	vec3 one = vec3(1.0);
 	if(screen) o = one - (one - a) * (one - b) * (one - c) * (one - d) * (one - e) * (one - f);
+	if(outside) o = a * (one - b) * (one - c) * (one - d) * (one - e) * (one - f);
 	if(adotb) o = vec3(dot(a, b));
 	if(acrossb) o = cross(a, b);
 	o = mixa * o + (1.0 - mixa) * texture2D(A, xy).rgb;
