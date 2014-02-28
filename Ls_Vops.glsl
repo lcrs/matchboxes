@@ -1,8 +1,8 @@
 // Vector operations
-// Normalize, multiply, add, find lengths, combine vector passes
+// Normalize, multiply, add, compute lengths of and combine vector passes
 // lewis@lewissaunders.com
 // TODO:
-//  o Do-nothing test colour pickers everywhere
+//  o Gamma?
 
 uniform sampler2D A, B, C, D, E, F;
 uniform float adsk_result_w, adsk_result_h;
@@ -78,7 +78,7 @@ void main() {
 	if(subtract) o = a - b - c - d - e - f;
 	vec3 one = vec3(1.0);
 	if(screen) o = one - (one - a) * (one - b) * (one - c) * (one - d) * (one - e) * (one - f);
-	if(adotb) o = dot(a, b);
+	if(adotb) o = vec3(dot(a, b));
 	if(acrossb) o = cross(a, b);
 	o = mixa * o + (1.0 - mixa) * texture2D(A, xy).rgb;
 
