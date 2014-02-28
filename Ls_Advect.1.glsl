@@ -1,9 +1,7 @@
 // Pass 1: make the vectors
 // lewis@lewissaunders.com
 // TODO:
-//  o Bigger Sobel kernels?
 //  o Pre-blur input in case of kinks?
-//  o Could probably use dfdx,dfdy instead of manual convolution
 
 uniform sampler2D map;
 uniform float adsk_result_w, adsk_result_h, ksize;
@@ -20,6 +18,10 @@ void main() {
 	if(directvectors) {
 		// Map input is already vectors, yay!
 		d = texture2D(map, xy * px).xy;
+		if(radial) {
+			// Rotate 90 degrees
+			d = vec2(-d.y, d.x);
+		}
 		gl_FragColor = vec4(d.x, d.y, 0.0, 1.0);
 		return;
 	}
