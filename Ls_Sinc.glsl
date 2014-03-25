@@ -11,8 +11,8 @@ void main() {
 
 	vec3 o = vec3(0.0);
 	float energy = 0.0;
-	for(float i = -support; i < support; i++) {
-		for(float j = -support; j < support; j++) {
+	for(float i = -support; i <= support; i++) {
+		for(float j = -support; j <= support; j++) {
 			vec2 here = (gl_FragCoord.xy + scale * (vec2(i, j) / support)) / res;
 			float dist = length(vec2(i, j));
 			float weight = sin(dist) / dist;

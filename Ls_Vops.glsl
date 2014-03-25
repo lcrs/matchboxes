@@ -3,6 +3,7 @@
 // lewis@lewissaunders.com
 // TODO:
 //  o Gamma?
+//  o NaN killing after length/normalisation
 
 uniform sampler2D A, B, C, D, E, F;
 uniform float adsk_result_w, adsk_result_h;
