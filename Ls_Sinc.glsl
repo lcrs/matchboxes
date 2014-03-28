@@ -2,28 +2,42 @@
 // lewis@lewissaunders.com
 
 uniform sampler2D front;
-uniform float adsk_result_w, adsk_result_h;
-uniform float support;
-uniform float scale;
+uniform float adsk_result_w, adsk_result_h, support, inputwidth, sc;
+
+#define pi 3.1415926535897932384626
 
 void main() {
 	vec2 res = vec2(adsk_result_w, adsk_result_h);
+	vec2 xy = gl_FragCoord.xy;
 
 	vec3 o = vec3(0.0);
 	float energy = 0.0;
-	for(float i = -support; i <= support; i++) {
-		for(float j = -support; j <= support; j++) {
-			vec2 here = (gl_FragCoord.xy + scale * (vec2(i, j) / support)) / res;
-			float dist = length(vec2(i, j));
-			float weight = sin(dist) / dist;
-			if(dist == 0.0) {
+
+	float ksize = support;
+	float scale = res.x / inputwidth;
+
+	// Kernel must grow if we're magnifying
+	if(scale > 1.0) ksize *= scale;
+
+	// We loop over the input image pixels under our
+	// kernel, which covers -ksize to +ksize in output pixels
+	for(float x = ceil((xy.x-ksize)/scale); x <= floor((xy.x+ksize)/scale); x++) {
+		for(float y = ceil((xy.y-ksize)/scale); y <= floor((xy.y+ksize)/scale); y++) {
+			// Distance measured in output pixels
+			float dist = length(vec2(x,y) * scale - xy) * sc;
+
+			// Sinc weights
+			float weight = sin(pi * dist) / (pi * dist);
+			if(dist < 0.0001) {
 				weight = 1.0;
 			}
-			o += texture2D(front, here).rgb * weight;
+
+			// Sample!
+			o += texture2D(front, vec2(x,y)/(res/scale)).rgb * weight;
 			energy += weight;
 		}
 	}
-	o /= energy;
+	o.rgb /= energy;
 
-	gl_FragColor = vec4(o, 1.0);
+	gl_FragColor = vec4(o, 0.0);
 }
