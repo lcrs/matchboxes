@@ -1,4 +1,5 @@
 // Sinc4 resampling
+// Pass 1, horizontal
 // lewis@lewissaunders.com
 
 uniform sampler2D front;
@@ -22,20 +23,18 @@ void main() {
 	// We loop over the input image pixels under our
 	// kernel, which covers -ksize to +ksize in output pixels
 	for(float x = ceil((xy.x-ksize)/scale); x <= floor((xy.x+ksize)/scale); x++) {
-		for(float y = ceil((xy.y-ksize)/scale); y <= floor((xy.y+ksize)/scale); y++) {
-			// Distance measured in output pixels
-			float dist = length(vec2(x,y) * scale - xy) * sc;
+		// Distance measured in output pixels
+		float dist = (x * scale - xy.x) * sc;
 
-			// Sinc weights
-			float weight = sin(pi * dist) / (pi * dist);
-			if(dist < 0.0001) {
-				weight = 1.0;
-			}
-
-			// Sample!
-			o += texture2D(front, vec2(x,y)/(res/scale)).rgb * weight;
-			energy += weight;
+		// Sinc weights
+		float weight = sin(pi * dist) / (pi * dist);
+		if(dist == 0.0) {
+			weight = 1.0;
 		}
+
+		// Sample!
+		o += texture2D(front, vec2(x,xy.y)/vec2(res.x/scale, res.y)).rgb * weight;
+		energy += weight;
 	}
 	o.rgb /= energy;
 
