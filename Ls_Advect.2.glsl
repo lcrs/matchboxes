@@ -65,6 +65,11 @@ void main() {
 				}
 				xy += d * (blength/sam) + blength * sidestep/1000.0 * vec2(-d.y, d.x) + (blength/32.0) * offset;
 				dist += length(d * (blength/sam));
+				if(length(texture2D(front, xy * px).rgb) > 0.1) {
+					// We found a non-black pixel in the front image!
+					xy += 8.0 * d * (blength/sam) + (blength/32.0);
+					break;
+				}
 			}
 			// Sample front image where our walk ended up
 			acc.rgb += texture2D(front, xy * px).rgb;
