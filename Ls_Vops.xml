@@ -1,4 +1,4 @@
-<ShaderNodePreset SupportsAdaptiveDegradation="0" Description="Vector operations - normalize, scale, rotate, translate, compute lengths of and combine vector passes.
+<ShaderNodePreset SupportsAdaptiveDegradation="0" Description="Vector operations - normalize, scale, rotate, translate, compute lengths of and combine vector passes; default is to add all inputs.
 
 lewis@lewissaunders.com" Name="Vops">
    <Shader OutputBitDepth="Output" Index="1">
