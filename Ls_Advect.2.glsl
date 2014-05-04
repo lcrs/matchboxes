@@ -4,7 +4,7 @@
 // lewis@lewissaunders.com
 
 uniform sampler2D front, map, adsk_results_pass1;
-uniform float adsk_result_w, adsk_result_h, blength, spacing, maxlength, sidestep, diffusion;
+uniform float adsk_result_w, adsk_result_h, blength, spacing, maxlength, sidestep;
 uniform vec2 offset;
 uniform int samples, oversamples;
 uniform vec2 bl, tr;

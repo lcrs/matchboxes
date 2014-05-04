@@ -1,4 +1,4 @@
-<ShaderNodePreset SupportsAdaptiveDegradation="0" Description="Advect - pushes an image along the contours of another, like ink in a river
+<ShaderNodePreset SupportsAdaptiveDegradation="0" Description="Advect - pushes an image along the contours of another, like ink in a river; try big soft noise on the second input.
 
 lewis@lewissaunders.com" Name="Advect">
    <Shader OutputBitDepth="Output" Index="1">
@@ -25,8 +25,6 @@ lewis@lewissaunders.com" Name="Advect">
 	      </SubUniform>
 	      <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
 	      </SubUniform>
-      </Uniform>
-      <Uniform ResDependent="Width" Max="32.0" Min="0.0" Default="0.0" Inc="0.1" Tooltip="Sample a larger area at each step" Row="4" Col="1" Page="0" DisplayName="Diffusion" Type="float" Name="diffusion">
       </Uniform>
       <Uniform Max="2048" Min="1" Default="32" Inc="1" Tooltip="Number of steps along path, increase to get correct path shape" Row="1" Col="2" Page="0" DisplayName="Path segments" Type="int" Name="samples">
       </Uniform>
