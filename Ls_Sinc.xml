@@ -1,0 +1,31 @@
+<ShaderNodePreset SupportsAdaptiveDegradation="0" Description="" Name="Preset Name">
+   <Shader OutputBitDepth="Output" Index="1">
+      <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="front" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_NEAREST" GL_TEXTURE_MIN_FILTER="GL_NEAREST" Type="sampler2D" Name="front">
+      </Uniform>
+   </Shader>
+   <Shader OutputBitDepth="Output" Index="2">
+      <Uniform Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_NEAREST" GL_TEXTURE_MIN_FILTER="GL_NEAREST" Type="sampler2D" Name="adsk_results_pass1">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="2048.0" Inc="0.01" Tooltip="" Row="0" Col="0" Page="0" DisplayName="outputwidth" Type="float" Name="outputwidth">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="2.0" Inc="0.01" Tooltip="" Row="1" Col="0" Page="0" DisplayName="support" Type="float" Name="support">
+      </Uniform>
+   </Shader>
+   <Shader OutputBitDepth="Output" Index="3">
+      <Uniform Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_NEAREST" GL_TEXTURE_MIN_FILTER="GL_NEAREST" Type="sampler2D" Name="adsk_results_pass2">
+      </Uniform>
+      <Uniform Type="float" Name="outputwidth">
+         <Duplicate>
+         </Duplicate>
+      </Uniform>
+      <Uniform Type="float" Name="support">
+         <Duplicate>
+         </Duplicate>
+      </Uniform>
+   </Shader>
+   <Page Name="Page 1" Page="0">
+      <Col Name="Column 1" Col="0" Page="0">
+      </Col>
+   </Page>
+</ShaderNodePreset>
+
