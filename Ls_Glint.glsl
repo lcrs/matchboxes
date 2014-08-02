@@ -1,15 +1,5 @@
-uniform vec3      iResolution;
-uniform float     iGlobalTime;
-uniform float     iChannelTime[4];
-uniform vec4      iMouse;
-uniform vec4      iDate;
-uniform vec3      iChannelResolution[4];
-uniform sampler2D iChannel0;
-uniform sampler2D iChannel1;
-uniform sampler2D iChannel2;
-uniform sampler2D iChannel3;
 const float threshold = 0.55;
-const float gain = 63.0;
+const float gain = 43.0;
 const float size = 30.0;
 const float rays = 6.0;
 const float spin = 44.0;
@@ -22,11 +12,19 @@ const float randgain = 0.5;
 const float randseed = 0.1;
 const vec3 tint = vec3(1.0, 1.0, 1.0);
 const float aa = 1.0;
-#define samples size*aa
-#define tau 2.0*3.1415926535
+#define samples (size*aa)
+#define tau (2.0*3.1415926535)
+
+vec3 yuv(vec3 rgb) {
+    return mat3(0.2215, -0.1145, 0.5016, 0.7154, -0.3855, -0.4556, 0.0721, 0.5, -0.0459) * rgb;
+}
+
+vec3 rgb(vec3 yuv) {
+    return mat3(1.0, 1.0, 1.0, 0.0, -0.1870, 1.8556, 1.5701, -0.4664, 0.0) * yuv;
+}
 
 void main(void) {
-	vec2 uv = gl_FragCoord.xy / iResolution.xy;
+    vec2 uv = gl_FragCoord.xy / iResolution.xy;
     vec3 front = texture2D(iChannel0, uv).rgb;
     vec3 sample, glint = vec3(0.0);
     vec2 offset;
@@ -50,11 +48,7 @@ void main(void) {
     }
     glint /= rays * samples;
     
-    float luma = 0.2126*glint.r + 0.7152*glint.g + 0.0722*glint.b;
-    glint = mix(vec3(luma), glint, saturation);
-    
-    glint = mix(luma * normalize(tint), glint, tint); //FIXX
-    
     vec3 result = front + glint;
-	gl_FragColor = vec4(result, 1.0);
+
+    gl_FragColor = vec4(result, 1.0);
 }
