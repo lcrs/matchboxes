@@ -1,3 +1,5 @@
+uniform sampler2D front;
+uniform float adsk_result_w, adsk_result_h;
 const float threshold = 0.8;
 const float gain = 40.0;
 const float size = 90.0;
@@ -33,8 +35,8 @@ vec3 rgb(vec3 yuv) {
 }
 
 void main(void) {
-    vec2 uv = gl_FragCoord.xy / iResolution.xy;
-    vec3 front = texture2D(iChannel0, uv).rgb;
+    vec2 uv = gl_FragCoord.xy / vec2(adsk_result_w, adsk_result_h);
+    vec3 frontpix = texture2D(front, uv).rgb;
     vec3 sample, glint = vec3(0.0);
     vec2 offset;
     float angle;
@@ -59,7 +61,7 @@ void main(void) {
             angle -= (twirl/samples * i/size)/360.0 * tau;
             
             // Offset along ray direction
-            offset = i/iResolution.xy * vec2(cos(angle), sin(angle));
+            offset = i/vec2(adsk_result_w, adsk_result_h) * vec2(cos(angle), sin(angle));
             
             // Horizontal stretch/squash for anamorphic glints
             offset.x *= aspect;
@@ -71,7 +73,7 @@ void main(void) {
             offset -= pow((i/size), barrelbend) * barrel * (-uv+vec2(0.5, 0.5));
             
             // Read a pixel
-            sample = texture2D(iChannel0, uv + offset).rgb;
+            sample = texture2D(front, uv + offset).rgb;
             
             // Only keep pixels over threshold
             sample *= smoothstep(threshold, 1.0, sample);
@@ -115,10 +117,11 @@ void main(void) {
     // Blend with front input
     vec3 result;
     if(screen) {
-        result = 1.0 - ((1.0-front) * (1.0-glint));
+        result = 1.0 - ((1.0-frontpix) * (1.0-glint));
     } else {
-        result = front + glint;
+        result = frontpix + glint;
     }
 
-    gl_FragColor = vec4(glint, length(glint));
+    // Matte output is luma of glint only
+    gl_FragColor = vec4(result, yuv(glint).r);
 }
