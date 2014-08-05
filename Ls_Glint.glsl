@@ -6,7 +6,7 @@ uniform sampler2D front, matte;
 uniform float adsk_result_w, adsk_result_h;
 uniform float threshold, gain, size, rays, spin, falloff, twirl, barrel, barrelbend, saturation;
 uniform vec3 tint;
-uniform bool screen;
+uniform bool screen, usematte;
 uniform float dispersion, dispersionoffset, dispersioncycles;
 uniform float aspect, randlen, randspin, randgain, randseed, aa;
 #define samples (size*aa)
@@ -62,6 +62,11 @@ void main(void) {
             
             // Read a pixel
             sample = texture2D(front, uv + offset).rgb;
+
+            // Affect it by the matte
+            if(usematte) {
+                sample *= texture2D(matte, uv + offset).rgb;
+            }
             
             // Only keep pixels over threshold
             sample *= smoothstep(threshold, 1.01, sample);
