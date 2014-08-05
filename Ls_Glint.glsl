@@ -75,7 +75,11 @@ void main(void) {
             sample *= max(0.0, 1.0 + randgain * rand);
             
             // Falloff darkens the ray ends
-            sample *= smoothstep(1.001, 1.0-falloff, i/size);
+            if(falloff > 1.0) {
+                sample *= max(0.0, mix(1.0, -falloff+2.0, i/size));
+            } else {
+                sample *= max(0.0, mix(falloff, 1.0, i/size));
+            }
             
             // Do saturation in YUV
             vec3 sampley = yuv(sample);
