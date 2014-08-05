@@ -4,17 +4,13 @@ lewis@lewissaunders.com" Name="Glint">
    <Shader OutputBitDepth="Output" Index="1">
       <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="Front" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="front"></Uniform>
       <Uniform Index="1" NoInput="White" Tooltip="" DisplayName="Matte" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="matte"></Uniform>
-      <Uniform Name="randgain" ResDependent="None" Max="10.0" Min="0.0" Default="0.0" Inc="0.02" Tooltip="Make some rays brighter than others" Row="0" Col="1" Page="1" DisplayName="Randomize gain" Type="float"></Uniform>
       <Uniform Name="barrel" ResDependent="None" Max="10.0" Min="-10.0" Default="0.0" Inc="0.01" Tooltip="Bend stars around center of frame" Row="0" Col="2" Page="0" DisplayName="Barrel distort" Type="float"></Uniform>
       <Uniform Name="aspect" ResDependent="None" Max="100.0" Min="0.01" Default="1.0" Inc="0.01" Tooltip="Stretch stars for anamorphic glints" Row="3" Col="2" Page="0" DisplayName="Aspect" Type="float"></Uniform>
       <Uniform Name="dispersioncycles" ResDependent="None" Max="30.0" Min="0.01" Default="1.0" Inc="0.01" Tooltip="How many complete rainbows fit along each ray" Row="1" Col="3" Page="0" DisplayName="Dispersion cycles" Type="float"></Uniform>
-      <Uniform Name="randlen" ResDependent="None" Max="100.0" Min="0.00" Default="0.0" Inc="0.01" Tooltip="Make some rays longer than others" Row="1" Col="1" Page="1" DisplayName="Randomize length" Type="float"></Uniform>
       <Uniform Name="saturation" ResDependent="None" Max="10.0" Min="-10.0" Default="0.7" Inc="0.01" Tooltip="How much star colour comes from the underlying image" Row="2" Col="0" Page="0" DisplayName="Saturation" Type="float"></Uniform>
       <Uniform Name="twirl" ResDependent="None" Max="1080.0" Min="-1080.0" Default="0.0" Inc="1.0" Tooltip="Bend the arms of the stars" Row="2" Col="2" Page="0" DisplayName="Twirl" Type="float"></Uniform>
       <Uniform Name="gain" ResDependent="None" Max="200.0" Min="0.0" Default="40.0" Inc="0.5" Tooltip="Overall brightness of stars" Row="1" Col="0" Page="0" DisplayName="Gain" Type="float"></Uniform>
       <Uniform Name="screen" Row="4" Col="0" Page="0" Default="True" Tooltip="Screens the glints over the image instead of simply adding them" DisplayName="Screen highlights" Type="bool"></Uniform>
-      <Uniform Name="randspin" ResDependent="None" Max="360.0" Min="-360.0" Default="0.0" Inc="0.1" Tooltip="Make some rays not line up" Row="2" Col="1" Page="1" DisplayName="Randomize spin" Type="float"></Uniform>
-      <Uniform Name="randseed" ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.1" Inc="0.01" Tooltip="Offset the randomness (in a slightly crude way)" Row="4" Col="1" Page="1" DisplayName="Random seed" Type="float"></Uniform>
       <Uniform Name="aa" ResDependent="None" Max="16.0" Min="0.1" Default="1.4" Inc="0.1" Tooltip="Increase to avoid stepping artifacts" Row="4" Col="1" Page="0" DisplayName="AA samples" Type="float"></Uniform>
       <Uniform Name="falloff" ResDependent="None" Max="4.0" Min="-2.0" Default="1.9" Inc="0.01" Tooltip="Dissolves away ends of rays" Row="3" Col="1" Page="0" DisplayName="Falloff" Type="float"></Uniform>
       <Uniform Name="dispersionoffset" ResDependent="None" Max="360.0" Min="-360.0" Default="-45.0" Inc="1.00" Tooltip="Hue-clock the dispersion rainbows" Row="2" Col="3" Page="0" DisplayName="Dispersion offset" Type="float"></Uniform>
@@ -36,9 +32,5 @@ lewis@lewissaunders.com" Name="Glint">
       <Col Name="Geometry" Col="1" Page="0"></Col>
       <Col Name="Distort" Col="2" Page="0"></Col>
       <Col Name="Dispersion" Col="3" Page="0"></Col>
-   </Page>
-   <Page Name="Randomize" Page="1">
-      <Col Name="" Col="0" Page="1"></Col>
-      <Col Name="" Col="1" Page="1"></Col>
    </Page>
 </ShaderNodePreset>

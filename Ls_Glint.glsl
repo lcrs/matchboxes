@@ -8,7 +8,7 @@ uniform float threshold, gain, size, rays, spin, falloff, twirl, barrel, barrelb
 uniform vec3 tint;
 uniform bool screen, usematte;
 uniform float dispersion, dispersionoffset, dispersioncycles;
-uniform float aspect, randlen, randspin, randgain, randseed, aa;
+uniform float aspect, aa;
 #define samples (size*aa)
 #define tau (2.0*3.1415926535)
 
@@ -31,17 +31,11 @@ void main(void) {
 
     // Iterate around rays
     for(float ray = 0.0; ray < rays; ray++) {
-        // Random-ish value for this ray
-        float rand = fract(sin(ray * 3214.5) * 45378.42 + randseed) - 0.5;
-        
         // Figure out what angle this ray is at
         angle = ray * tau/rays;
         
         // Spin rotates entire glint
         angle -= spin/360.0 * tau;
-        
-        // Random rotation for this ray
-        angle -= rand * randspin/360.0 * tau;
         
         // Iterate along arm of ray
         for(float i = size/samples; i < size; i += size/samples) {
@@ -53,10 +47,7 @@ void main(void) {
             
             // Horizontal stretch/squash for anamorphic glints
             offset.x *= aspect;
-            
-            // Random length variation for this ray
-            offset *= abs(1.0 + randlen * rand);
-            
+
             // Barrel pushes ends of rays away towards edge of frame
             offset -= pow((i/size), barrelbend) * 0.1 * barrel * (-uv+vec2(0.5, 0.5));
             
@@ -70,10 +61,7 @@ void main(void) {
             
             // Only keep pixels over threshold
             sample *= max(sample - threshold, 0.0);
-            
-            // Random brightness variation for this ray
-            sample *= max(0.0, 1.0 + randgain * rand);
-            
+
             // Falloff darkens the ray ends
             if(falloff > 1.0) {
                 sample *= max(0.0, mix(1.0, -falloff+2.0, i/size));
