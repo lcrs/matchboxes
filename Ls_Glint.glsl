@@ -69,7 +69,7 @@ void main(void) {
             }
             
             // Only keep pixels over threshold
-            sample *= max(sample - threshold, 0);
+            sample *= max(sample - threshold, 0.0);
             
             // Random brightness variation for this ray
             sample *= max(0.0, 1.0 + randgain * rand);
