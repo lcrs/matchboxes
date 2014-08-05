@@ -69,7 +69,7 @@ void main(void) {
             }
             
             // Only keep pixels over threshold
-            sample *= smoothstep(threshold, 1.01, sample);
+            sample *= max(sample - threshold, 0);
             
             // Random brightness variation for this ray
             sample *= max(0.0, 1.0 + randgain * rand);
@@ -110,7 +110,7 @@ void main(void) {
     // Blend with front input
     vec3 result;
     if(screen) {
-        result = 1.0 - ((1.0-frontpix) * (1.0-glint));
+        result = max(max(frontpix, glint), glint+frontpix-(glint*frontpix));
     } else {
         result = frontpix + glint;
     }

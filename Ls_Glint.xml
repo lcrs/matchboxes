@@ -18,7 +18,7 @@ lewis@lewissaunders.com" Name="Glint">
       <Uniform Name="aa" ResDependent="None" Max="16.0" Min="0.1" Default="1.4" Inc="0.1" Tooltip="Increase to avoid stepping artifacts" Row="4" Col="1" Page="0" DisplayName="AA samples" Type="float"></Uniform>
       <Uniform Name="falloff" ResDependent="None" Max="1.0" Min="0.0" Default="0.9" Inc="0.01" Tooltip="Dissolves away edges of rays" Row="3" Col="1" Page="0" DisplayName="Falloff" Type="float"></Uniform>
       <Uniform Name="dispersionoffset" ResDependent="None" Max="360.0" Min="-360.0" Default="-45.0" Inc="1.00" Tooltip="Hue-clock the dispersion rainbows" Row="2" Col="3" Page="0" DisplayName="Dispersion offset" Type="float"></Uniform>
-      <Uniform Name="threshold" ResDependent="None" Max="1.0" Min="0.0" Default="0.8" Inc="0.01" Tooltip="Highlights darker than this are ignored" Row="0" Col="0" Page="0" DisplayName="Threshold" Type="float"></Uniform>
+      <Uniform Name="threshold" ResDependent="None" Max="100.0" Min="0.0" Default="0.8" Inc="0.01" Tooltip="Highlights darker than this are ignored" Row="0" Col="0" Page="0" DisplayName="Threshold" Type="float"></Uniform>
       <Uniform Name="barrelbend" ResDependent="None" Max="20.0" Min="1.0" Default="2.0" Inc="0.01" Tooltip="Bendiness of barrel distortion" Row="1" Col="2" Page="0" DisplayName="Barrel bend" Type="float"></Uniform>
       <Uniform Name="dispersion" ResDependent="None" Max="10.0" Min="0.0" Default="0.4" Inc="0.01" Tooltip="How much the stars change colour along their arms" Row="0" Col="3" Page="0" DisplayName="Dispersion" Type="float"></Uniform>
       <Uniform Name="tint" Inc="0.01" Tooltip="Tint the stars towards this colour" Row="3" Col="0" Page="0" DisplayName="Tint" ValueType="Colour" Type="vec3">
@@ -27,8 +27,8 @@ lewis@lewissaunders.com" Name="Glint">
          <SubUniform ResDependent="None" Max="10.0" Min="-10.0" Default="1.0"></SubUniform>
       </Uniform>
       <Uniform Name="spin" ResDependent="None" Max="360.0" Min="-360.0" Default="48.0" Inc="1.0" Tooltip="Rotate the stars" Row="2" Col="1" Page="0" DisplayName="Spin" Type="float"></Uniform>
-      <Uniform Name="size" ResDependent="None" Max="4096.0" Min="0.01" Default="50.0" Inc="1.0" Tooltip="Size of the stars" Row="0" Col="1" Page="0" DisplayName="Size" Type="float"></Uniform>
-      <Uniform Name="rays" ResDependent="None" Max="32.0" Min="1.0" Default="6.0" Inc="1.0" Tooltip="How many points each star has" Row="1" Col="1" Page="0" DisplayName="Rays" Type="float"></Uniform>
+      <Uniform Name="size" ResDependent="None" Max="16000.0" Min="0.01" Default="50.0" Inc="1.0" Tooltip="Size of the stars" Row="0" Col="1" Page="0" DisplayName="Size" Type="float"></Uniform>
+      <Uniform Name="rays" ResDependent="None" Max="2000.0" Min="1.0" Default="6.0" Inc="1.0" Tooltip="How many points each star has" Row="1" Col="1" Page="0" DisplayName="Rays" Type="float"></Uniform>
       <Uniform Name="usematte" Row="4" Col="3" Page="0" Default="False" Tooltip="Only consider highlights inside the matte; the matte can also be RGB to tint certain highlights" DisplayName="Use matte" Type="bool"></Uniform>
    </Shader>
    <Page Name="Stars" Page="0">
