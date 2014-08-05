@@ -1,26 +1,14 @@
-uniform sampler2D front;
+// Glint
+// Directly from the dancefloor of Studio 54 in 1979
+// lewis@lewissaunders.com
+
+uniform sampler2D front, matte;
 uniform float adsk_result_w, adsk_result_h;
-const float threshold = 0.8;
-const float gain = 40.0;
-const float size = 50.0;
-const float rays = 6.0;
-const float spin = 49.0;
-const float falloff = 0.5;
-const float twirl = 0.0;
-const float barrel = 0.02;
-const float barrelbend = 2.0;
-const float saturation = 0.5;
-const vec3 tint = vec3(0.9, 0.95, 1.0);
-const bool screen = true;
-const float diffraction = 1.0;
-const float diffractionoffset = -45.0;
-const float diffractioncycles = 1.5;
-const float aspect = 1.0;
-const float randlen = 0.0;
-const float randspin = 0.0;
-const float randgain = 0.0;
-const float randseed = 0.1;
-const float aa = 1.5;
+uniform float threshold, gain, size, rays, spin, falloff, twirl, barrel, barrelbend, saturation;
+uniform vec3 tint;
+uniform bool screen;
+uniform float dispersion, dispersionoffset, dispersioncycles;
+uniform float aspect, randlen, randspin, randgain, randseed, aa;
 #define samples (size*aa)
 #define tau (2.0*3.1415926535)
 
@@ -44,7 +32,7 @@ void main(void) {
     // Iterate around rays
     for(float ray = 0.0; ray < rays; ray++) {
         // Random-ish value for this ray
-        float rand = fract(sin(ray * 3214.5 + randseed) * 45378.42) - 0.5;
+        float rand = fract(sin(ray * 3214.5) * 45378.42 + randseed) - 0.5;
         
         // Figure out what angle this ray is at
         angle = ray * tau/rays;
@@ -70,16 +58,16 @@ void main(void) {
             offset *= abs(1.0 + randlen * rand);
             
             // Barrel pushes ends of rays away towards edge of frame
-            offset -= pow((i/size), barrelbend) * barrel * (-uv+vec2(0.5, 0.5));
+            offset -= pow((i/size), barrelbend) * 0.1 * barrel * (-uv+vec2(0.5, 0.5));
             
             // Read a pixel
             sample = texture2D(front, uv + offset).rgb;
             
             // Only keep pixels over threshold
-            sample *= smoothstep(threshold, 1.0, sample);
+            sample *= smoothstep(threshold, 1.01, sample);
             
             // Random brightness variation for this ray
-            sample *= abs(1.0 + randgain * rand);
+            sample *= max(0.0, 1.0 + randgain * rand);
             
             // Falloff darkens the ray ends
             sample *= smoothstep(1.001, 1.0-falloff, i/size);
@@ -89,12 +77,12 @@ void main(void) {
             sampley.gb *= saturation;
             
             // Hue varies along length of ray
-            float hue = diffractioncycles * tau *-i/size;
-            hue -= diffractionoffset/360.0 * tau;
+            float hue = dispersioncycles * tau *-i/size;
+            hue -= dispersionoffset/360.0 * tau;
             
             // Use hue as angle around centre of UV plane
             vec2 rainbow = vec2(cos(hue), sin(hue)) * sampley.r;
-            sampley.gb = mix(sampley.gb, rainbow, diffraction * i/size);
+            sampley.gb = mix(sampley.gb, rainbow, dispersion * i/size);
             sample = rgb(sampley);
             
             // Accumulate
