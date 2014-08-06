@@ -1,5 +1,5 @@
 // Glint
-// Directly from the dancefloor of Studio 54 in 1979
+// Directly from the floor of Studio 54 in 1979
 // lewis@lewissaunders.com
 
 uniform sampler2D front, matte;
