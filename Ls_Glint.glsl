@@ -30,7 +30,7 @@ void main(void) {
     vec2 offset;
     float angle;
 
-    // If matte is being used to blend with, take a massive shortcut where it's black
+    // If matte is being used to blend with, we can take a massive shortcut where it's black
     if(useblendmatte && (length(mattepix) < 0.0001)) {
         gl_FragColor = vec4(frontpix, 0.0);
         if(outputglints) {
@@ -87,7 +87,11 @@ void main(void) {
             float hue = dispersioncycles * tau *-i/size;
             hue -= dispersionoffset/360.0 * tau;
             
-            // Use hue as angle around centre of UV plane
+            // I'm adventurously using YUV to do a rainbow tint here
+            // The discontinuities in the usual HSV method bug me
+            // and are probably slower than this, which just requires
+            // matrix mults and a bit of trig
+            // Hue is the angle around centre of UV plane
             vec2 rainbow = vec2(cos(hue), sin(hue)) * sampley.r;
             sampley.gb = mix(sampley.gb, rainbow, dispersion * i/size);
             sample = rgb(sampley);
@@ -102,18 +106,18 @@ void main(void) {
     // Master brightness
     glint *= gain;
     
-    // Tint
+    // Tint in YUV space
     vec3 glinty = yuv(glint);
     vec3 tinty = yuv(tint);
-    tinty.gb *= glinty.r; // if uv > 0 when y = 0, bad things happen
-    glinty.gb = mix(glinty.gb, tinty.gb, 3.0*length(tinty.gb));
+    tinty.gb *= glinty.r; // If U/V aren't 0 when Y is black, bad things happen...
+    glinty.gb = mix(glinty.gb, tinty.gb, 4.0*length(tinty.gb));
     glint = rgb(glinty);
     
     // Blend with front input
     vec3 result;
     if(useblendmatte) {
         glint *= mattepix;
-        glinty *= mattepix;
+        glinty *= mattepix; // Luma is used for matte output below
     }
     if(screen) {
         result = max(max(frontpix, glint), glint+frontpix-(glint*frontpix));
