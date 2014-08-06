@@ -6,7 +6,7 @@ uniform sampler2D front, matte;
 uniform float adsk_result_w, adsk_result_h;
 uniform float threshold, gain, size, rays, spin, falloff, twirl, barrel, barrelbend, saturation;
 uniform vec3 tint;
-uniform bool screen, usematte;
+uniform bool screen, usematte, useblendmatte, outputglints;
 uniform float dispersion, dispersionoffset, dispersioncycles;
 uniform float aspect, aa;
 #define samples (size*aa)
@@ -25,9 +25,19 @@ vec3 rgb(vec3 yuv) {
 void main(void) {
     vec2 uv = gl_FragCoord.xy / vec2(adsk_result_w, adsk_result_h);
     vec3 frontpix = texture2D(front, uv).rgb;
+    vec3 mattepix = texture2D(matte, uv).rgb;
     vec3 sample, glint = vec3(0.0);
     vec2 offset;
     float angle;
+
+    // If matte is being used to blend with, take a massive shortcut where it's black
+    if(useblendmatte && (length(mattepix) < 0.0001)) {
+        gl_FragColor = vec4(frontpix, 0.0);
+        if(outputglints) {
+            gl_FragColor = vec4(0.0);
+        }
+        return;
+    }
 
     // Iterate around rays
     for(float ray = 0.0; ray < rays; ray++) {
@@ -93,20 +103,27 @@ void main(void) {
     glint *= gain;
     
     // Tint
-    glint = yuv(glint);
+    vec3 glinty = yuv(glint);
     vec3 tinty = yuv(tint);
-    tinty.gb *= glint.r; // if uv > 0 when y = 0, bad things happen
-    glint.gb = mix(glint.gb, tinty.gb, 3.0*length(tinty.gb));
-    glint = rgb(glint);
+    tinty.gb *= glinty.r; // if uv > 0 when y = 0, bad things happen
+    glinty.gb = mix(glinty.gb, tinty.gb, 3.0*length(tinty.gb));
+    glint = rgb(glinty);
     
     // Blend with front input
     vec3 result;
+    if(useblendmatte) {
+        glint *= mattepix;
+        glinty *= mattepix;
+    }
     if(screen) {
         result = max(max(frontpix, glint), glint+frontpix-(glint*frontpix));
     } else {
         result = frontpix + glint;
     }
+    if(outputglints) {
+        result = glint;
+    }
 
     // Matte output is luma of glint only
-    gl_FragColor = vec4(result, yuv(glint).r);
+    gl_FragColor = vec4(result, glinty.r);
 }

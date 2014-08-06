@@ -4,19 +4,19 @@ lewis@lewissaunders.com" Name="Glint">
    <Shader OutputBitDepth="Output" Index="1">
       <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="Front" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="front"></Uniform>
       <Uniform Index="1" NoInput="White" Tooltip="" DisplayName="Matte" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="matte"></Uniform>
-      <Uniform Name="barrel" ResDependent="None" Max="10.0" Min="-10.0" Default="0.0" Inc="0.01" Tooltip="Bend stars around center of frame" Row="0" Col="2" Page="0" DisplayName="Barrel distort" Type="float"></Uniform>
-      <Uniform Name="aspect" ResDependent="None" Max="100.0" Min="0.01" Default="1.0" Inc="0.01" Tooltip="Stretch stars for anamorphic glints" Row="3" Col="2" Page="0" DisplayName="Aspect" Type="float"></Uniform>
-      <Uniform Name="dispersioncycles" ResDependent="None" Max="30.0" Min="0.01" Default="1.0" Inc="0.01" Tooltip="How many complete rainbows fit along each ray" Row="1" Col="3" Page="0" DisplayName="Dispersion cycles" Type="float"></Uniform>
+      <Uniform Name="barrel" ResDependent="None" Max="10.0" Min="-10.0" Default="0.0" Inc="0.01" Tooltip="Bend stars around center of frame" Row="0" Col="1" Page="1" DisplayName="Barrel distort" Type="float"></Uniform>
+      <Uniform Name="aspect" ResDependent="None" Max="100.0" Min="0.01" Default="1.0" Inc="0.01" Tooltip="Stretch stars for anamorphic glints" Row="3" Col="1" Page="1" DisplayName="Aspect" Type="float"></Uniform>
+      <Uniform Name="dispersioncycles" ResDependent="None" Max="30.0" Min="0.01" Default="1.0" Inc="0.01" Tooltip="How many complete rainbows fit along each ray" Row="1" Col="2" Page="0" DisplayName="Dispersion cycles" Type="float"></Uniform>
       <Uniform Name="saturation" ResDependent="None" Max="10.0" Min="-10.0" Default="0.7" Inc="0.01" Tooltip="How much star colour comes from the underlying image" Row="2" Col="0" Page="0" DisplayName="Saturation" Type="float"></Uniform>
-      <Uniform Name="twirl" ResDependent="None" Max="1080.0" Min="-1080.0" Default="0.0" Inc="1.0" Tooltip="Bend the arms of the stars" Row="2" Col="2" Page="0" DisplayName="Twirl" Type="float"></Uniform>
-      <Uniform Name="gain" ResDependent="None" Max="200.0" Min="0.0" Default="40.0" Inc="0.5" Tooltip="Overall brightness of stars" Row="1" Col="0" Page="0" DisplayName="Gain" Type="float"></Uniform>
-      <Uniform Name="screen" Row="4" Col="0" Page="0" Default="True" Tooltip="Screens the glints over the image instead of simply adding them" DisplayName="Screen highlights" Type="bool"></Uniform>
+      <Uniform Name="twirl" ResDependent="None" Max="1080.0" Min="-1080.0" Default="0.0" Inc="1.0" Tooltip="Bend the arms of the stars" Row="2" Col="1" Page="1" DisplayName="Twirl" Type="float"></Uniform>
+      <Uniform Name="gain" ResDependent="None" Max="2000.0" Min="0.0" Default="40.0" Inc="0.5" Tooltip="Overall brightness of stars" Row="1" Col="0" Page="0" DisplayName="Gain" Type="float"></Uniform>
+      <Uniform Name="screen" Row="0" Col="3" Page="0" Default="True" Tooltip="Screens the glints over the image instead of simply adding them" DisplayName="Screen highlights" Type="bool"></Uniform>
       <Uniform Name="aa" ResDependent="None" Max="16.0" Min="0.1" Default="1.4" Inc="0.1" Tooltip="Increase to avoid stepping artifacts" Row="4" Col="1" Page="0" DisplayName="AA samples" Type="float"></Uniform>
       <Uniform Name="falloff" ResDependent="None" Max="4.0" Min="-2.0" Default="1.9" Inc="0.01" Tooltip="Dissolves away ends of rays" Row="3" Col="1" Page="0" DisplayName="Falloff" Type="float"></Uniform>
-      <Uniform Name="dispersionoffset" ResDependent="None" Max="360.0" Min="-360.0" Default="-45.0" Inc="1.00" Tooltip="Hue-clock the dispersion rainbows" Row="2" Col="3" Page="0" DisplayName="Dispersion offset" Type="float"></Uniform>
+      <Uniform Name="dispersionoffset" ResDependent="None" Max="360.0" Min="-360.0" Default="-45.0" Inc="1.00" Tooltip="Hue-clock the dispersion rainbows" Row="2" Col="2" Page="0" DisplayName="Dispersion offset" Type="float"></Uniform>
       <Uniform Name="threshold" ResDependent="None" Max="200.0" Min="0.0" Default="0.6" Inc="0.01" Tooltip="Highlights darker than this are ignored" Row="0" Col="0" Page="0" DisplayName="Threshold" Type="float"></Uniform>
-      <Uniform Name="barrelbend" ResDependent="None" Max="20.0" Min="1.0" Default="2.0" Inc="0.01" Tooltip="Bendiness of barrel distortion" Row="1" Col="2" Page="0" DisplayName="Barrel bend" Type="float"></Uniform>
-      <Uniform Name="dispersion" ResDependent="None" Max="10.0" Min="0.0" Default="0.25" Inc="0.01" Tooltip="How much the stars change colour along their arms" Row="0" Col="3" Page="0" DisplayName="Dispersion" Type="float"></Uniform>
+      <Uniform Name="barrelbend" ResDependent="None" Max="20.0" Min="1.0" Default="2.0" Inc="0.01" Tooltip="Bendiness of barrel distortion" Row="1" Col="1" Page="1" DisplayName="Barrel bend" Type="float"></Uniform>
+      <Uniform Name="dispersion" ResDependent="None" Max="10.0" Min="0.0" Default="0.25" Inc="0.01" Tooltip="How much the stars change colour along their arms" Row="0" Col="2" Page="0" DisplayName="Dispersion" Type="float"></Uniform>
       <Uniform Name="tint" Inc="0.01" Tooltip="Tint the stars towards this colour" Row="3" Col="0" Page="0" DisplayName="Tint" ValueType="Colour" Type="vec3">
          <SubUniform ResDependent="None" Max="10.0" Min="-10.0" Default="1.0"></SubUniform>
          <SubUniform ResDependent="None" Max="10.0" Min="-10.0" Default="1.0"></SubUniform>
@@ -25,12 +25,18 @@ lewis@lewissaunders.com" Name="Glint">
       <Uniform Name="spin" ResDependent="None" Max="360.0" Min="-360.0" Default="48.0" Inc="1.0" Tooltip="Rotate the stars" Row="2" Col="1" Page="0" DisplayName="Spin" Type="float"></Uniform>
       <Uniform Name="size" ResDependent="None" Max="16000.0" Min="0.01" Default="50.0" Inc="1.0" Tooltip="Size of the stars" Row="0" Col="1" Page="0" DisplayName="Size" Type="float"></Uniform>
       <Uniform Name="rays" ResDependent="None" Max="2000.0" Min="1.0" Default="6.0" Inc="1.0" Tooltip="How many points each star has" Row="1" Col="1" Page="0" DisplayName="Rays" Type="float"></Uniform>
-      <Uniform Name="usematte" Row="4" Col="3" Page="0" Default="False" Tooltip="Only consider highlights inside the matte; the matte can also be RGB to tint certain highlights" DisplayName="Use matte" Type="bool"></Uniform>
+      <Uniform Name="usematte" Row="2" Col="3" Page="0" Default="False" Tooltip="Generate glints only from highlights inside the matte; the matte can also be RGB to selectively tint the stars" DisplayName="Use matte on glint source" Type="bool"></Uniform>
+      <Uniform Name="useblendmatte" Row="3" Col="3" Page="0" Default="False" Tooltip="Only processes pixels inside the matte - this is really fast for small mattes, but glints will be cut off at the matte edge" DisplayName="Use matte to blend (faster)" Type="bool"></Uniform>
+      <Uniform Name="outputglints" Row="4" Col="3" Page="0" Default="False" Tooltip="Output just the glints on black" DisplayName="Output glints only" Type="bool"></Uniform>
    </Shader>
    <Page Name="Stars" Page="0">
       <Col Name="Colour" Col="0" Page="0"></Col>
-      <Col Name="Geometry" Col="1" Page="0"></Col>
-      <Col Name="Distort" Col="2" Page="0"></Col>
-      <Col Name="Dispersion" Col="3" Page="0"></Col>
+      <Col Name="Shape" Col="1" Page="0"></Col>
+      <Col Name="Dispersion" Col="2" Page="0"></Col>
+      <Col Name="Blend" Col="3" Page="0"></Col>
+   </Page>
+   <Page Name="Distort" Page="1">
+      <Col Name="" Col="0" Page="1"></Col>
+      <Col Name="" Col="1" Page="1"></Col>
    </Page>
 </ShaderNodePreset>
