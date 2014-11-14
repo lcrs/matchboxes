@@ -38,5 +38,5 @@ void main() {
 	}
 	o.rgb /= energy;
 
-	gl_FragColor = vec4(o, 0.0);
+	gl_FragColor = vec4(xy.r, xy.g, 0.0, 0.0);
 }
