@@ -4,12 +4,13 @@
 
 uniform sampler2D front, matte;
 uniform float adsk_result_w, adsk_result_h;
-uniform float threshold, gain, size, rays, spin, falloff, twirl, barrel, barrelbend, saturation;
+uniform float threshold, gain, size, rays, spin, falloff, twirl, barrel, barrelbend, saturation, extrasize;
 uniform vec3 tint;
 uniform bool screen, usematte, useblendmatte, outputglints;
 uniform float dispersion, dispersionoffset, dispersioncycles;
 uniform float aspect, aa;
-#define samples (size*aa)
+#define realsize (size*extrasize)
+#define samples (size*extrasize*aa)
 #define tau (2.0*3.1415926535)
 
 // RGB to Rec709 YPbPr
@@ -48,9 +49,9 @@ void main(void) {
         angle -= spin/360.0 * tau;
         
         // Iterate along arm of ray
-        for(float i = size/samples; i < size; i += size/samples) {
+        for(float i = realsize/samples; i < realsize; i += realsize/samples) {
             // Twirl ray around further as we move out
-            angle -= (twirl/samples * i/size)/360.0 * tau;
+            angle -= (twirl/samples * i/realsize)/360.0 * tau;
             
             // Offset along ray direction
             offset = i/vec2(adsk_result_w, adsk_result_h) * vec2(cos(angle), sin(angle));
@@ -59,7 +60,7 @@ void main(void) {
             offset.x *= aspect;
 
             // Barrel pushes ends of rays away towards edge of frame
-            offset -= pow((i/size), barrelbend) * 0.1 * barrel * (-uv+vec2(0.5, 0.5));
+            offset -= pow((i/realsize), barrelbend) * 0.1 * barrel * (-uv+vec2(0.5, 0.5));
             
             // Read a pixel
             sample = texture2D(front, uv + offset).rgb;
@@ -74,9 +75,9 @@ void main(void) {
 
             // Falloff darkens the ray ends
             if(falloff > 1.0) {
-                sample *= max(0.0, mix(1.0, -falloff+2.0, i/size));
+                sample *= max(0.0, mix(1.0, -falloff+2.0, i/realsize));
             } else {
-                sample *= max(0.0, mix(falloff, 1.0, i/size));
+                sample *= max(0.0, mix(falloff, 1.0, i/realsize));
             }
             
             // Do saturation in YUV
@@ -84,7 +85,7 @@ void main(void) {
             sampley.gb *= saturation;
             
             // Hue varies along length of ray
-            float hue = dispersioncycles * tau *-i/size;
+            float hue = dispersioncycles * tau *-i/realsize;
             hue -= dispersionoffset/360.0 * tau;
             
             // I'm adventurously using YUV to do a rainbow tint here
@@ -93,7 +94,7 @@ void main(void) {
             // matrix mults and a bit of trig
             // Hue is the angle around centre of UV plane
             vec2 rainbow = vec2(cos(hue), sin(hue)) * sampley.r;
-            sampley.gb = mix(sampley.gb, rainbow, dispersion * i/size);
+            sampley.gb = mix(sampley.gb, rainbow, dispersion * i/realsize);
             sample = rgb(sampley);
             
             // Accumulate
