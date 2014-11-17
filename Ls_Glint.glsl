@@ -4,7 +4,7 @@
 
 uniform sampler2D front, matte;
 uniform float adsk_result_w, adsk_result_h;
-uniform float threshold, gain, size, rays, spin, falloff, twirl, barrel, barrelbend, saturation, extrasize;
+uniform float threshold, gain, size, rays, spin, falloff, twirl, barrel, barrelbend, saturation, extrasize, extrarays;
 uniform vec3 tint;
 uniform bool screen, usematte, useblendmatte, outputglints;
 uniform float dispersion, dispersionoffset, dispersioncycles;
@@ -41,9 +41,9 @@ void main(void) {
     }
 
     // Iterate around rays
-    for(float ray = 0.0; ray < rays; ray++) {
+    for(float ray = 0.0; ray < floor(rays*extrarays); ray++) {
         // Figure out what angle this ray is at
-        angle = ray * tau/rays;
+        angle = ray * tau/floor(rays*extrarays);
         
         // Spin rotates entire glint
         angle -= spin/360.0 * tau;
@@ -102,7 +102,7 @@ void main(void) {
         }
     }
     // Normalise all our accumulated samples
-    glint /= rays * samples;
+    glint /= floor(rays*extrarays) * samples;
     
     // Master brightness
     glint *= gain;
