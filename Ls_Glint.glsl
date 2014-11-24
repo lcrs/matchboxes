@@ -107,7 +107,7 @@ void main(void) {
                 float noiz = rand(vec2(42.1, 12.4) + 0.01 * vec2(dirtfreq/100.0)   * offset);
                 noiz +=      rand(vec2(4.1, 1.4)   + 0.01 * vec2(dirtfreq/1000.0)  * offset);
                 noiz +=      rand(vec2(2.1, 2.4)   + 0.01 * vec2(dirtfreq/10000.0) * offset);
-                sample *= mix(1.0, 10.0 * noiz, dirt);
+                sample *= mix(1.0, clamp(10.0 * noiz, 0.0, 99.0), dirt);
             }
             
             // Accumulate
