@@ -6,8 +6,8 @@ uniform sampler2D front, matte;
 uniform float adsk_result_w, adsk_result_h;
 uniform float threshold, gain, size, rays, spin, falloff, twirl, barrel, barrelbend, saturation, extrasize, extrarays;
 uniform vec3 tint;
-uniform bool screen, usematte, useblendmatte, outputglints;
-uniform float dispersion, dispersionoffset, dispersioncycles;
+uniform bool screen, usematte, useblendmatte, outputglints, dirton;
+uniform float dispersion, dispersionoffset, dispersioncycles, dirt, dirtfreq;
 uniform float aspect, aa;
 #define realsize (size*extrasize)
 #define samples (size*extrasize*aa)
@@ -21,6 +21,11 @@ vec3 yuv(vec3 rgb) {
 // Rec709 YPbPr to RGB
 vec3 rgb(vec3 yuv) {
     return mat3(1.0, 1.0, 1.0, 0.0, -0.1870, 1.8556, 1.5701, -0.4664, 0.0) * yuv;
+}
+
+// Noise
+float rand(vec2 co){
+    return fract(sin(dot(co.xy, vec2(12.9898, 78.233))) * 43758.5453) - 0.5;
 }
 
 void main(void) {
@@ -96,6 +101,14 @@ void main(void) {
             vec2 rainbow = vec2(cos(hue), sin(hue)) * sampley.r;
             sampley.gb = mix(sampley.gb, rainbow, dispersion * i/realsize);
             sample = rgb(sampley);
+
+            if(dirton) {
+                // Multiply by a bit of noise texture
+                float noiz = rand(vec2(42.1, 12.4) + 0.01 * vec2(dirtfreq/100.0)   * offset);
+                noiz +=      rand(vec2(4.1, 1.4)   + 0.01 * vec2(dirtfreq/1000.0)  * offset);
+                noiz +=      rand(vec2(2.1, 2.4)   + 0.01 * vec2(dirtfreq/10000.0) * offset);
+                sample *= mix(1.0, 10.0 * noiz, dirt);
+            }
             
             // Accumulate
             glint += sample;

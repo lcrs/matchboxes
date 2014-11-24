@@ -11,6 +11,9 @@ lewis@lewissaunders.com" Name="Glint">
       <Uniform Name="dispersioncycles" ResDependent="None" Max="30.0" Min="0.01" Default="1.0" Inc="0.01" Tooltip="How many complete rainbows fit along each ray" Row="1" Col="2" Page="0" DisplayName="Dispersion cycles" Type="float"></Uniform>
       <Uniform Name="saturation" ResDependent="None" Max="10.0" Min="-10.0" Default="0.7" Inc="0.01" Tooltip="How much star colour comes from the underlying image" Row="2" Col="0" Page="0" DisplayName="Saturation" Type="float"></Uniform>
       <Uniform Name="twirl" ResDependent="None" Max="1080.0" Min="-1080.0" Default="0.0" Inc="1.0" Tooltip="Bend the arms of the stars" Row="2" Col="1" Page="1" DisplayName="Twirl" Type="float"></Uniform>
+      <Uniform Name="dirton" Row="0" Col="2" Page="1" Default="False" Tooltip="" DisplayName="Use noise" Type="bool"></Uniform>
+      <Uniform Name="dirt" ResDependent="None" Max="1.0" Min="0.0" Default="0.1" Inc="0.005" Tooltip="" Row="1" Col="2" Page="1" DisplayName="Dirt" Type="float"></Uniform>
+      <Uniform Name="dirtfreq" ResDependent="None" Max="1000.0" Min="0.0" Default="5.0" Inc="0.2" Tooltip="" Row="2" Col="2" Page="1" DisplayName="Frequency" Type="float"></Uniform>
       <Uniform Name="gain" ResDependent="None" Max="2000.0" Min="0.0" Default="40.0" Inc="0.5" Tooltip="Overall brightness of stars" Row="1" Col="0" Page="0" DisplayName="Gain" Type="float"></Uniform>
       <Uniform Name="screen" Row="0" Col="3" Page="0" Default="True" Tooltip="Screens the glints over the image instead of simply adding them" DisplayName="Screen highlights" Type="bool"></Uniform>
       <Uniform Name="aa" ResDependent="None" Max="16.0" Min="0.1" Default="1.4" Inc="0.1" Tooltip="Increase to avoid stepping artifacts" Row="4" Col="1" Page="0" DisplayName="AA samples" Type="float"></Uniform>
@@ -40,8 +43,8 @@ lewis@lewissaunders.com" Name="Glint">
       <Col Name="Blend" Col="3" Page="0"></Col>
    </Page>
    <Page Name="Distort" Page="1">
-      <Col Name="" Col="0" Page="1"></Col>
-      <Col Name="" Col="1" Page="1"></Col>
+      <Col Name="Geometry" Col="1" Page="1"></Col>
+      <Col Name="Noise" Col="2" Page="1"></Col>
    </Page>
    <Page Name="Slow options" Page="2">
       <Col Name="" Col="0" Page="2"></Col>
