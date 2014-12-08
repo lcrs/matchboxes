@@ -15,7 +15,7 @@ uniform sampler2D front, uv, matte;
 uniform float adsk_result_w, adsk_result_h;
 uniform float filterwidth, filtersharpness;
 uniform float lin4mag, emult;
-uniform bool flin, outputdfdx;
+uniform bool flin, outputdfdx, convertoffsetuv;
 uniform int texellimit;
 uniform vec2 offset;
 
@@ -90,7 +90,12 @@ vec4 texture2DEWA(sampler2D tex0, vec2 p0) {
 
 void main(void) {
 	vec2 coords = gl_FragCoord.xy / vec2(adsk_result_w, adsk_result_h);
-	vec2 uvcoords = mix(coords, texture2D(uv, coords).rg + offset, emult);
+	vec2 uv = texture2D(uv, coords).rg;
+	if(convertoffsetuv) {
+		uv += coords;
+	}
+	uv += offset;
+	vec2 uvcoords = mix(coords, uv, emult);
 
 	vec4 df = vec4(dFdx(uvcoords.x), dFdy(uvcoords.x), dFdx(uvcoords.y), dFdy(uvcoords.y));
 
