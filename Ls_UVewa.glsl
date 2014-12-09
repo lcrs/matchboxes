@@ -94,7 +94,7 @@ void main(void) {
 	if(convertoffsetuv) {
 		uv += coords;
 	}
-	uv += offset;
+	uv += offset / 100.0;
 	vec2 uvcoords = mix(coords, uv, emult);
 
 	vec4 df = vec4(dFdx(uvcoords.x), dFdy(uvcoords.x), dFdx(uvcoords.y), dFdy(uvcoords.y));
