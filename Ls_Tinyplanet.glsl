@@ -24,10 +24,10 @@ void main() {
 
 	float p = sqrt((coords.x-xo)*(coords.x-xo)+(coords.y-yo)*(coords.y-yo));
 	float c = 2.0 * atan(p, 2.0 * r);
-	float long = (long0 + atan((coords.x-xo)*sin(c), p*cos(lat1)*cos(c) - (coords.y-yo)*sin(lat1)*sin(c)));
+	float longg = (long0 + atan((coords.x-xo)*sin(c), p*cos(lat1)*cos(c) - (coords.y-yo)*sin(lat1)*sin(c)));
 	float lat = asin(cos(c)*sin(lat1) + (((coords.y-yo)*sin(c)*cos(lat1)) / p));
 	vec2 uv;
-	uv.x = (long - longo) * longm;
+	uv.x = (longg - longo) * longm;
 	uv.y = (lat - lato) * latm;
 
 	vec3 o = texture2D(front, uv).rgb;
