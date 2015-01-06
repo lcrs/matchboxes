@@ -1,16 +1,17 @@
 // Project on a Position pass
 // lewis@lewissaunders.com
 // TODO:
-//  o Optional near/far clipping
-//  o Optional camera-to-world transform using another linked camera
-//  o Filtering?
-//  o UV output
+//  o Optional camera-to-world transform using another linked camera, and output thereof
+//  o Filtering?  Or rely on outputting UVs into UVewa
 //  o Front/back facing using rest normals and camera pos?
+//  o Make matte input optional, often won't be needed
+//  o Clip space isn't traditional, couldn't figure out proper [near,far] > [-1,1]
 
 uniform float adsk_result_w, adsk_result_h;
 uniform sampler2D front, matte, pos;
 uniform vec3 projector_position, projector_rotation;
-uniform float projector_fov, projector_near, projector_far;
+uniform float projector_fov, znear, zfar;
+uniform bool zclip, outputviewspace, outputclipspace, outputndc, outputuv;
 #define pi 3.1415926535897932384624433832795
 
 // Degrees to radians
@@ -37,26 +38,52 @@ void main() {
 	// World space to view space
 	p.xyz -= projector_position;
 	p.xyz = rotate(p.xyz, -projector_rotation);
+	if(outputviewspace) {
+		p.z *= -1.0;
+		gl_FragColor = p;
+		return;
+	}
+
+	// Optional clipping
+	if(zclip) {
+		if(abs(p.z) < znear || abs(p.z) > zfar) {
+			gl_FragColor = vec4(0.0);
+			return;
+		}
+	}
 
 	// View space to clip space
 	float aspect = adsk_result_w / adsk_result_h;
 	float fovy = deg2rad(projector_fov);
-	float znear = projector_near;
-	float zfar = projector_far;
 	mat4 projection_matrix = mat4(vec4(1.0/(aspect*tan(fovy/2.0)), 0.0, 0.0, 0.0),
 								  vec4(0.0, 1.0/tan(fovy/2.0), 0.0, 0.0),
-								  vec4(0.0, 0.0, (zfar+znear)/(zfar-znear), 1.0),
-								  vec4(0.0, 0.0, -2.0*zfar*znear/(zfar-znear), 0.0));
+								  vec4(0.0, 0.0, 1.0, 1.0),
+								  vec4(0.0, 0.0, 1.0, 0.0));
 	p = projection_matrix * p;
-
-	// Optional clipping
+	if(outputclipspace) {
+		gl_FragColor = p;
+		return;
+	}
 
 	// Clip space to NDC
 	p /= p.w;
+	if(outputndc) {
+		gl_FragColor = p;
+		return;
+	}
 
 	// NDC to window
 	p.xy /= -2.0;
 	p.xy += 0.5;
+	if(outputuv) {
+		p.z *= 0.0;
+		gl_FragColor = p;
+		return;
+	}
+	if(p.x < 0.0 || p.x > 1.0 || p.y < 0.0 || p.y > 1.0) {
+			gl_FragColor = vec4(0.0);
+			return;
+	}
 
 	// Sample
 	vec3 frontpix = texture2D(front, p.xy).rgb;

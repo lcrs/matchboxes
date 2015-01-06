@@ -1,0 +1,30 @@
+<ShaderNodePreset LimitInputsToTexture="True" Version="1" Name="Ls_GlueP" SupportsAdaptiveDegradation="0" Description="Project an image onto the surface described by a world position pass
+
+lewis@lewissaunders.com">
+ <Shader OutputBitDepth="Output" Index="1">
+  <Uniform Name="front"              DisplayName="Front"              Type="sampler2D"  Index="0" GL_TEXTURE_WRAP_T="GL_REPEAT" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" Tooltip="" InputColor="67, 77, 83" NoInput="Error" GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_S="GL_REPEAT"></Uniform>
+  <Uniform Name="matte"              DisplayName="Matte"              Type="sampler2D"  Index="1" GL_TEXTURE_WRAP_T="GL_REPEAT" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" Tooltip="" InputColor="67, 77, 83" NoInput="Error" GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_S="GL_REPEAT"></Uniform>
+  <Uniform Name="pos"                DisplayName="Position pass"      Type="sampler2D"  Index="2" GL_TEXTURE_WRAP_T="GL_REPEAT" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" Tooltip="" InputColor="67, 77, 83" NoInput="Error" GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_S="GL_REPEAT"></Uniform>
+  <Uniform Name="znear"              DisplayName="Near"               Page="0" Col="1" Row="1" Type="float"      Default="0.01"       Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
+  <Uniform Name="outputviewspace"    DisplayName="Output view space"  Page="0" Col="2" Row="0" Type="bool"       Default="False"                                                                                   Tooltip=""></Uniform>
+  <Uniform Name="outputclipspace"    DisplayName="Output clip space"  Page="0" Col="2" Row="1" Type="bool"       Default="False"                                                                                   Tooltip=""></Uniform>
+  <Uniform Name="zclip"              DisplayName="Depth clip"         Page="0" Col="1" Row="0" Type="bool"       Default="False"                                                                                   Tooltip=""></Uniform>
+  <Uniform Name="zfar"               DisplayName="Far"                Page="0" Col="1" Row="2" Type="float"      Default="1000.0"     Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
+  <Uniform Name="projector_rotation" DisplayName="Rotation"           Page="0" Col="0" Row="2" Type="vec3"                                                              Inc="0.01"                                 ValueType="Position" Tooltip="" IconType="None">
+                                                                                                     <SubUniform Default="0.0"        Min="-1000000.0" Max="1000000.0"                   ResDependent="None"></SubUniform>
+                                                                                                     <SubUniform Default="0.0"        Min="-1000000.0" Max="1000000.0"                   ResDependent="None"></SubUniform>
+                                                                                                     <SubUniform Default="0.0"        Min="-1000000.0" Max="1000000.0"                   ResDependent="None"></SubUniform></Uniform>
+  <Uniform Name="projector_position" DisplayName="Position"           Page="0" Col="0" Row="0" Type="vec3"                                                              Inc="0.01"                                 ValueType="Position" Tooltip="" IconType="None">
+                                                                                                     <SubUniform Default="0.0"        Min="-1000000.0" Max="1000000.0"                   ResDependent="None"></SubUniform>
+                                                                                                     <SubUniform Default="0.0"        Min="-1000000.0" Max="1000000.0"                   ResDependent="None"></SubUniform>
+                                                                                                     <SubUniform Default="0.0"        Min="-1000000.0" Max="1000000.0"                   ResDependent="None"></SubUniform></Uniform>
+  <Uniform Name="outputuv"           DisplayName="Output UVs"         Page="0" Col="2" Row="3" Type="bool"       Default="False"                                                                                   Tooltip=""></Uniform>
+  <Uniform Name="outputndc"          DisplayName="Output NDC space"   Page="0" Col="2" Row="2" Type="bool"       Default="False"                                                                                   Tooltip=""></Uniform>
+  <Uniform Name="projector_fov"      DisplayName="Field of view"      Page="0" Col="0" Row="4" Type="float"      Default="0.0"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
+ </Shader>
+ <Page Page="0" Name="">
+  <Col Page="0" Col="0" Name="Projector"></Col>
+  <Col Page="0" Col="1" Name="Clip"></Col>
+  <Col Page="0" Col="2" Name="Output"></Col>
+ </Page>
+</ShaderNodePreset>
