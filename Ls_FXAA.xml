@@ -1,0 +1,15 @@
+<ShaderNodePreset SupportsAdaptiveDegradation="0" LimitInputsToTexture="True" Version="1" Description="FXAA 3.11 - fast cheap antialiasing, soften those crunchy edges
+lewis@lewissaunders.com" Name="Ls_FXAA">
+   <Shader OutputBitDepth="Output" Index="1">
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.04" Inc="0.001" Tooltip="Trims the algorithm from processing darks" Row="2" Col="1" Page="0" DisplayName="Dark threshold" Type="float" Name="fxaaQualityEdgeThresholdMin"></Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.75" Inc="0.01" Tooltip="Amount of sub-pixel aliasing removal, can affect sharpness" Row="0" Col="1" Page="0" DisplayName="Subpixel amount" Type="float" Name="fxaaQualitySubpix"></Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.1" Inc="0.01" Tooltip="Minimum amount of local contrast required to apply algorithm" Row="1" Col="1" Page="0" DisplayName="Edge threshold" Type="float" Name="fxaaQualityEdgeThreshold"></Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="" Row="3" Col="1" Page="0" DisplayName="Mix" Type="float" Name="mixx"></Uniform>
+      <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="Front" InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_REPEAT" GL_TEXTURE_WRAP_S="GL_REPEAT" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="front">
+      </Uniform>
+   </Shader>
+   <Page Name="" Page="0">
+      <Col Name="" Col="0" Page="0"></Col>
+      <Col Name="Tune" Col="1" Page="0"></Col>
+   </Page>
+</ShaderNodePreset>
