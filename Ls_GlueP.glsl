@@ -4,7 +4,6 @@
 //  o Optional camera-to-world transform using another linked camera, and output thereof
 //  o Filtering?  Or rely on outputting UVs into UVewa
 //  o Front/back facing using rest normals and camera pos?
-//  o Make matte input optional, often won't be needed
 //  o Clip space isn't traditional, couldn't figure out proper [near,far] > [-1,1]
 
 uniform float adsk_result_w, adsk_result_h;

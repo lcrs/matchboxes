@@ -3,7 +3,7 @@
 lewis@lewissaunders.com">
  <Shader OutputBitDepth="Output" Index="1">
   <Uniform Name="front"              DisplayName="Front"              Type="sampler2D"  Index="0" GL_TEXTURE_WRAP_T="GL_REPEAT" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" Tooltip="" InputColor="67, 77, 83" NoInput="Error" GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_S="GL_REPEAT"></Uniform>
-  <Uniform Name="matte"              DisplayName="Matte"              Type="sampler2D"  Index="1" GL_TEXTURE_WRAP_T="GL_REPEAT" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" Tooltip="" InputColor="67, 77, 83" NoInput="Error" GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_S="GL_REPEAT"></Uniform>
+  <Uniform Name="matte"              DisplayName="Matte"              Type="sampler2D"  Index="1" GL_TEXTURE_WRAP_T="GL_REPEAT" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" Tooltip="" InputColor="67, 77, 83" NoInput="White" GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_S="GL_REPEAT"></Uniform>
   <Uniform Name="pos"                DisplayName="Position pass"      Type="sampler2D"  Index="2" GL_TEXTURE_WRAP_T="GL_REPEAT" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" Tooltip="" InputColor="67, 77, 83" NoInput="Error" GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_S="GL_REPEAT"></Uniform>
   <Uniform Name="znear"              DisplayName="Near"               Page="0" Col="1" Row="1" Type="float"      Default="0.01"       Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
   <Uniform Name="outputviewspace"    DisplayName="Output view space"  Page="0" Col="2" Row="0" Type="bool"       Default="False"                                                                                   Tooltip=""></Uniform>
