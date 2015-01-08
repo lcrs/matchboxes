@@ -3,14 +3,24 @@
 // TODO:
 //  o Optional camera-to-world transform using another linked camera, and output thereof
 //  o Filtering?  Or rely on outputting UVs into UVewa
-//  o Front/back facing using rest normals and camera pos?
+//  o Soft shoulders on the depth clip and front/back face clip
 //  o Clip space isn't traditional, couldn't figure out proper [near,far] > [-1,1]
+/*  o Seam fixing? And idea:
+		i) edge detect uv output, just by dfdx is probably ok
+		ii) blur result a little
+		iii) use dfdx of blur to get edge tangent vector
+		iv) walk along tangent for at least 2px, then continue until no longer on an edge
+		v) same in opposite direction
+		vi) these two positions along the tangent become our fg/bg sample points
+		vii) fetch texture for fg/bg points
+		viii) blend according to... something
+*/
 
 uniform float adsk_result_w, adsk_result_h;
-uniform sampler2D front, matte, pos;
+uniform sampler2D front, matte, pos, norm;
 uniform vec3 projector_position, projector_rotation;
 uniform float projector_fov, znear, zfar;
-uniform bool zclip, outputviewspace, outputclipspace, outputndc, outputuv;
+uniform bool zclip, outputviewspace, outputclipspace, outputndc, outputuv, frontface, backface;
 #define pi 3.1415926535897932384624433832795
 
 // Degrees to radians
@@ -31,7 +41,7 @@ vec3 rotate(vec3 p, vec3 angles) {
 }
 
 void main() {
-	vec2 coords = gl_FragCoord.xy / vec2(adsk_result_w, adsk_result_h);	
+	vec2 coords = gl_FragCoord.xy / vec2(adsk_result_w, adsk_result_h);
 	vec4 p = texture2D(pos, coords);
 
 	// World space to view space
@@ -46,6 +56,22 @@ void main() {
 	// Optional clipping
 	if(zclip) {
 		if(abs(p.z) < znear || abs(p.z) > zfar) {
+			gl_FragColor = vec4(0.0);
+			return;
+		}
+	}
+
+	// Facing
+	vec3 n = texture2D(norm, coords).xyz;
+	vec3 v = normalize(projector_position - texture2D(pos, coords).xyz);
+	float facingratio = dot(n, v);
+	if(facingratio > 0.0) {
+		if(!frontface) {
+			gl_FragColor = vec4(0.0);
+			return;
+		}
+	} else {
+		if(!backface) {
 			gl_FragColor = vec4(0.0);
 			return;
 		}
