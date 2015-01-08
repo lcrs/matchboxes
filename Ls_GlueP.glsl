@@ -1,11 +1,10 @@
 // Project on a Position pass
 // lewis@lewissaunders.com
 // TODO:
-//  o Optional camera-to-world transform using another linked camera, and output thereof
 //  o Filtering?  Or rely on outputting UVs into UVewa
-//  o Soft shoulders on the depth clip and front/back face clip
+//  o Soft shoulders on the depth clip and front/back face clip? You can pull keys from P or N instead
 //  o Clip space isn't traditional, couldn't figure out proper [near,far] > [-1,1]
-/*  o Seam fixing? And idea:
+/*  o Seam fixing? An idea:
 		i) edge detect uv output, just by dfdx is probably ok
 		ii) blur result a little
 		iii) use dfdx of blur to get edge tangent vector
@@ -19,8 +18,10 @@
 uniform float adsk_result_w, adsk_result_h;
 uniform sampler2D front, matte, pos, norm;
 uniform vec3 projector_position, projector_rotation;
+uniform vec3 worldcam_position, worldcam_rotation;
 uniform float projector_fov, znear, zfar;
 uniform bool zclip, outputviewspace, outputclipspace, outputndc, outputuv, frontface, backface;
+uniform bool convert, convertp, convertn, outputp, outputn;
 #define pi 3.1415926535897932384624433832795
 
 // Degrees to radians
@@ -40,9 +41,44 @@ vec3 rotate(vec3 p, vec3 angles) {
 	return(p * r);
 }
 
+// Un-rotates in ZXY order
+vec3 unrotate(vec3 p, vec3 angles) {
+	float x = deg2rad(angles.x);
+	float y = deg2rad(angles.y);
+	float z = deg2rad(angles.z);
+	mat3 rx = mat3(1.0, 0.0, 0.0, 0.0, cos(x), sin(x), 0.0, -sin(x), cos(x));
+	mat3 ry = mat3(cos(y), 0.0, -sin(y), 0.0, 1.0, 0.0, sin(y), 0.0, cos(y));
+	mat3 rz = mat3(cos(z), sin(z), 0.0, -sin(z), cos(z), 0.0, 0.0, 0.0, 1.0);
+	mat3 r = ry * rx * rz;
+	return(r * p);
+}
+
 void main() {
 	vec2 coords = gl_FragCoord.xy / vec2(adsk_result_w, adsk_result_h);
 	vec4 p = texture2D(pos, coords);
+	vec3 n = normalize(texture2D(norm, coords).xyz);
+
+	// Optional space conversion
+	if(convert) {
+		if(convertp) {
+			p.z *= -1.0;
+			p.xyz = unrotate(p.xyz, -worldcam_rotation);
+			p.xyz += worldcam_position;
+		}
+		if(convertn) {
+			n.z *= -1.0;
+			n = unrotate(n, -worldcam_rotation);
+		}
+	}
+	if(outputp) {
+		gl_FragColor = p;
+		return;		
+	}
+	if(outputn) {
+		gl_FragColor = vec4(n, 1.0);
+		return;		
+	}
+	vec3 worldp = p.xyz;
 
 	// World space to view space
 	p.xyz -= projector_position;
@@ -62,8 +98,7 @@ void main() {
 	}
 
 	// Facing
-	vec3 n = texture2D(norm, coords).xyz;
-	vec3 v = normalize(projector_position - texture2D(pos, coords).xyz);
+	vec3 v = normalize(projector_position - worldp);
 	float facingratio = dot(n, v);
 	if(facingratio > 0.0) {
 		if(!frontface) {

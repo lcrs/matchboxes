@@ -24,11 +24,30 @@ lewis@lewissaunders.com">
   <Uniform Name="outputuv"           DisplayName="Output UVs"         Page="0" Col="3" Row="3" Type="bool"       Default="False"                                                                                   Tooltip=""></Uniform>
   <Uniform Name="outputndc"          DisplayName="Output NDC space"   Page="0" Col="3" Row="2" Type="bool"       Default="False"                                                                                   Tooltip=""></Uniform>
   <Uniform Name="projector_fov"      DisplayName="Field of view"      Page="0" Col="0" Row="4" Type="float"      Default="0.0"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
+  
+  <Uniform Name="convert"            DisplayName="Convert view to world"  Page="1" Col="0" Row="0" Type="bool"       Default="False"                                                                                  Tooltip=""></Uniform>
+  <Uniform Name="convertp"           DisplayName="Affect position"        Page="1" Col="0" Row="1" Type="bool"       Default="True"                                                                                   Tooltip=""></Uniform>
+  <Uniform Name="convertn"           DisplayName="Affect normal"          Page="1" Col="0" Row="2" Type="bool"       Default="True"                                                                                   Tooltip=""></Uniform>
+  <Uniform Name="worldcam_rotation"  DisplayName="World rotation"         Page="1" Col="1" Row="2" Type="vec3"                                                              Inc="0.01"                                 ValueType="Position" Tooltip="" IconType="None">
+                                                                                                     <SubUniform Default="0.0"        Min="-1000000.0" Max="1000000.0"                   ResDependent="None"></SubUniform>
+                                                                                                     <SubUniform Default="0.0"        Min="-1000000.0" Max="1000000.0"                   ResDependent="None"></SubUniform>
+                                                                                                     <SubUniform Default="0.0"        Min="-1000000.0" Max="1000000.0"                   ResDependent="None"></SubUniform></Uniform>
+  <Uniform Name="worldcam_position"  DisplayName="World position"         Page="1" Col="1" Row="0" Type="vec3"                                                              Inc="0.01"                                 ValueType="Position" Tooltip="" IconType="None">
+                                                                                                     <SubUniform Default="0.0"        Min="-1000000.0" Max="1000000.0"                   ResDependent="None"></SubUniform>
+                                                                                                     <SubUniform Default="0.0"        Min="-1000000.0" Max="1000000.0"                   ResDependent="None"></SubUniform>
+                                                                                                     <SubUniform Default="0.0"        Min="-1000000.0" Max="1000000.0"                   ResDependent="None"></SubUniform></Uniform>
+  <Uniform Name="outputp"            DisplayName="Output world position"  Page="1" Col="3" Row="1" Type="bool"       Default="False"                                                                                   Tooltip=""></Uniform>
+  <Uniform Name="outputn"            DisplayName="Output world normal"    Page="1" Col="3" Row="2" Type="bool"       Default="False"                                                                                   Tooltip=""></Uniform>
  </Shader>
- <Page Page="0" Name="">
+ <Page Page="0" Name="Projection">
   <Col Page="0" Col="0" Name="Projector"></Col>
   <Col Page="0" Col="1" Name="Clip"></Col>
   <Col Page="0" Col="2" Name="Face"></Col>
   <Col Page="0" Col="3" Name="Output"></Col>
+ </Page>
+ <Page Page="1" Name="Space conversion">
+  <Col Page="1" Col="0" Name="Convert"></Col>
+  <Col Page="1" Col="1" Name="World camera"></Col>
+  <Col Page="1" Col="3" Name="Output converted"></Col>
  </Page>
 </ShaderNodePreset>
