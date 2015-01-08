@@ -12,16 +12,12 @@ lewis@lewissaunders.com" Name="Vops">
       <Uniform Row="0" Col="3" Page="1" Default="False" Tooltip="" DisplayName="Pre-normalize" Type="bool" Name="Bnorm"></Uniform>
       <Uniform Row="0" Col="3" Page="2" Default="False" Tooltip="" DisplayName="Pre-normalize" Type="bool" Name="Cnorm"></Uniform>
       <Uniform Row="0" Col="3" Page="3" Default="False" Tooltip="" DisplayName="Pre-normalize" Type="bool" Name="Dnorm"></Uniform>
-      <Uniform Row="0" Col="3" Page="4" Default="False" Tooltip="" DisplayName="Pre-normalize" Type="bool" Name="Enorm"></Uniform>
-      <Uniform Row="0" Col="3" Page="5" Default="False" Tooltip="" DisplayName="Pre-normalize" Type="bool" Name="Fnorm"></Uniform>
-      <Uniform Row="0" Col="3" Page="7" Default="False" Tooltip="" DisplayName="Pre-normalize" Type="bool" Name="Onorm"></Uniform>
+      <Uniform Row="0" Col="3" Page="5" Default="False" Tooltip="" DisplayName="Pre-normalize" Type="bool" Name="Onorm"></Uniform>
       <Uniform Row="1" Col="3" Page="0" Default="False" Tooltip="" DisplayName="Compute length" Type="bool" Name="Alen"></Uniform>
       <Uniform Row="1" Col="3" Page="1" Default="False" Tooltip="" DisplayName="Compute length" Type="bool" Name="Blen"></Uniform>
       <Uniform Row="1" Col="3" Page="2" Default="False" Tooltip="" DisplayName="Compute length" Type="bool" Name="Clen"></Uniform>
       <Uniform Row="1" Col="3" Page="3" Default="False" Tooltip="" DisplayName="Compute length" Type="bool" Name="Dlen"></Uniform>
-      <Uniform Row="1" Col="3" Page="4" Default="False" Tooltip="" DisplayName="Compute length" Type="bool" Name="Elen"></Uniform>
-      <Uniform Row="1" Col="3" Page="5" Default="False" Tooltip="" DisplayName="Compute length" Type="bool" Name="Flen"></Uniform>
-      <Uniform Row="1" Col="3" Page="7" Default="False" Tooltip="" DisplayName="Compute length" Type="bool" Name="Olen"></Uniform>
+      <Uniform Row="1" Col="3" Page="5" Default="False" Tooltip="" DisplayName="Compute length" Type="bool" Name="Olen"></Uniform>
       <Uniform Inc="0.01" Tooltip="" Row="0" Col="0" Page="0" DisplayName="Multiply" ValueType="Colour" Type="vec3" Name="Amult">
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0"></SubUniform>
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0"></SubUniform>
@@ -38,15 +34,7 @@ lewis@lewissaunders.com" Name="Vops">
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0"></SubUniform>
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0"></SubUniform>
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0"></SubUniform></Uniform>
-      <Uniform Inc="0.01" Tooltip="" Row="0" Col="0" Page="4" DisplayName="Multiply" ValueType="Colour" Type="vec3" Name="Emult">
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0"></SubUniform>
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0"></SubUniform>
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0"></SubUniform></Uniform>
-      <Uniform Inc="0.01" Tooltip="" Row="0" Col="0" Page="5" DisplayName="Multiply" ValueType="Colour" Type="vec3" Name="Fmult">
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0"></SubUniform>
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0"></SubUniform>
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0"></SubUniform></Uniform>
-      <Uniform Inc="0.01" Tooltip="" Row="0" Col="0" Page="7" DisplayName="Multiply" ValueType="Colour" Type="vec3" Name="Omult">
+      <Uniform Inc="0.01" Tooltip="" Row="0" Col="0" Page="5" DisplayName="Multiply" ValueType="Colour" Type="vec3" Name="Omult">
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0"></SubUniform>
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0"></SubUniform>
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0"></SubUniform></Uniform>
@@ -66,15 +54,7 @@ lewis@lewissaunders.com" Name="Vops">
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0"></SubUniform>
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0"></SubUniform>
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0"></SubUniform></Uniform>
-      <Uniform Inc="0.01" Tooltip="" Row="1" Col="0" Page="4" DisplayName="Scale" ValueType="Position" Type="vec3" Name="Emult2">
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0"></SubUniform>
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0"></SubUniform>
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0"></SubUniform></Uniform>
-      <Uniform Inc="0.01" Tooltip="" Row="1" Col="0" Page="5" DisplayName="Scale" ValueType="Position" Type="vec3" Name="Fmult2">
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0"></SubUniform>
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0"></SubUniform>
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0"></SubUniform></Uniform>
-      <Uniform Inc="0.01" Tooltip="" Row="1" Col="0" Page="7" DisplayName="Scale" ValueType="Position" Type="vec3" Name="Omult2">
+      <Uniform Inc="0.01" Tooltip="" Row="1" Col="0" Page="5" DisplayName="Scale" ValueType="Position" Type="vec3" Name="Omult2">
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0"></SubUniform>
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0"></SubUniform>
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0"></SubUniform></Uniform>
@@ -82,9 +62,7 @@ lewis@lewissaunders.com" Name="Vops">
       <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0" Inc="0.01" Tooltip="" Row="3" Col="0" Page="1" DisplayName="Overall scale" Type="float" Name="Bmult3"></Uniform>
       <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0" Inc="0.01" Tooltip="" Row="3" Col="0" Page="2" DisplayName="Overall scale" Type="float" Name="Cmult3"></Uniform>
       <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0" Inc="0.01" Tooltip="" Row="3" Col="0" Page="3" DisplayName="Overall scale" Type="float" Name="Dmult3"></Uniform>
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0" Inc="0.01" Tooltip="" Row="3" Col="0" Page="4" DisplayName="Overall scale" Type="float" Name="Emult3"></Uniform>
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0" Inc="0.01" Tooltip="" Row="3" Col="0" Page="5" DisplayName="Overall scale" Type="float" Name="Fmult3"></Uniform>
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0" Inc="0.01" Tooltip="" Row="3" Col="0" Page="7" DisplayName="Overall scale" Type="float" Name="Omult3"></Uniform>
+      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0" Inc="0.01" Tooltip="" Row="3" Col="0" Page="5" DisplayName="Overall scale" Type="float" Name="Omult3"></Uniform>
       <Uniform Inc="0.1" Tooltip="" Row="0" Col="1" Page="0" DisplayName="Rotate" ValueType="Position" Type="vec3" Name="Arot">
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform>
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform>
@@ -101,15 +79,7 @@ lewis@lewissaunders.com" Name="Vops">
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform>
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform>
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform></Uniform>
-      <Uniform Inc="0.1" Tooltip="" Row="0" Col="1" Page="4" DisplayName="Rotate" ValueType="Position" Type="vec3" Name="Erot">
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform>
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform>
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform></Uniform>
-      <Uniform Inc="0.1" Tooltip="" Row="0" Col="1" Page="5" DisplayName="Rotate" ValueType="Position" Type="vec3" Name="Frot">
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform>
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform>
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform></Uniform>
-      <Uniform Inc="0.1" Tooltip="" Row="0" Col="1" Page="7" DisplayName="Rotate" ValueType="Position" Type="vec3" Name="Orot">
+      <Uniform Inc="0.1" Tooltip="" Row="0" Col="1" Page="5" DisplayName="Rotate" ValueType="Position" Type="vec3" Name="Orot">
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform>
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform>
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform></Uniform>
@@ -129,15 +99,7 @@ lewis@lewissaunders.com" Name="Vops">
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform>
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform>
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform></Uniform>
-      <Uniform Inc="0.01" Tooltip="" Row="0" Col="2" Page="4" DisplayName="Offset" ValueType="Colour" Type="vec3" Name="Eadd">
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform>
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform>
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform></Uniform>
-      <Uniform Inc="0.01" Tooltip="" Row="0" Col="2" Page="5" DisplayName="Offset" ValueType="Colour" Type="vec3" Name="Fadd">
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform>
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform>
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform></Uniform>
-      <Uniform Inc="0.01" Tooltip="" Row="0" Col="2" Page="7" DisplayName="Offset" ValueType="Colour" Type="vec3" Name="Oadd">
+      <Uniform Inc="0.01" Tooltip="" Row="0" Col="2" Page="5" DisplayName="Offset" ValueType="Colour" Type="vec3" Name="Oadd">
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform>
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform>
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform></Uniform>
@@ -157,30 +119,22 @@ lewis@lewissaunders.com" Name="Vops">
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform>
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform>
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform></Uniform>
-      <Uniform Inc="0.01" Tooltip="" Row="1" Col="2" Page="4" DisplayName="Translate" ValueType="Position" Type="vec3" Name="Eadd2">
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform>
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform>
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform></Uniform>
-      <Uniform Inc="0.01" Tooltip="" Row="1" Col="2" Page="5" DisplayName="Translate" ValueType="Position" Type="vec3" Name="Fadd2">
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform>
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform>
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform></Uniform>
-      <Uniform Inc="0.01" Tooltip="" Row="1" Col="2" Page="7" DisplayName="Translate" ValueType="Position" Type="vec3" Name="Oadd2">
+      <Uniform Inc="0.01" Tooltip="" Row="1" Col="2" Page="5" DisplayName="Translate" ValueType="Position" Type="vec3" Name="Oadd2">
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform>
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform>
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform></Uniform>
  
-      <Uniform Row="0" Col="0" Page="6" Default="True" Tooltip="o = a+b+c+d+e+f" DisplayName="Add" Type="bool" Name="add"></Uniform>
-      <Uniform Row="1" Col="0" Page="6" Default="False" Tooltip="o = a-b-c-d-e-f" DisplayName="Subtract" Type="bool" Name="subtract"></Uniform>
-      <Uniform Row="2" Col="0" Page="6" Default="False" Tooltip="o = 1-((1-a)*(1-b)*(1-c)*(1-d)*(1-e)*(1-f)), which if the inputs are grayscale mattes is the same as comping them all together" DisplayName="Screen" Type="bool" Name="screen"></Uniform>
-      <Uniform Row="3" Col="0" Page="6" Default="False" Tooltip="o = a*(1-b)*(1-c)*(1-d)*(1-e)*(1-f), which if the inputs are grayscale mattes, removes areas b through f from a" DisplayName="Outside" Type="bool" Name="outside"></Uniform>
-      <Uniform Row="0" Col="1" Page="6" Default="False" Tooltip="Vector dot product of A and B, which if A is a normals pass and B is a constant direction gives you Lambert diffuse shading" DisplayName="A dot B" Type="bool" Name="adotb"></Uniform>
-      <Uniform Row="1" Col="1" Page="6" Default="False" Tooltip="Vector cross product of A and B, which gives you a vector at right angles to both" DisplayName="A cross B" Type="bool" Name="acrossb"></Uniform>
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0" Inc="0.01" Tooltip="" Row="0" Col="2" Page="6" DisplayName="Mix" Type="float" Name="mixa"></Uniform>
-      <Uniform Inc="0.01" Tooltip="" Row="0" Col="3" Page="6" DisplayName="Inspect" ValueType="Colour" Type="vec3" Name="picker">
-	 <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.25"></SubUniform>
-	 <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.75"></SubUniform>
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.125"></SubUniform></Uniform>
+      <Uniform Row="0" Col="0" Page="4" Default="True" Tooltip="o = a+b+c+d+e+f" DisplayName="Add" Type="bool" Name="add"></Uniform>
+      <Uniform Row="1" Col="0" Page="4" Default="False" Tooltip="o = a-b-c-d-e-f" DisplayName="Subtract" Type="bool" Name="subtract"></Uniform>
+      <Uniform Row="2" Col="0" Page="4" Default="False" Tooltip="o = 1-((1-a)*(1-b)*(1-c)*(1-d)*(1-e)*(1-f)), which if the inputs are grayscale mattes is the same as comping them all together" DisplayName="Screen" Type="bool" Name="screen"></Uniform>
+      <Uniform Row="3" Col="0" Page="4" Default="False" Tooltip="o = a*(1-b)*(1-c)*(1-d)*(1-e)*(1-f), which if the inputs are grayscale mattes, removes areas b through f from a" DisplayName="Outside" Type="bool" Name="outside"></Uniform>
+      <Uniform Row="0" Col="1" Page="4" Default="False" Tooltip="Vector dot product of A and B, which if A is a normals pass and B is a constant direction gives you Lambert diffuse shading" DisplayName="A dot B" Type="bool" Name="adotb"></Uniform>
+      <Uniform Row="1" Col="1" Page="4" Default="False" Tooltip="Vector cross product of A and B, which gives you a vector at right angles to both" DisplayName="A cross B" Type="bool" Name="acrossb"></Uniform>
+      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0" Inc="0.01" Tooltip="" Row="0" Col="2" Page="4" DisplayName="Mix" Type="float" Name="mixa"></Uniform>
+      <Uniform Inc="0.01" Tooltip="" Row="0" Col="3" Page="4" DisplayName="Inspect" ValueType="Colour" Type="vec3" Name="picker">
+	     <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.25"></SubUniform>
+	     <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.75"></SubUniform>
+        <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.125"></SubUniform></Uniform>
    </Shader>
    <Page Name="A" Page="0">
       <Col Name="Input A Scale" Col="0" Page="0"></Col>
@@ -206,28 +160,16 @@ lewis@lewissaunders.com" Name="Vops">
       <Col Name="Input D Translate" Col="2" Page="3"></Col>
       <Col Name="Input D Magnitude" Col="3" Page="3"></Col>
    </Page>
-   <Page Name="E" Page="4">
-      <Col Name="Input E Scale" Col="0" Page="4"></Col>
-      <Col Name="Input E Rotate" Col="1" Page="4"></Col>
-      <Col Name="Input E Translate" Col="2" Page="4"></Col>
-      <Col Name="Input E Magnitude" Col="3" Page="4"></Col>
+   <Page Name="Combine" Page="4">
+      <Col Name="Combine all inputs" Col="0" Page="4"></Col>
+      <Col Name="Combine A &amp; B only" Col="1" Page="4"></Col>
+      <Col Name="Mix from input A" Col="2" Page="4"></Col>
+      <Col Name="Do-nothing picker" Col="3" Page="4"></Col>
    </Page>
-   <Page Name="F" Page="5">
-      <Col Name="Input F Scale" Col="0" Page="5"></Col>
-      <Col Name="Input F Rotate" Col="1" Page="5"></Col>
-      <Col Name="Input F Translate" Col="2" Page="5"></Col>
-      <Col Name="Input F Magnitude" Col="3" Page="5"></Col>
-   </Page>
-   <Page Name="Combine" Page="6">
-      <Col Name="Combine all inputs" Col="0" Page="6"></Col>
-      <Col Name="Combine A &amp; B only" Col="1" Page="6"></Col>
-      <Col Name="Mix from input A" Col="2" Page="6"></Col>
-      <Col Name="Do-nothing picker" Col="3" Page="6"></Col>
-   </Page>
-   <Page Name="Output" Page="7">
-      <Col Name="Output Scale" Col="0" Page="7"></Col>
-      <Col Name="Output Rotate" Col="1" Page="7"></Col>
-      <Col Name="Output Translate" Col="2" Page="7"></Col>
-      <Col Name="Output Magnitude" Col="3" Page="7"></Col>
+   <Page Name="Output" Page="5">
+      <Col Name="Output Scale" Col="0" Page="5"></Col>
+      <Col Name="Output Rotate" Col="1" Page="5"></Col>
+      <Col Name="Output Translate" Col="2" Page="5"></Col>
+      <Col Name="Output Magnitude" Col="3" Page="5"></Col>
    </Page>
 </ShaderNodePreset>

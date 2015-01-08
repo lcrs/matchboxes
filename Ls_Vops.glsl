@@ -8,14 +8,14 @@
 uniform sampler2D A, B, C, D, E, F;
 uniform float adsk_result_w, adsk_result_h;
 
-uniform bool Anorm, Bnorm, Cnorm, Dnorm, Enorm, Fnorm, Onorm;
-uniform vec3 Amult, Bmult, Cmult, Dmult, Emult, Fmult, Omult;
-uniform vec3 Amult2, Bmult2, Cmult2, Dmult2, Emult2, Fmult2, Omult2;
-uniform float Amult3, Bmult3, Cmult3, Dmult3, Emult3, Fmult3, Omult3;
-uniform vec3 Arot, Brot, Crot, Drot, Erot, Frot, Orot;
-uniform vec3 Aadd, Badd, Cadd, Dadd, Eadd, Fadd, Oadd;
-uniform vec3 Aadd2, Badd2, Cadd2, Dadd2, Eadd2, Fadd2, Oadd2;
-uniform bool Alen, Blen, Clen, Dlen, Elen, Flen, Olen;
+uniform bool Anorm, Bnorm, Cnorm, Dnorm, Onorm;
+uniform vec3 Amult, Bmult, Cmult, Dmult, Omult;
+uniform vec3 Amult2, Bmult2, Cmult2, Dmult2, Omult2;
+uniform float Amult3, Bmult3, Cmult3, Dmult3, Omult3;
+uniform vec3 Arot, Brot, Crot, Drot, Orot;
+uniform vec3 Aadd, Badd, Cadd, Dadd, Oadd;
+uniform vec3 Aadd2, Badd2, Cadd2, Dadd2, Oadd2;
+uniform bool Alen, Blen, Clen, Dlen, Olen;
 
 uniform bool add, subtract, screen, outside, adotb, acrossb;
 uniform float mixa;
@@ -57,22 +57,16 @@ void main() {
 	if(Bnorm) b = normalize(b);
 	if(Cnorm) c = normalize(c);
 	if(Dnorm) d = normalize(d);
-	if(Enorm) e = normalize(e);
-	if(Fnorm) f = normalize(f);
 
 	a = rotate(a * Amult * Amult2 * Amult3, Arot) + Aadd + Aadd2;
 	b = rotate(b * Bmult * Bmult2 * Bmult3, Brot) + Badd + Badd2;
 	c = rotate(c * Cmult * Cmult2 * Cmult3, Crot) + Cadd + Cadd2;
 	d = rotate(d * Dmult * Dmult2 * Dmult3, Drot) + Dadd + Dadd2;
-	e = rotate(e * Emult * Emult2 * Emult3, Erot) + Eadd + Eadd2;
-	f = rotate(f * Fmult * Fmult2 * Fmult3, Frot) + Fadd + Fadd2;
 
 	if(Alen) a = vec3(length(a));
 	if(Blen) b = vec3(length(b));
 	if(Clen) c = vec3(length(c));
 	if(Dlen) d = vec3(length(d));
-	if(Elen) e = vec3(length(e));
-	if(Flen) f = vec3(length(f));
 
 	vec3 o = vec3(0.0);
 	if(add) o = a + b + c + d + e + f;
