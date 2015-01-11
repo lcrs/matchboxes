@@ -4,15 +4,15 @@
 //  o Filtering?  Or rely on outputting UVs into UVewa
 //  o Soft shoulders on the depth clip and front/back face clip? You can pull keys from P or N instead
 //  o Clip space isn't traditional, couldn't figure out proper [near,far] > [-1,1]
-/*  o Seam fixing? An idea:
-		i) edge detect uv output, just by dfdx is probably ok
+/*  o Seam fixing when AOVs are antialiased? An idea, which should probably go in Ls_UVewa:
+		i) edge detect uv output, just dFdx() is probably ok
 		ii) blur result a little
-		iii) use dfdx of blur to get edge tangent vector
+		iii) use dFdx() of blurred edges to get edge tangent vector
 		iv) walk along tangent for at least 2px, then continue until no longer on an edge
 		v) same in opposite direction
 		vi) these two positions along the tangent become our fg/bg sample points
 		vii) fetch texture for fg/bg points
-		viii) blend according to... something
+		viii) blend fg over bg according to... something... distance from edge?
 */
 
 uniform float adsk_result_w, adsk_result_h;
