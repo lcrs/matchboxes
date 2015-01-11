@@ -97,6 +97,12 @@ void main() {
 		}
 	}
 
+	// Clip behind projector
+	if(p.z > 0.0) {
+			gl_FragColor = vec4(0.0);
+			return;
+	}
+
 	// Facing
 	vec3 v = normalize(projector_position - worldp);
 	float facingratio = dot(n, v);
