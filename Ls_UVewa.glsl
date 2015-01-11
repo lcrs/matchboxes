@@ -97,6 +97,8 @@ void main(void) {
 	uv += offset / 100.0;
 	vec2 uvcoords = mix(coords, uv, emult);
 
+	uvcoords = clamp(uv, 0.0, 1.0);
+
 	vec4 df = vec4(dFdx(uvcoords.x), dFdy(uvcoords.x), dFdx(uvcoords.y), dFdy(uvcoords.y));
 
 	vec4 ewa = texture2DEWA(front, uvcoords);
