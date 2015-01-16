@@ -1,19 +1,19 @@
-// Colour blur horizontal pass
+// Lumps blur horizontal pass
 // lewis@lewissaunders.com
 
 uniform sampler2D adsk_results_pass1;
 uniform float adsk_result_w, adsk_result_h;
-uniform float coloursize;
+uniform float lumpsize;
 uniform bool recombine;
 const float pi = 3.141592653589793238462643383279502884197969;
 
 void main() {
 	if(recombine) discard;
-
+	
 	vec2 xy = gl_FragCoord.xy;
 	vec2 px = vec2(1.0) / vec2(adsk_result_w, adsk_result_h);
 
-	float sigma = coloursize;
+	float sigma = lumpsize;
 	int support = int(sigma * 3.0);
 
 	// Incremental coefficient calculation setup as per GPU Gems 3
