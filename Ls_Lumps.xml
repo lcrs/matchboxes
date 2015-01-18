@@ -1,4 +1,6 @@
-<ShaderNodePreset Name="Lumps" SupportsAdaptiveDegradation="0" Description="Frequency separation - split image into colour, lumps and detail, A.K.A. low, mid and high frequencies.  You can adjust gain of each here which is often enough, or use three copies of this shader to split out the three bands, then rebuild the image using a fourth shader with Recombine on and the three bands in inputs 2/3/4
+<ShaderNodePreset Name="Lumps" SupportsAdaptiveDegradation="0" Description="Frequency separation - split image into colour, lumps and detail, A.K.A. low, mid and high frequencies.  You can adjust gain of each here which is often enough, or use three copies of this shader to split out the three bands, then rebuild the image using a fourth shader with Recombine on and the three bands in inputs 2/3/4.
+
+Beware that if you have a CTF as your viewer LUT, or you're using LUT Editor nodes near this shader, there seems to be a Flame bug which can cause the whole screen to go a flat colour - it's still possible to hit shift-insert then return to quit, but watch out!  Same applies to Smoke, but it's apple-q then return to quit...
 
 lewis@lewissaunders.com">
  <Shader OutputBitDepth="Output" Index="1">
