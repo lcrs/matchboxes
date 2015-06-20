@@ -1,4 +1,4 @@
-<ShaderNodePreset Description="RandoGrade - generates random grades
+<ShaderNodePreset Description="RandoGrade - generates random grades.  Works best on log footage, or low-contrast ungraded video.
 
 lewis@lewissaunders.com" Name="RandoGrade" SupportsAdaptiveDegradation="0" LimitInputsToTexture="True">
    <Shader OutputBitDepth="Output" Index="1">
