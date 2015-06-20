@@ -76,14 +76,16 @@ void main() {
 	              rando(crossseed, 6.0) - 0.5, rando(crossseed, 7.0) - 0.5, 1.0);
 	vec3 crossed = frontpix * (m + crossamount * r);
 
-	// Keep white white
-	crossed = mix(frontpix, crossed, length(vec3(1.0, 1.0, 1.0) - frontpix));
+	// Don't affect the grayscale
+	vec3 desat = vec3((frontpix.r + frontpix.g + frontpix.b) / 3.0);
+	float sat = length(frontpix - desat);
+	crossed = mix(frontpix, crossed, sat);
 
 	// Now random curves per RGB
 	vec3 rgbcurved;
-	rgbcurved.r = curve(crossed.r, rgbseed+7.0, rgbpoints, rgbamount, lockblack, smoothblack, lockwhite, smoothwhite);
-	rgbcurved.g = curve(crossed.g, rgbseed+8.0, rgbpoints, rgbamount, lockblack, smoothblack, lockwhite, smoothwhite);
-	rgbcurved.b = curve(crossed.b, rgbseed+9.0, rgbpoints, rgbamount, lockblack, smoothblack, lockwhite, smoothwhite);
+	rgbcurved.r = curve(crossed.r, rgbseed+7.0, rgbpoints, rgbamount/10.0, lockblack, smoothblack, lockwhite, smoothwhite);
+	rgbcurved.g = curve(crossed.g, rgbseed+8.0, rgbpoints, rgbamount/10.0, lockblack, smoothblack, lockwhite, smoothwhite);
+	rgbcurved.b = curve(crossed.b, rgbseed+9.0, rgbpoints, rgbamount/10.0, lockblack, smoothblack, lockwhite, smoothwhite);
 
 	vec3 mixed = mix(frontpix, rgbcurved, mix * length(mattepix));
 
