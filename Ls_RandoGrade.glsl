@@ -77,8 +77,11 @@ void main() {
 	              rando(crossseed, 3.0) - 0.5, 1.0, rando(crossseed, 5.0) - 0.5,
 	              rando(crossseed, 6.0) - 0.5, rando(crossseed, 7.0) - 0.5, 1.0);
 	vec3 crossed = frontpix * (m + crossamount * r);
+
+	// Keep white white
 	crossed = mix(frontpix, crossed, length(vec3(1.0, 1.0, 1.0) - frontpix));
 
+	// Now random curves per RGB
 	vec3 rgbcurved;
 	rgbcurved.r = curve(crossed.r, rgbseed+7.0, rgbpoints, rgbamount, lockblack, smoothblack, lockwhite, smoothwhite);
 	rgbcurved.g = curve(crossed.g, rgbseed+8.0, rgbpoints, rgbamount, lockblack, smoothblack, lockwhite, smoothwhite);
