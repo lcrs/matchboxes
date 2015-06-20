@@ -8,10 +8,8 @@
 uniform float adsk_result_w, adsk_result_h, adsk_time;
 uniform sampler2D front, matte;
 uniform int rgbpoints;
-float rgbseed = float(adsk_time);
-uniform float rgbamount;
-float crossseed = float(adsk_time);
-uniform float crossamount;
+uniform float rgbseed, rgbamount;
+uniform float crossseed, crossamount;
 uniform float mix, lockblack, lockwhite, smoothblack, smoothwhite;
 
 float rando(float a, float b) {

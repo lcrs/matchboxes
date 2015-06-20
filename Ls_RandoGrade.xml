@@ -1,0 +1,28 @@
+<ShaderNodePreset Description="RandoGrade - generates random grades
+
+lewis@lewissaunders.com" Name="RandoGrade" SupportsAdaptiveDegradation="0" LimitInputsToTexture="True">
+   <Shader OutputBitDepth="Output" Index="1">
+      <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="Front" InputType="Front" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_NEAREST" GL_TEXTURE_MIN_FILTER="GL_NEAREST" Type="sampler2D" Name="front">      </Uniform>
+      <Uniform Index="1" NoInput="White" Tooltip="" DisplayName="Matte" InputType="Matte" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_NEAREST" GL_TEXTURE_MIN_FILTER="GL_NEAREST" Type="sampler2D" Name="matte">      </Uniform>
+      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="10.0" Inc="1.0" Tooltip="" Row="1" Col="0" Page="0" Type="float" DisplayName="Seed" Name="rgbseed">      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="-10.0" Default="0.1" Inc="0.01" Tooltip="" Row="2" Col="0" Page="0" Type="float" DisplayName="Amount" Name="rgbamount">      </Uniform>
+      <Uniform Max="20" Min="2" Default="4" Inc="1" Tooltip="How many random points on the curves - more gives interesting grades but they may start to solarize" Row="3" Col="0" Page="0" Type="int" DisplayName="Curve points" Name="rgbpoints">      </Uniform>
+      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="21.0" Inc="1.0" Tooltip="" Row="1" Col="1" Page="0" Type="float" DisplayName="Seed" Name="crossseed">      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="-10.0" Default="0.1" Inc="0.01" Tooltip="" Row="2" Col="1" Page="0" Type="float" DisplayName="Amount" Name="crossamount">      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.5" Inc="0.01" Tooltip="Keep the curve point at 1.0 pinned to white" Row="0" Col="2" Page="0" Type="float" DisplayName="Lock white" Name="lockwhite">      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.5" Inc="0.01" Tooltip="Keep the curves flat at white, so highlights roll off nicely" Row="1" Col="2" Page="0" Type="float" DisplayName="Smooth white" Name="smoothwhite">      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.5" Inc="0.01" Tooltip="Keep the curve point at 0.0 pinned to black" Row="3" Col="2" Page="0" Type="float" DisplayName="Lock black" Name="lockblack">      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.5" Inc="0.01" Tooltip="Keep the curves flat at black, so shadows roll off nicely" Row="4" Col="2" Page="0" Type="float" DisplayName="Smooth black" Name="smoothblack">      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.5" Inc="0.01" Tooltip="" Row="2" Col="3" Page="0" Type="float" DisplayName="Mix" Name="mix">      </Uniform>
+   </Shader>
+   <Page Name="" Page="0">
+      <Col Name="RGB curves" Col="0" Page="0">
+      </Col>
+      <Col Name="Cross-channel matrix" Col="1" Page="0">
+      </Col>
+      <Col Name="Preserve some sanity" Col="2" Page="0">
+      </Col>
+      <Col Name="Output" Col="3" Page="0">
+      </Col>
+   </Page>
+</ShaderNodePreset>
