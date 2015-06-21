@@ -4,6 +4,8 @@
 //  o Prevent solarization somehow?
 //  o HSV, Lab, YUV curve options?
 //  o Curves overlay...
+//  o Luma-only or "colourfulness" control
+//  o Clamp negs
 
 uniform float adsk_result_w, adsk_result_h, adsk_time;
 uniform sampler2D front, matte;
