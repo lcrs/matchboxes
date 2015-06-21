@@ -1,6 +1,6 @@
-<ShaderNodePreset Description="RandoGrade - generates random grades.  Works best on log footage, or low-contrast ungraded video.
+<ShaderNodePreset Description="RndmGrade - generates random grades.  Works best on log footage, or low-contrast ungraded video.
 
-lewis@lewissaunders.com" Name="RandoGrade" SupportsAdaptiveDegradation="0" LimitInputsToTexture="True">
+lewis@lewissaunders.com" Name="RndmGrade" SupportsAdaptiveDegradation="0" LimitInputsToTexture="True">
    <Shader OutputBitDepth="Output" Index="1">
       <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="Front" InputType="Front" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_NEAREST" GL_TEXTURE_MIN_FILTER="GL_NEAREST" Type="sampler2D" Name="front">      </Uniform>
       <Uniform Index="1" NoInput="White" Tooltip="" DisplayName="Matte" InputType="Matte" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_NEAREST" GL_TEXTURE_MIN_FILTER="GL_NEAREST" Type="sampler2D" Name="matte">      </Uniform>
