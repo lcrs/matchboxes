@@ -4,15 +4,14 @@
 //  o Prevent solarization somehow?
 //  o HSV, Lab, YUV curve options?
 //  o Curves overlay...
-//  o Luma-only or "colourfulness" control
-//  o Clamp negs
 
 uniform float adsk_result_w, adsk_result_h, adsk_time;
 uniform sampler2D front, matte;
 uniform int rgbpoints;
-uniform float rgbseed, rgbamount;
+uniform float rgbseed, rgbamount, colourfulness;
 uniform float crossseed, crossamount;
 uniform float mix, lockblack, lockwhite, smoothblack, smoothwhite;
+uniform bool clampnegs;
 
 float rando(float a, float b) {
 	vec2 s = vec2(a, b);
@@ -89,7 +88,13 @@ void main() {
 	rgbcurved.g = curve(crossed.g, rgbseed+8.0, rgbpoints, rgbamount/10.0, lockblack, smoothblack, lockwhite, smoothwhite);
 	rgbcurved.b = curve(crossed.b, rgbseed+9.0, rgbpoints, rgbamount/10.0, lockblack, smoothblack, lockwhite, smoothwhite);
 
+	vec3 diff = rgbcurved - crossed;
+	float avgdiff = (diff.r + diff.g + diff.b) / 3.0;
+	vec3 nocolourfulness = crossed + avgdiff;
+	rgbcurved = mix(nocolourfulness, rgbcurved, colourfulness);
+
 	vec3 mixed = mix(frontpix, rgbcurved, mix * length(mattepix));
+	if(clampnegs) mixed = clamp(mixed, 0.0, 999999.0);
 
 	gl_FragColor = vec4(mixed, 1.0);
 }
