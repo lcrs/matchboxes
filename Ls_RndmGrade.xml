@@ -1,4 +1,5 @@
 <ShaderNodePreset Description="RndmGrade - generates random grades.  Works best on log footage, or low-contrast ungraded video.
+Demo: http://www.youtube.com/watch?v=joeSPsaVwOE
 
 lewis@lewissaunders.com" Name="RndmGrade" SupportsAdaptiveDegradation="0" LimitInputsToTexture="True">
    <Shader OutputBitDepth="Output" Index="1">
