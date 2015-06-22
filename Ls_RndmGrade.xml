@@ -20,7 +20,7 @@ lewis@lewissaunders.com" Name="RndmGrade" SupportsAdaptiveDegradation="0" LimitI
       <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.5" Inc="0.01" Tooltip="Keep the curves flat at black, so shadows roll off nicely" Row="4" Col="2" Page="0" Type="float" DisplayName="Smooth black" Name="smoothblack">      </Uniform>
 
       <Uniform Row="0" Col="3" Page="0" Default="True" Tooltip="" Type="bool" DisplayName="Overlays" Name="overlays">      </Uniform>
-      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.5" Inc="0.01" Tooltip="" Row="2" Col="3" Page="0" Type="float" DisplayName="Mix" Name="mix">      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.5" Inc="0.01" Tooltip="" Row="2" Col="3" Page="0" Type="float" DisplayName="Mix" Name="mixx">      </Uniform>
       <Uniform Row="3" Col="3" Page="0" Default="True" Tooltip="" Type="bool" DisplayName="Clamp negative" Name="clampnegs">      </Uniform>
    </Shader>
    <Page Name="" Page="0">

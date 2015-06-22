@@ -9,7 +9,7 @@ uniform sampler2D front, matte;
 uniform int rgbpoints;
 uniform float rgbseed, rgbamount, colourfulness;
 uniform float crossseed, crossamount;
-uniform float mix, lockblack, lockwhite, smoothblack, smoothwhite;
+uniform float mixx, lockblack, lockwhite, smoothblack, smoothwhite;
 uniform bool clampnegs, overlays;
 
 // RGB to Rec709 YPbPr
@@ -183,7 +183,7 @@ void main() {
 
 	vec3 crossed = rgbmatrix(frontpix);
 	vec3 rgbcurved = rgbcurves(crossed);
-	vec3 mixed = mix(frontpix, rgbcurved, mix * length(mattepix));
+	vec3 mixed = mix(frontpix, rgbcurved, mixx * length(mattepix));
 
 	if(overlays) {
 		mixed = graph(mixed, coords);
