@@ -129,7 +129,7 @@ vec3 graph(vec3 i, vec2 xy) {
 	float rgraph = 1.0 - smoothstep(0.0, 2.0, rdist);
 	float ggraph = 1.0 - smoothstep(0.0, 2.0, gdist);
 	float bgraph = 1.0 - smoothstep(0.0, 2.0, bdist);
-	vec3 graph = vec3(rgraph, bgraph, ggraph);
+	vec3 graph = vec3(rgraph, ggraph, bgraph);
 	vec2 lines = 1.0 - smoothstep(0.0, 0.08, fract(pos*10.04));
 	if(pos.x > 0.0 && pos.x < 1.0 && pos.y > 0.0 && pos.y < 1.0) {
 		graph += 0.15 * length(lines);
