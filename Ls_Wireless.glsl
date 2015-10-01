@@ -11,7 +11,7 @@
 //  o try adaptive median a la IRank - pull in pixels that are most different to the wire colour
 
 uniform sampler2D front;
-uniform float adsk_result_w, adsk_result_h;
+uniform float adsk_result_w, adsk_result_h, adsk_result_pixelratio;
 uniform vec2 starttrack, endtrack, startoffset, endoffset;
 uniform float radius, restoresize, restoremix, curve, hook, angle;
 uniform bool overlay;
@@ -64,8 +64,8 @@ void main() {
 	vec3 frontpix = texture2D(front, coords / res).rgb;
 
 	// Combine pixel tracks and 0-1 offsets
-	vec2 start = starttrack + (startoffset * res);
-	vec2 end = endtrack + (endoffset * res);
+	vec2 start = starttrack / vec2(adsk_result_pixelratio, 1.0) + (startoffset * res);
+	vec2 end = endtrack / vec2(adsk_result_pixelratio, 1.0) + (endoffset * res);
 	
 	// Figure out bend, our actual b-spline control point
 	vec2 slope = normalize(end - start);
