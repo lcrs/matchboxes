@@ -3,6 +3,7 @@
 // lewis@lewissaunders.com
 
 #extension GL_EXT_gpu_shader4 : enable
+#define FXAA_GATHER4_ALPHA 0
 
 uniform sampler2D front;
 uniform float adsk_result_w, adsk_result_h;
