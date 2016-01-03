@@ -2,11 +2,11 @@
 // lewis@lewissaunders.com
 
 uniform sampler2D start, adsk_accum_texture;
-uniform float adsk_result_w, adsk_result_h, blength, spacing, maxlength, sidestep;
+uniform float adsk_result_w, adsk_result_h, blength, spacing, sidestep;
 uniform vec2 offset;
 uniform int samples, oversamples;
 uniform vec2 bl, tr;
-uniform bool radial, normalize, adsk_degrade, adsk_accum_no_prev_frame;
+uniform bool adsk_accum_no_prev_frame;
 
 vec2 get(vec2 uv) {
 	if(adsk_accum_no_prev_frame){
@@ -23,11 +23,8 @@ void main() {
 	vec2 px = vec2(1.0) / vec2(adsk_result_w, adsk_result_h);
 
 	vec2 d = get(xy * px);
-	
+
 	float sam = float(samples);
-	if(adsk_degrade) {
-		sam /= 4.0;
-	}
 
 	vec3 acc = vec3(0.0);
 	for(int j = 0; j < oversamples; j++) {

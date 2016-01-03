@@ -1,3 +1,4 @@
+// Undiverge a vector field
 // Pass 2 - Gaussian blur 1, horizontal
 // lewis@lewissaunders.com
 
