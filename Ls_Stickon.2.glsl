@@ -6,7 +6,7 @@ uniform sampler2D front, matte, back, adsk_results_pass1;
 uniform float adsk_result_w, adsk_result_h;
 uniform bool accumulateUVs;
 uniform bool outputUVs;
-uniform bool comp;
+uniform bool comp, ispremult;
 
 void main() {
 	vec2 res = vec2(adsk_result_w, adsk_result_h);
@@ -30,9 +30,13 @@ void main() {
 		o.a = texture2D(adsk_results_pass1, uv).a;
 	}
 
-	if(comp) {
+	if(!(outputUVs && accumulateUVs) && comp) {
 		vec3 bg = texture2D(back, uv).rgb;
-		o.rgb = mix(bg.rgb, o.rgb, o.a);
+		if(ispremult) {
+			o.rgb = bg * (1.0 - o.a) + o.rgb;
+		} else {
+			o.rgb = mix(bg.rgb, o.rgb, o.a);
+		}
 	}
 
 	gl_FragColor = o;

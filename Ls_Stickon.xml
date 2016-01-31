@@ -1,4 +1,4 @@
-<ShaderNodePreset SupportsAdaptiveDegradation="True" SupportsAction="False" SupportsTransition="False" SupportsTimeline="False" TimelineUseBack="False" MatteProvider="False" CommercialUsePermitted="True"  AccumulatePass="1" AccumulationFromStartFrame="1" ShaderType="Matchbox" SoftwareVersion="2016.0.0" LimitInputsToTexture="True" Version="1" Description="Recursively warp an image by motion vectors, to stick it to something.  Supply backward motion vectors to the vector input, i.e. the second output of Motion Analysis, or even better the backward channel from Nuke 9's VectorGenerator.  The front and matte inputs should normally be a still lined up on the Accumulate From frame
+<ShaderNodePreset SupportsAdaptiveDegradation="True" SupportsAction="False" SupportsTransition="False" SupportsTimeline="False" TimelineUseBack="False" MatteProvider="False" CommercialUsePermitted="True"  AccumulatePass="1" AccumulationFromStartFrame="1" ShaderType="Matchbox" SoftwareVersion="2016.0.0" LimitInputsToTexture="True" Version="1" Description="Recursively warp an image by motion vectors, to stick it to something.  Supply backward motion vectors to the vector input, i.e. the second output of Motion Analysis, or even better the backward channel from Nuke 9's VectorGenerator.  The front and matte inputs should normally be a still lined up on the Accumulate From frame.  The front input should be 16-bit fp if using the UV method!
 
 lewis@lewissaunders.com" Name="Stickon">
    <Shader ClearColor="0, 0, 0, 0" GridSubdivision="1" OutputBitDepth="Output" Index="1">
@@ -24,7 +24,9 @@ lewis@lewissaunders.com" Name="Stickon">
          <Duplicate>
          </Duplicate>
       </Uniform>
-      <Uniform Row="2" Col="2" Page="0" Default="False" Tooltip="Comp the warped front and matte over the back" Type="bool" ChannelName="comp" DisplayName="Comp over back" Name="comp">
+      <Uniform Row="3" Col="2" Page="0" Default="False" Tooltip="Comp the warped front and matte over the back" Type="bool" ChannelName="comp" DisplayName="Comp over back" Name="comp">
+      </Uniform>
+      <Uniform Row="4" Col="2" Page="0" Default="False" Tooltip="Front input is already premultiplied on black" Type="bool" ChannelName="ispremult" DisplayName="Front is premultiplied" Name="ispremult" UIConditionSource="comp" UIConditionValue="True" UIConditionType="Disable">
       </Uniform>
       <Uniform Index="1" NoInput="Black" Tooltip="" DisplayName="Back" InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="back">
       </Uniform>
