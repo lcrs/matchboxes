@@ -1,16 +1,15 @@
 // Pass 1: advect the vectors by themselves
 // lewis@lewissaunders.com
 
-uniform sampler2D start, adsk_accum_texture;
+uniform sampler2D vecs, adsk_accum_texture;
 uniform float adsk_result_w, adsk_result_h, blength, spacing, sidestep;
 uniform vec2 offset;
 uniform int samples, oversamples;
-uniform vec2 bl, tr;
 uniform bool adsk_accum_no_prev_frame;
 
 vec2 get(vec2 uv) {
 	if(adsk_accum_no_prev_frame){
-		return texture2D(start, uv).xy;
+		return texture2D(vecs, uv).xy;
 	} else {
 		return texture2D(adsk_accum_texture, uv).xy;
 	}
@@ -18,15 +17,11 @@ vec2 get(vec2 uv) {
 
 void main() {
 	vec2 xy = gl_FragCoord.xy;
-
-	// Factor to convert pixels to [0,1] texture coords
-	vec2 px = vec2(1.0) / vec2(adsk_result_w, adsk_result_h);
-
-	vec2 d = get(xy * px);
+	vec2 px = vec2(1.0) / vec2(adsk_result_w, adsk_result_h); // Factor to convert pixels to [0,1] texture coords
 
 	float sam = float(samples);
-
 	vec3 acc = vec3(0.0);
+	vec2 v;
 	for(int j = 0; j < oversamples; j++) {
 		for(int k = 0; k < oversamples; k++) {
 			// Starting point for this sample
@@ -34,12 +29,12 @@ void main() {
 			float dist = 0.0;
 			// Walk along path by sampling vector image, moving, sampling, moving...
 			for(float i = 0.0; i < sam; i++) {
-				d = get(xy * px);
-				if(length(d) == 0.0) {
+				v = get(xy * px);
+				if(length(v) == 0.0) {
 					// No gradient at this point in the map, early out
 					break;
 				}
-				xy += d * (blength/sam) + blength * sidestep/1000.0 * vec2(-d.y, d.x) + (blength/32.0) * offset;
+				xy -= v * (blength/sam) + blength * sidestep/1000.0 * vec2(-v.y, v.x) + (blength/32.0) * offset;
 			}
 			// Sample front image where our walk ended up
 			acc.rg += get(xy * px);
