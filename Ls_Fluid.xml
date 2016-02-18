@@ -1,112 +1,98 @@
-<ShaderNodePreset SupportsAdaptiveDegradation="False" SupportsAction="False" SupportsTransition="False" SupportsTimeline="False" TimelineUseBack="False" MatteProvider="False" CommercialUsePermitted="True" ShaderType="Matchbox" SoftwareVersion="2016.0.0" LimitInputsToTexture="True" Version="1" Description="" Name="Ls_Fluid" AccumulatePass="9">
-   <Shader ClearColor="0, 0, 0, 0" GridSubdivision="1" OutputBitDepth="Output" Index="1">
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="20.0" Inc="0.1" Tooltip="" Row="0" Col="0" Page="0" Type="float" ChannelName="blength" DisplayName="blength" Name="blength">
-      </Uniform>
-      <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="vecs" InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="vecs">
-      </Uniform>
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0" Inc="0.01" Tooltip="" Row="1" Col="0" Page="0" Type="float" ChannelName="sidestep" DisplayName="sidestep" Name="sidestep">
-      </Uniform>
-      <Uniform Inc="0.01" Tooltip="" Row="2" Col="0" Page="0" IconType="None" Type="vec2" ChannelName="offset" DisplayName="offset" Name="offset">
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
-         </SubUniform>
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
-         </SubUniform>
-      </Uniform>
-      <Uniform Max="1000000" Min="-1000000" Default="4" Inc="1" Tooltip="" Row="4" Col="0" Page="0" Type="int" ChannelName="samples" DisplayName="samples" Name="samples">
-      </Uniform>
-      <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_accum_texture">
-      </Uniform>
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.5" Inc="0.01" Tooltip="" Row="0" Col="1" Page="0" Type="float" ChannelName="spacing" DisplayName="spacing" Name="spacing">
-      </Uniform>
-      <Uniform Max="1000000" Min="-1000000" Default="1" Inc="1" Tooltip="" Row="1" Col="1" Page="0" Type="int" ChannelName="oversamples" DisplayName="oversamples" Name="oversamples">
-      </Uniform>
-   </Shader>
-   <Shader ClearColor="0, 0, 0, 0" GridSubdivision="1" OutputBitDepth="Output" Index="2">
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="5.0" Inc="0.01" Tooltip="" Row="2" Col="1" Page="0" Type="float" ChannelName="blur1size" DisplayName="blur1size" Name="blur1size">
-      </Uniform>
-      <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass1">
-      </Uniform>
-   </Shader>
-   <Shader ClearColor="0, 0, 0, 0" GridSubdivision="1" OutputBitDepth="Output" Index="3">
-      <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass2">
-      </Uniform>
-      <Uniform Type="float" ChannelName="blur1size" DisplayName="blur1size" Name="blur1size">
-         <Duplicate>
-         </Duplicate>
-      </Uniform>
-   </Shader>
-   <Shader ClearColor="0, 0, 0, 0" GridSubdivision="1" OutputBitDepth="Output" Index="4">
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="20.0" Inc="0.01" Tooltip="" Row="3" Col="1" Page="0" Type="float" ChannelName="blur2size" DisplayName="blur2size" Name="blur2size">
-      </Uniform>
-      <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass3">
-      </Uniform>
-   </Shader>
-   <Shader ClearColor="0, 0, 0, 0" GridSubdivision="1" OutputBitDepth="Output" Index="5">
-      <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass4">
-      </Uniform>
-      <Uniform Type="float" ChannelName="blur2size" DisplayName="blur2size" Name="blur2size">
-         <Duplicate>
-         </Duplicate>
-      </Uniform>
-   </Shader>
-   <Shader ClearColor="0, 0, 0, 0" GridSubdivision="1" OutputBitDepth="Output" Index="6">
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="75.0" Inc="0.01" Tooltip="" Row="4" Col="1" Page="0" Type="float" ChannelName="blur3size" DisplayName="blur3size" Name="blur3size">
-      </Uniform>
-      <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass5">
-      </Uniform>
-   </Shader>
-   <Shader ClearColor="0, 0, 0, 0" GridSubdivision="1" OutputBitDepth="Output" Index="7">
-      <Uniform Type="float" ChannelName="blur3size" DisplayName="blur3size" Name="blur3size">
-         <Duplicate>
-         </Duplicate>
-      </Uniform>
-      <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass6">
-      </Uniform>
-   </Shader>
-   <Shader ClearColor="0, 0, 0, 0" GridSubdivision="1" OutputBitDepth="Output" Index="8">
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0" Inc="0.01" Tooltip="" Row="0" Col="2" Page="0" Type="float" ChannelName="amount2" DisplayName="amount2" Name="amount2">
-      </Uniform>
-      <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass5">
-      </Uniform>
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0" Inc="0.01" Tooltip="" Row="1" Col="2" Page="0" Type="float" ChannelName="amount1" DisplayName="amount1" Name="amount1">
-      </Uniform>
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0" Inc="0.01" Tooltip="" Row="2" Col="2" Page="0" Type="float" ChannelName="d3" DisplayName="d3" Name="d3">
-      </Uniform>
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0" Inc="0.01" Tooltip="" Row="3" Col="2" Page="0" Type="float" ChannelName="amount3" DisplayName="amount3" Name="amount3">
-      </Uniform>
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0" Inc="0.01" Tooltip="" Row="4" Col="2" Page="0" Type="float" ChannelName="d1" DisplayName="d1" Name="d1">
-      </Uniform>
-      <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass3">
-      </Uniform>
-      <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass7">
-      </Uniform>
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0" Inc="0.01" Tooltip="" Row="0" Col="3" Page="0" Type="float" ChannelName="d2" DisplayName="d2" Name="d2">
-      </Uniform>
-   </Shader>
-   <Shader ClearColor="0, 0, 0, 0" GridSubdivision="1" OutputBitDepth="Output" Index="9">
-     <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="vecs" InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="vecs">
-     </Uniform>
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0" Inc="0.01" Tooltip="" Row="1" Col="3" Page="0" Type="float" ChannelName="dpressure" DisplayName="dpressure" Name="dpressure">
-      </Uniform>
-      <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass8">
-      </Uniform>
-      <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass1">
-      </Uniform>
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0" Inc="0.01" Tooltip="" Row="2" Col="3" Page="0" Type="float" ChannelName="amountmaster" DisplayName="amountmaster" Name="amountmaster">
-      </Uniform>
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0" Inc="0.01" Tooltip="" Row="3" Col="3" Page="0" Type="float" ChannelName="excitablity" DisplayName="excitablity" Name="excitablity">
-      </Uniform>
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0" Inc="0.01" Tooltip="" Row="4" Col="3" Page="0" Type="float" ChannelName="inputamount" DisplayName="inputamount" Name="inputamount">
-      </Uniform>
-   </Shader>
-   <Page Name="Page 1" Page="0">
-      <Col Name="Column 1" Col="0" Page="0">
-      </Col>
-      <Col Name="Column 2" Col="1" Page="0">
-      </Col>
-      <Col Name="Column 3" Col="2" Page="0">
-      </Col>
-      <Col Name="Column 4" Col="3" Page="0">
-      </Col>
-   </Page>
+<ShaderNodePreset AccumulatePass="9" TimelineUseBack="False" Description="" ShaderType="Matchbox" AccumulatePass="9" SupportsAdaptiveDegradation="False" SoftwareVersion="2016.0.0" Version="1" SupportsAction="False" SupportsTimeline="False" Name="Ls_Fluid" MatteProvider="False" LimitInputsToTexture="True" CommercialUsePermitted="True" SupportsTransition="False" >
+ <Shader GridSubdivision="1" OutputBitDepth="Output" ClearColor="0, 0, 0, 0" Index="1">
+  <Uniform Name="adsk_accum_texture" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
+  <Uniform Name="vecs"               DisplayName="Input vectors"               Type="sampler2D"  Index="1" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" Tooltip="" InputColor="67, 77, 83" NoInput="Black" GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
+  <Uniform Name="velocity"           DisplayName="Velocity"           Page="3" Col="0" Row="0" Type="float"      Default="1.0"        Min="-1000000.0" Max="1000000.0"  Inc="0.1"        ResDependent="None"       Tooltip="" ChannelName="velocity"></Uniform>
+  <Uniform Name="sidestep"           DisplayName="Sidestep"           Page="3" Col="0" Row="1" Type="float"      Default="0.0"        Min="-1000000.0" Max="1000000.0"  Inc="1.0"        ResDependent="None"       Tooltip="" ChannelName="sidestep"></Uniform>
+  <Uniform Name="offset"             DisplayName="Gravity"            Page="0" Col="0" Row="1" Type="vec2"                                                              Inc="0.01"                                 IconType="None" Tooltip="" ChannelName="offset">
+                                                                                                     <SubUniform Default="0.0"        Min="-1000000.0" Max="1000000.0"                   ResDependent="None"></SubUniform>
+                                                                                                     <SubUniform Default="0.0"        Min="-1000000.0" Max="1000000.0"                   ResDependent="None"></SubUniform></Uniform>
+  <Uniform Name="samples"            DisplayName="Advect steps"       Page="3" Col="0" Row="2" Type="int"        Default="8"          Min="-1000000"   Max="1000000"    Inc="1"                                    Tooltip="" ChannelName="samples"></Uniform>
+  <Uniform Name="spacing"            DisplayName="Sample softness"    Page="3" Col="0" Row="4" Type="float"      Default="0.5"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip="" ChannelName="spacing"></Uniform>
+  <Uniform Name="oversamples"        DisplayName="Advect samples"     Page="3" Col="0" Row="3" Type="int"        Default="1"          Min="-1000000"   Max="1000000"    Inc="1"                                    Tooltip="" ChannelName="oversamples"></Uniform>
+ </Shader>
+ <Shader GridSubdivision="1" OutputBitDepth="Output" ClearColor="0, 0, 0, 0" Index="2">
+  <Uniform Name="adsk_results_pass1" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
+  <Uniform Name="blur1size"          DisplayName="Size 1"          Page="3" Col="1" Row="0" Type="float"      Default="5.0"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip="" ChannelName="blur1size"></Uniform>
+ </Shader>
+ <Shader GridSubdivision="1" OutputBitDepth="Output" ClearColor="0, 0, 0, 0" Index="3">
+  <Uniform Name="adsk_results_pass2" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
+  <Uniform Name="blur1size"          DisplayName="Size 1"          Type="float"      ChannelName="blur1size"><Duplicate></Duplicate></Uniform>
+ </Shader>
+ <Shader GridSubdivision="1" OutputBitDepth="Output" ClearColor="0, 0, 0, 0" Index="4">
+  <Uniform Name="adsk_results_pass3" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
+  <Uniform Name="blur2size"          DisplayName="Size 2"          Page="3" Col="1" Row="1" Type="float"      Default="15.0"       Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip="" ChannelName="blur2size"></Uniform>
+ </Shader>
+ <Shader GridSubdivision="1" OutputBitDepth="Output" ClearColor="0, 0, 0, 0" Index="5">
+  <Uniform Name="adsk_results_pass4" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
+  <Uniform Name="blur2size"          DisplayName="Size 2"          Type="float"      ChannelName="blur2size"><Duplicate></Duplicate></Uniform>
+ </Shader>
+ <Shader GridSubdivision="1" OutputBitDepth="Output" ClearColor="0, 0, 0, 0" Index="6">
+  <Uniform Name="adsk_results_pass5" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
+  <Uniform Name="blur3size"          DisplayName="Size 3"          Page="3" Col="1" Row="2" Type="float"      Default="25.0"       Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip="" ChannelName="blur3size"></Uniform>
+ </Shader>
+ <Shader GridSubdivision="1" OutputBitDepth="Output" ClearColor="0, 0, 0, 0" Index="7">
+  <Uniform Name="adsk_results_pass6" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
+  <Uniform Name="blur3size"          DisplayName="Size 3"          Type="float"      ChannelName="blur3size"><Duplicate></Duplicate></Uniform>
+ </Shader>
+ <Shader GridSubdivision="1" OutputBitDepth="Output" ClearColor="0, 0, 0, 0" Index="8">
+  <Uniform Name="adsk_results_pass7" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
+  <Uniform Name="adsk_results_pass3" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
+  <Uniform Name="adsk_results_pass5" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
+  <Uniform Name="amount2"            DisplayName="Amount 2"           Page="3" Col="3" Row="1" Type="float"      Default="1.0"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip="" ChannelName="amount2"></Uniform>
+  <Uniform Name="amount1"            DisplayName="Amount 1"           Page="3" Col="3" Row="0" Type="float"      Default="1.0"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip="" ChannelName="amount1"></Uniform>
+  <Uniform Name="d3"                 DisplayName="Delta 3"            Page="3" Col="2" Row="2" Type="float"      Default="3.0"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip="" ChannelName="d3"></Uniform>
+  <Uniform Name="amount3"            DisplayName="Amount 3"           Page="3" Col="3" Row="2" Type="float"      Default="2.0"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip="" ChannelName="amount3"></Uniform>
+  <Uniform Name="d1"                 DisplayName="Delta 1"            Page="3" Col="2" Row="0" Type="float"      Default="1.0"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip="" ChannelName="d1"></Uniform>
+  <Uniform Name="d2"                 DisplayName="Delta 2"            Page="3" Col="2" Row="1" Type="float"      Default="2.0"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip="" ChannelName="d2"></Uniform>
+ </Shader>
+ <Shader GridSubdivision="1" OutputBitDepth="Output" ClearColor="0, 0, 0, 0" Index="9">
+  <Uniform Name="adsk_results_pass1" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
+  <Uniform Name="adsk_results_pass8" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
+  <Uniform Name="vecs"               DisplayName="Input vectors"               Type="sampler2D"  Index="0" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" Tooltip="" InputColor="67, 77, 83" NoInput="Error" GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
+  <Uniform Name="dpressure"          DisplayName="Delta pressure"     Page="3" Col="2" Row="3" Type="float"      Default="1.0"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip="" ChannelName="dpressure"></Uniform>
+  <Uniform Name="amountmaster"       DisplayName="Undivergence"       Page="3" Col="3" Row="3" Type="float"      Default="1.0"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip="" ChannelName="amountmaster"></Uniform>
+  <Uniform Name="excitablity"        DisplayName="Excitablity"        Page="3" Col="1" Row="4" Type="float"      Default="100.0"      Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip="" ChannelName="excitablity"></Uniform>
+  <Uniform Name="inputamount"        DisplayName="Input vectors"      Page="0" Col="0" Row="0" Type="float"      Default="0.0"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip="" ChannelName="inputamount"></Uniform>
+ </Shader>
+ <Shader GridSubdivision="1" OutputBitDepth="Output" ClearColor="0, 0, 0, 0" Index="10">
+   <Uniform Name="adsk_results_pass9" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
+   <Uniform Name="img"               DisplayName="Front"              Type="sampler2D"  Index="0" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" Tooltip="" InputColor="67, 77, 83" NoInput="Black" GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
+   <Uniform Name="rgbout"            DisplayName="RGB output"         Page="4" Col="3" Row="1" Type="int"        Default="2"  ValueType="Popup" Tooltip="">
+    <PopupEntry Title="Vectors" Value="0">    </PopupEntry>
+    <PopupEntry Title="UVs" Value="1">    </PopupEntry>
+    <PopupEntry Title="Image" Value="2">    </PopupEntry>
+    <PopupEntry Title="Velocity" Value="3">    </PopupEntry>
+  </Uniform>
+ </Shader>
+ <Page Page="0" Name="Sources">
+  <Col Page="0" Col="0" Name="Column 1"></Col>
+  <Col Page="0" Col="1" Name="Column 2"></Col>
+  <Col Page="0" Col="2" Name="Column 3"></Col>
+  <Col Page="0" Col="3" Name="Column 4"></Col>
+ </Page>
+ <Page Page="1" Name="Sinks">
+  <Col Page="1" Col="0" Name="Column 1"></Col>
+  <Col Page="1" Col="1" Name="Column 2"></Col>
+  <Col Page="1" Col="2" Name="Column 3"></Col>
+  <Col Page="1" Col="3" Name="Column 4"></Col>
+ </Page>
+ <Page Page="2" Name="Obstacles">
+  <Col Page="2" Col="0" Name="Column 1"></Col>
+  <Col Page="2" Col="1" Name="Column 2"></Col>
+  <Col Page="2" Col="2" Name="Column 3"></Col>
+  <Col Page="2" Col="3" Name="Column 4"></Col>
+ </Page>
+ <Page Page="3" Name="Simulation">
+  <Col Page="3" Col="0" Name="Quality"></Col>
+  <Col Page="3" Col="1" Name="Blur sizes"></Col>
+  <Col Page="3" Col="2" Name="Gradient deltas"></Col>
+  <Col Page="3" Col="3" Name="Undiverge strengths"></Col>
+ </Page>
+ <Page Page="4" Name="Output">
+  <Col Page="4" Col="0" Name="Column 1"></Col>
+  <Col Page="4" Col="1" Name="Column 2"></Col>
+  <Col Page="4" Col="2" Name="Column 3"></Col>
+  <Col Page="4" Col="3" Name="Column 4"></Col>
+ </Page>
 </ShaderNodePreset>
