@@ -1,6 +1,6 @@
 <ShaderNodePreset SupportsAdaptiveDegradation="0" Description="Adaptive sharpening - sharpen without ringing edges, or sharpen edges without increasing texture
 
-lewis@lewissaunders.com" Name="Ash">
+lewis@lewissaunders.com" Name="Ash" LimitInputsToTexture="1">
    <Shader OutputBitDepth="Output" Index="1">
       <Uniform ResDependent="None" Max="1.0" Min="0.001" Default="0.13" Inc="0.01" Tooltip="Increase to sharpen more edges" Row="1" Col="2" Page="0" DisplayName="Edge threshold" Type="float" Name="threshold">
       </Uniform>
@@ -18,6 +18,8 @@ lewis@lewissaunders.com" Name="Ash">
          <Duplicate>
          </Duplicate>
       </Uniform>
+      <Uniform Index="1" NoInput="White" Tooltip="" DisplayName="Strength" InputColor="80, 80, 20" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="strengthmap">
+      </Uniform>
       <Uniform Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass2">
       </Uniform>
       <Uniform ResDependent="None" Max="5.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Amount of sharpening" Row="1" Col="1" Page="0" DisplayName="Strength" Type="float" Name="strength">
@@ -28,7 +30,7 @@ lewis@lewissaunders.com" Name="Ash">
       </Uniform>
       <Uniform Row="3" Col="1" Page="0" Default="True" Tooltip="Protect edges from ringing" DisplayName="Adaptive" Type="bool" Name="adaptive">
       </Uniform>
-      <Uniform Row="4" Col="2" Page="0" Default="False" Tooltip="Sharpen just the edges" DisplayName="Sharpen edges only" Type="bool" Name="onlyedges">
+      <Uniform Row="4" Col="2" Page="0" Default="False" Tooltip="Sharpen just the edges, instead of trying to keep the sharpening away from them" DisplayName="Sharpen edges only" Type="bool" Name="onlyedges">
       </Uniform>
       <Uniform Row="2" Col="2" Page="0" Default="False" Tooltip="Output edge matte" DisplayName="Show edges" Type="bool" Name="showedges">
       </Uniform>

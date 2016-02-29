@@ -2,7 +2,7 @@
 // Pass 2: vertical Gaussian blur, blend
 // lewis@lewissaunders.com
 
-uniform sampler2D adsk_results_pass2, front;
+uniform sampler2D adsk_results_pass2, front, strengthmap;
 uniform float adsk_result_w, adsk_result_h;
 uniform float sigma, strength;
 uniform bool adaptive, onlyedges, showedges;
@@ -11,6 +11,8 @@ const float pi = 3.141592653589793238462643383279502884197969;
 void main() {
 	vec2 xy = gl_FragCoord.xy;
 	vec2 px = vec2(1.0) / vec2(adsk_result_w, adsk_result_h);
+
+	float strength_here = strength * texture2D(strengthmap, xy * px).b;
 
 	int support = int(sigma * 3.0);
 
@@ -48,7 +50,7 @@ void main() {
 
 	// Sharpen
 	vec4 orig = texture2D(front, xy * px);
-	vec4 sharp = orig + vec4(strength) * (orig - unsharp);
+	vec4 sharp = orig + vec4(strength_here) * (orig - unsharp);
 
 	if(adaptive){
 		// Remove sharpening from edges
