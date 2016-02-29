@@ -2,7 +2,7 @@
 // Pass 2: horizontal blur
 // lewis@lewissaunders.com
 
-uniform sampler2D front;
+uniform sampler2D front, strength;
 uniform float adsk_result_w, adsk_result_h;
 uniform float sigma, threshold;
 uniform bool slow;
@@ -13,7 +13,10 @@ void main() {
 	vec2 xy = gl_FragCoord.xy;
 	vec2 px = vec2(1.0) / vec2(adsk_result_w, adsk_result_h);
 
-	int support = int(sigma * 3.0);
+	float strength_here = texture2D(strength, xy * px).b;
+	float sigma_here = sigma * strength_here;
+
+	int support = int(sigma_here * 3.0);
 
 	float kernelhyp = length(vec2(support, support));
 	float rgbhyp = length(vec3(1.0, 1.0, 1.0));
@@ -33,8 +36,8 @@ void main() {
 		// Yes, this is brute force and dirty
 		// Making bilateral filtering separable is really hard
 		// c.f. any number of SIGGRAPH papers
-		for(float x = -sigma * m; x <= sigma * m; x += inc) {
-			for(float y = -sigma * m; y <= sigma * m; y += inc) {
+		for(float x = -sigma_here * m; x <= sigma_here * m; x += inc) {
+			for(float y = -sigma_here * m; y <= sigma_here * m; y += inc) {
 				vec4 b = texture2D(front, (xy + vec2(x, y)) * px);
 				b.a = 1.0;
 
@@ -66,11 +69,11 @@ void main() {
 	// Okay.  On to complicated two-pass algorithm
 	// Incremental coefficient calculation setup as per GPU Gems 3
 	vec3 g;
-	g.x = 1.0 / (sqrt(2.0 * pi) * sigma);
-	g.y = exp(-0.5 / (sigma * sigma));
+	g.x = 1.0 / (sqrt(2.0 * pi) * sigma_here);
+	g.y = exp(-0.5 / (sigma_here * sigma_here));
 	g.z = g.y * g.y;
 
-	if(sigma == 0.0) {
+	if(sigma_here == 0.0) {
 		g.x = 1.0;
 	}
 

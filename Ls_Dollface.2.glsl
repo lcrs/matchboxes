@@ -2,7 +2,7 @@
 // Pass 2: vertical blur
 // lewis@lewissaunders.com
 
-uniform sampler2D adsk_results_pass1;
+uniform sampler2D adsk_results_pass1, strength;
 uniform float adsk_result_w, adsk_result_h;
 uniform float sigma, threshold;
 uniform bool slow;
@@ -13,7 +13,10 @@ void main() {
 	vec2 xy = gl_FragCoord.xy;
 	vec2 px = vec2(1.0) / vec2(adsk_result_w, adsk_result_h);
 
-	int support = int(sigma * 3.0);
+	float strength_here = texture2D(strength, xy * px).b;
+	float sigma_here = sigma * strength_here;
+
+	int support = int(sigma_here * 3.0);
 
 	float kernelhyp = length(vec2(support, support));
 	float rgbhyp = length(vec3(1.0, 1.0, 1.0));
@@ -26,11 +29,11 @@ void main() {
 
 	// Incremental coefficient calculation setup as per GPU Gems 3
 	vec3 g;
-	g.x = 1.0 / (sqrt(2.0 * pi) * sigma);
-	g.y = exp(-0.5 / (sigma * sigma));
+	g.x = 1.0 / (sqrt(2.0 * pi) * sigma_here);
+	g.y = exp(-0.5 / (sigma_here * sigma_here));
 	g.z = g.y * g.y;
 
-	if(sigma == 0.0) {
+	if(sigma_here == 0.0) {
 		g.x = 1.0;
 	}
 
