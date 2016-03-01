@@ -1,4 +1,8 @@
-<ShaderNodePreset SupportsAdaptiveDegradation="False" SupportsAction="False" SupportsTransition="False" SupportsTimeline="False" TimelineUseBack="False" MatteProvider="False" CommercialUsePermitted="True" ShaderType="Matchbox" SoftwareVersion="2016.0.0" LimitInputsToTexture="True" Version="1" Description="Bevel - cheap pseudo-bevel for text, using the Gaussian Distance Transform" Name="Bevel">
+<ShaderNodePreset SupportsAdaptiveDegradation="False" SupportsAction="False" SupportsTransition="False" SupportsTimeline="False" TimelineUseBack="False" MatteProvider="False" CommercialUsePermitted="True" ShaderType="Matchbox" SoftwareVersion="2016.0.0" LimitInputsToTexture="True" Version="1" Description="Bevel - cheap pseudo-bevel for text, using the Gaussian Distance Transform.  Can output normals to be fed into an Action normal map for more sophisticated lighting.  Sadly it is not possible to create a displacement map this way, so it's not a true 3D surface :(
+
+Demo: 
+
+lewis@lewissaunders.com" Name="Bevel">
    <Shader OutputBitDepth="Output" Index="1">
       <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="Front" InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="front">
       </Uniform>
