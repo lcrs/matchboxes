@@ -1,6 +1,6 @@
 <ShaderNodePreset SupportsAdaptiveDegradation="False" SupportsAction="False" SupportsTransition="False" SupportsTimeline="False" TimelineUseBack="False" MatteProvider="False" CommercialUsePermitted="True" ShaderType="Matchbox" SoftwareVersion="2016.0.0" LimitInputsToTexture="True" Version="1" Description="Bevel - cheap pseudo-bevel for text, using the Gaussian Distance Transform.  Can output normals to be fed into an Action normal map for more sophisticated lighting.  Sadly it is not possible to create a displacement map this way, so it's not a true 3D surface :(
 
-Demo:
+Demo: https://www.youtube.com/watch?v=Y7dUx1An_30
 
 lewis@lewissaunders.com" Name="Bevel">
    <Shader OutputBitDepth="Output" Index="1">
