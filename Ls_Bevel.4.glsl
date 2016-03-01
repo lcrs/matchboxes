@@ -1,5 +1,13 @@
 // Bevel
 // Pass 4: gradient detection and actual beveling
+// Broadly, we use the gradient vector of the blurred
+// image as the X/Y components of a normal vector, which
+// we then dot with the light direction.
+// To get the sharp edge, we normalize the gradient, then
+// use smoothstep() to remove the nasty artifacts where
+// it was near zero.  This gives us a kinda level-set iso-line
+// of the blurred image, which roughly follows the outline of
+// the text.  It ain't perfect!
 // lewis@lewissaunders.com
 
 uniform sampler2D adsk_results_pass3, adsk_results_pass1;
