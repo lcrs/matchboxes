@@ -11,7 +11,6 @@ void main() {
 	vec2 xy = gl_FragCoord.xy;
 	vec2 px = vec2(1.0) / vec2(adsk_result_w, adsk_result_h);
 
-	int support = int(size * 3.0);
 
 	// Incremental coefficient calculation setup as per GPU Gems 3
 	// We maintain 8 sets of the coefficients, to do 8 different
@@ -24,8 +23,7 @@ void main() {
 	vec4 a[8];
 	vec3 g[8];
 	for(int i = 0; i < 8; i++) {
-		sigma[i] = size / pow(float(i), 2.0);
-		if(size == 0.0) sigma[i] = 0.0;
+		sigma[i] = size * pow(2.0, float(i));
 		energy[i] = 0.0;
 		a[i] = vec4(0.0);
 		g[i] = vec3(0.0);
@@ -44,15 +42,51 @@ void main() {
 	}
 
 	// The rest
+
+	int support = int(sigma[7]) * 3;
 	for(int x = 1; x <= support; x++) {
 		vec4 sampl1 = texture2D(front, (xy - vec2(float(x), 0.0)) * px);
 		vec4 sampl2 = texture2D(front, (xy + vec2(float(x), 0.0)) * px);
-		for(int i = 0; i < 8; i++) {
-			a[i] += g[i].x * sampl1;
-			a[i] += g[i].x * sampl2;
-			energy[i] += 2.0 * g[i].x;
-			g[i].xy *= g[i].yz;
-		}
+
+		a[0] += g[0].x * sampl1;
+		a[0] += g[0].x * sampl2;
+		energy[0] += 2.0 * g[0].x;
+		g[0].xy *= g[0].yz;
+
+		a[1] += g[1].x * sampl1;
+		a[1] += g[1].x * sampl2;
+		energy[1] += 2.0 * g[1].x;
+		g[1].xy *= g[1].yz;
+
+		a[2] += g[2].x * sampl1;
+		a[2] += g[2].x * sampl2;
+		energy[2] += 2.0 * g[2].x;
+		g[2].xy *= g[2].yz;
+
+		a[3] += g[3].x * sampl1;
+		a[3] += g[3].x * sampl2;
+		energy[3] += 2.0 * g[3].x;
+		g[3].xy *= g[3].yz;
+
+		a[4] += g[4].x * sampl1;
+		a[4] += g[4].x * sampl2;
+		energy[4] += 2.0 * g[4].x;
+		g[4].xy *= g[4].yz;
+
+		a[5] += g[5].x * sampl1;
+		a[5] += g[5].x * sampl2;
+		energy[5] += 2.0 * g[5].x;
+		g[5].xy *= g[5].yz;
+
+		a[6] += g[6].x * sampl1;
+		a[6] += g[6].x * sampl2;
+		energy[6] += 2.0 * g[6].x;
+		g[6].xy *= g[6].yz;
+
+		a[7] += g[7].x * sampl1;
+		a[7] += g[7].x * sampl2;
+		energy[7] += 2.0 * g[7].x;
+		g[7].xy *= g[7].yz;
 	}
 
 	for(int i = 0; i < 8; i++) {
