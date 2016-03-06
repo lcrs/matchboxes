@@ -1,54 +1,34 @@
-<ShaderNodePreset AccumulatePass="1" SupportsAdaptiveDegradation="False" SupportsAction="False" SupportsTransition="False" SupportsTimeline="False" TimelineUseBack="False" MatteProvider="False" CommercialUsePermitted="True" ShaderType="Matchbox" SoftwareVersion="2017.0.0" LimitInputsToTexture="True" Version="1" Description="" Name="Preset Name">
-   <Shader ClearColor="0, 0, 0, 0" GridSubdivision="1" OutputBitDepth="Float32" Index="1">
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0" Inc="0.01" Tooltip="" Row="0" Col="0" Page="0" Type="float" ChannelName="startrand" DisplayName="startrand" Name="startrand">
-      </Uniform>
-      <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_accum_texture">
-      </Uniform>
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0" Inc="0.01" Tooltip="" Row="1" Col="0" Page="0" Type="float" ChannelName="followradius" DisplayName="followradius" Name="followradius">
-      </Uniform>
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0" Inc="0.01" Tooltip="" Row="2" Col="0" Page="0" Type="float" ChannelName="follow" DisplayName="follow" Name="follow">
-      </Uniform>
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0" Inc="0.01" Tooltip="" Row="3" Col="0" Page="0" Type="float" ChannelName="attractradius" DisplayName="attractradius" Name="attractradius">
-      </Uniform>
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0" Inc="0.01" Tooltip="" Row="4" Col="0" Page="0" Type="float" ChannelName="stray" DisplayName="stray" Name="stray">
-      </Uniform>
-      <Uniform Max="1000000" Min="-1000000" Default="1000" Inc="1" Tooltip="" Row="0" Col="1" Page="0" Type="int" ChannelName="count" DisplayName="count" Name="count">
-      </Uniform>
-      <Uniform Inc="0.01" Tooltip="" Row="1" Col="1" Page="0" Action3DWidget="False" IconType="None" ValueType="Position" Type="vec3" ChannelName="startdir" DisplayName="startdir" Name="startdir">
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
-         </SubUniform>
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
-         </SubUniform>
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
-         </SubUniform>
-      </Uniform>
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0" Inc="0.01" Tooltip="" Row="3" Col="1" Page="0" Type="float" ChannelName="strayradius" DisplayName="strayradius" Name="strayradius">
-      </Uniform>
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0" Inc="0.01" Tooltip="" Row="4" Col="1" Page="0" Type="float" ChannelName="attract" DisplayName="attract" Name="attract">
-      </Uniform>
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0" Inc="0.01" Tooltip="" Row="0" Col="2" Page="0" Type="float" ChannelName="repel" DisplayName="repel" Name="repel">
-      </Uniform>
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0" Inc="0.01" Tooltip="" Row="1" Col="2" Page="0" Type="float" ChannelName="repelradius" DisplayName="repelradius" Name="repelradius">
-      </Uniform>
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0" Inc="0.01" Tooltip="" Row="2" Col="2" Page="0" Type="float" ChannelName="startv" DisplayName="startv" Name="startv">
-      </Uniform>
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="5.0" Inc="0.01" Tooltip="" Row="3" Col="2" Page="0" Type="float" ChannelName="speedlimit" DisplayName="speedlimit" Name="speedlimit">
-      </Uniform>
-   </Shader>
-   <Shader ClearColor="0, 0, 0, 0" GridSubdivision="1" OutputBitDepth="Float32" Index="2">
-      <Uniform Type="int" ChannelName="count" DisplayName="count" Name="count">
-         <Duplicate>
-         </Duplicate>
-      </Uniform>
-      <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass1">
-      </Uniform>
-   </Shader>
-   <Page Name="Page 1" Page="0">
-      <Col Name="Column 1" Col="0" Page="0">
-      </Col>
-      <Col Name="Column 2" Col="1" Page="0">
-      </Col>
-      <Col Name="Column 3" Col="2" Page="0">
-      </Col>
-   </Page>
+<ShaderNodePreset TimelineUseBack="False" Description="Outputs a position map of points flocking and swarming about - in Action, feed this into a Position map, attach an Atomize to the image and remember to turn Adaptive Degradation off when viewing downstream!
+
+Demo:
+
+lewis@lewissaunders.com" ShaderType="Matchbox" SupportsAdaptiveDegradation="False" SoftwareVersion="2017.0.0" Version="1" SupportsAction="False" SupportsTimeline="False" MatteProvider="False" LimitInputsToTexture="True" CommercialUsePermitted="True" SupportsTransition="False" Name="Flock">
+ <Shader GridSubdivision="1" OutputBitDepth="Float32" ClearColor="0, 0, 0, 0" Index="1">
+  <Uniform Name="adsk_accum_texture" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_NEAREST" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_NEAREST" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
+  <Uniform Name="count"              DisplayName="Number"             ChannelName="Number"             Page="0" Col="0" Row="0" Type="int"        Default="9000"       Min="0"   Max="1000000"    Inc="1"                                    Tooltip=""></Uniform>
+  <Uniform Name="startdir"           DisplayName="Start direction"    ChannelName="Start direction"    Page="0" Col="0" Row="1" Type="vec3"                                                              Inc="0.01"                                 Action3DWidget="False" IconType="None" ValueType="Position" Tooltip="">
+                                                                                                                                      <SubUniform Default="1.0"        Min="0.0" Max="1000000.0"                   ResDependent="None"></SubUniform>
+                                                                                                                                      <SubUniform Default="1.0"        Min="0.0" Max="1000000.0"                   ResDependent="None"></SubUniform>
+                                                                                                                                      <SubUniform Default="0.0"        Min="0.0" Max="1000000.0"                   ResDependent="None"></SubUniform></Uniform>
+  <Uniform Name="startv"             DisplayName="Start speed"        ChannelName="Start speed"        Page="0" Col="0" Row="3" Type="float"      Default="5.0"        Min="0.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
+  <Uniform Name="startrand"          DisplayName="Start randomness"   ChannelName="Start randomness"   Page="0" Col="0" Row="4" Type="float"      Default="3.0"        Min="0.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
+
+  <Uniform Name="followradius"       DisplayName="Follow radius"      ChannelName="Follow radius"      Page="0" Col="1" Row="0" Type="float"      Default="50.0"       Min="0.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
+  <Uniform Name="attractradius"      DisplayName="Attract radius"     ChannelName="Attract radius"     Page="0" Col="1" Row="1" Type="float"      Default="100.0"      Min="0.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
+  <Uniform Name="repelradius"        DisplayName="Repel radius"       ChannelName="Repel radius"       Page="0" Col="1" Row="2" Type="float"      Default="75.0"       Min="0.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
+  <Uniform Name="strayradius"        DisplayName="Stray radius"       ChannelName="Stray radius"       Page="0" Col="1" Row="3" Type="float"      Default="150.0"      Min="0.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
+
+  <Uniform Name="follow"             DisplayName="Follow"             ChannelName="Follow"             Page="0" Col="2" Row="0" Type="float"      Default="2.0"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
+  <Uniform Name="attract"            DisplayName="Attract"            ChannelName="Attract"            Page="0" Col="2" Row="1" Type="float"      Default="0.01"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
+  <Uniform Name="repel"              DisplayName="Repel"              ChannelName="Repel"              Page="0" Col="2" Row="2" Type="float"      Default="0.3"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
+  <Uniform Name="stray"              DisplayName="Stray"              ChannelName="Stray"              Page="0" Col="2" Row="3" Type="float"      Default="0.7"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
+
+  <Uniform Name="speedlimit"         DisplayName="Speed limit"        ChannelName="Speed limit"        Page="0" Col="3" Row="0" Type="float"      Default="10.0"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
+ </Shader>
+ <Page Page="0" Name="">
+  <Col Page="0" Col="0" Name="Start"></Col>
+  <Col Page="0" Col="1" Name="Distances"></Col>
+  <Col Page="0" Col="2" Name="Forces"></Col>
+  <Col Page="0" Col="3" Name="Limits"></Col>
+ </Page>
 </ShaderNodePreset>

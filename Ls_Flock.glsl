@@ -3,15 +3,15 @@
 // in pixel colours.  On each frame the previous frame's p and v
 // are read, modified and output again.  The ID of each point in
 // the flock is kept as xy 2D coordinates, to avoid precision
-// problems resolving that to a single integer
+// problems resolving to a single integer
+//
+// lewis@lewissaunders.com
 
 uniform sampler2D adsk_accum_texture;
 uniform bool adsk_accum_no_prev_frame;
 uniform float adsk_result_w, adsk_result_h;
 vec2 res = vec2(adsk_result_w, adsk_result_h);
-float maxn = res.x * res.y;
 uniform int count;
-
 uniform float startv, startrand;
 uniform vec3 startdir;
 uniform float attractradius, attract;
@@ -20,11 +20,8 @@ uniform float followradius, follow;
 uniform float strayradius, stray;
 uniform float speedlimit;
 
-float rand(vec2 co) {
-  return 2.0 * fract(sin(dot(co.xy, vec2(12.9898, 78.233))) * 43758.5453) - 1.0;
-}
-
-// Begin ashima's noise...
+// ===============================================================================
+// ==================== Begin ashima's noise ====================================
 // Description : Array and textureless GLSL 2D/3D/4D simplex
 //               noise functions.
 //      Author : Ian McEwan, Ashima Arts.
@@ -168,54 +165,100 @@ float snoise(vec4 v)
                + dot(m1*m1, vec2( dot( p3, x3 ), dot( p4, x4 ) ) ) ) ;
 
 }
-// ...end ashima's noise
+// ==================== ...end ashima's noise ====================================
+// ===============================================================================
 
+// Cheapo random numbers
+float rand(vec2 co) {
+  return 2.0 * fract(sin(dot(co.xy, vec2(12.9898, 78.233))) * 43758.5453) - 1.0;
+}
+
+// Texture sampling wrapper
 vec3 get(vec2 xy) {
-  xy += vec2(0.5);
+  xy += vec2(0.5); // Sample texel centres
   xy /= res;
   return texture2D(adsk_accum_texture, xy).rgb;
 }
 
+// Return position of a particle ID xy
 vec3 p(vec2 xy) {
+  xy.y += 1.0;
   return get(xy);
 }
 
+// Return velocity for a particle ID xy
 vec3 v(vec2 xy) {
-  xy.y = res.y - xy.y;
+  xy.y += 1.0;
+  xy.y = res.y - xy.y - 1.0;
   return get(xy);
 }
 
 void main() {
-  vec2 xy = gl_FragCoord.xy - vec2(0.5);
-  float n = xy.y * res.x + xy.x;
+  vec2 xy = gl_FragCoord.xy - vec2(0.5); // Input coords are pixel centres
 
-  bool isp = true;
-  if(n > maxn / 2.0) {
-    isp = false;
-    xy.y = res.y - xy.y;
-    n = xy.y * res.x + xy.x;
+  bool position = true;
+  if(xy.y > res.y / 2.0) {
+    // Velocities start at the top of the image and work down
+    position = false;
+    xy.y = res.y - xy.y - 1.0;
   }
 
-  if(n > float(count)) discard;
+  // Skip over first line and adjust for it being not used
+  xy.y -= 1.0;
+
+  // Black if this particle is not in use
+  float n = xy.y * res.x + xy.x;
+  if(n >= float(count)) {
+    gl_FragColor = vec4(0.0);
+    return;
+  }
 
   if(adsk_accum_no_prev_frame) {
-    if(isp) {
+    // Start frame, output start conditions
+    if(position) {
+      // Position
+      if(xy.y == -1.0) {
+        gl_FragColor.a = 0.0;
+      } else {
+        gl_FragColor.a = 1.0;
+      }
+      xy += vec2(1.2345); // Offset away from 0.0, snoise is black there
       gl_FragColor.x = 400.0 * snoise(vec4(xy*1.234567, 1.0, 1.0));
       gl_FragColor.y = 400.0 * snoise(vec4(xy*7.654321, 2.0, 1.0));
-      gl_FragColor.z = 0.0;
+      gl_FragColor.z = 400.0 * snoise(vec4(xy*2.345678, 3.0, 1.0));
     } else {
+      // Velocity
+      xy += vec2(1.2345); // Offset away from 0.0, snoise is black there
       vec3 v = startrand * vec3(rand(xy/res * 2.1), rand(xy/res * 11.5), rand(xy/res * 4.2));
       v += startdir * startv;
       gl_FragColor.xyz = v;
+      gl_FragColor.a = 0.0;
     }
     return;
   }
 
-  vec3 oldp = p(xy);
-  vec3 oldv = v(xy);
-  vec3 newp = oldp;
-  vec3 newv = oldv;
-  for(vec2 i = vec2(0.0); i.y * res.x + i.x < float(count); i.x += 1.0) {
+  vec3 oldp, oldv, newp, newv;
+
+  if(position) {
+    // We're outputting a position pixel
+    // Move this particle along its velocity vector and get out of here
+    // This means that there's a 1-frame lag between velocity being updated
+    // and position changing, but that's not unlike real life
+    oldp = p(xy);
+    oldv = v(xy);
+    newp = oldp + oldv;
+    gl_FragColor = vec4(newp, 1.0);
+    return;
+  }
+
+  // We're outputting a velocity pixel
+  // Calculate new velocity for this particle based on its surroundings
+  oldp = p(xy);
+  oldv = v(xy);
+  newv = oldv;
+  // Loop over every other particle, allowing it to influence this one
+  // We ignore the first line of pixels because it causes problems in Action
+  for(vec2 i = vec2(0.0, 0.0); i.y * res.x + i.x < float(count); i.x += 1.0) {
     vec3 thisp = p(i);
     vec3 thisv = v(i);
     vec3 to = thisp - oldp;
@@ -231,7 +274,7 @@ void main() {
     weight = 1.0 - smoothstep(0.0, followradius, l);
     newv += thisv * weight * follow/1000.0;
 
-    if(i.x >= res.x) {
+    if(i.x >= (res.x - 1.0)) {
       i.x = 0.0;
       i.y += 1.0;
     }
@@ -245,11 +288,5 @@ void main() {
   strayed = smoothstep(0.0, 100.0, strayed);
   newv += strayed * -normalize(oldp) * stray;
 
-  newp = oldp + newv;
-
-  if(isp) {
-    gl_FragColor = vec4(newp, 1.0);
-  } else {
-    gl_FragColor = vec4(newv, 1.0);
-  }
+  gl_FragColor = vec4(newv, 0.0);
 }
