@@ -1,16 +1,22 @@
 // Flock pass 1
-// This simulates flocking by storing positions and velocities
+// This simulates flocking behaviour, like that of birds or fish.
+// It works by storing positions and velocities of particles
 // in pixel colours.  On each frame the previous frame's p and v
 // are read, modified and output again.  The ID of each point in
 // the flock is kept as xy 2D coordinates, to avoid precision
 // problems resolving to a single integer
 //
+// This pass outputs to a double height texture - the top half
+// is used to store the velocities, which are only needed for the
+// simulation stage, not the final output
+//
 // lewis@lewissaunders.com
+//
 
 uniform sampler2D adsk_accum_texture;
 uniform bool adsk_accum_no_prev_frame;
 uniform float adsk_result_w, adsk_result_h;
-vec2 res = vec2(adsk_result_w, adsk_result_h);
+vec2 res = vec2(adsk_result_w, adsk_result_h * 2.0);
 uniform int count;
 uniform float startv, startrand;
 uniform vec3 startdir;
@@ -168,11 +174,6 @@ float snoise(vec4 v)
 // ==================== ...end ashima's noise ====================================
 // ===============================================================================
 
-// Cheapo random numbers
-float rand(vec2 co) {
-  return 2.0 * fract(sin(dot(co.xy, vec2(12.9898, 78.233))) * 43758.5453) - 1.0;
-}
-
 // Texture sampling wrapper
 vec3 get(vec2 xy) {
   xy += vec2(0.5); // Sample texel centres
@@ -196,6 +197,9 @@ vec3 v(vec2 xy) {
 void main() {
   vec2 xy = gl_FragCoord.xy - vec2(0.5); // Input coords are pixel centres
 
+  // Make sure we don't have more particles than pixels in the texture
+  float countlimit = min(float(count), res.x * (res.y/2.0 - 2.0));
+
   bool position = true;
   if(xy.y > res.y / 2.0) {
     // Velocities start at the top of the image and work down
@@ -203,35 +207,40 @@ void main() {
     xy.y = res.y - xy.y - 1.0;
   }
 
-  // Skip over first line and adjust for it being not used
+  // Skip over first line and adjust for it being not used - it causes problems
+  // in Action, the position map only takes effect once at least one line is
+  // not black
   xy.y -= 1.0;
 
   // Black if this particle is not in use
   float n = xy.y * res.x + xy.x;
-  if(n >= float(count)) {
+  if(n >= countlimit) {
     gl_FragColor = vec4(0.0);
     return;
   }
 
   if(adsk_accum_no_prev_frame) {
-    // Start frame, output start conditions
+    // Start frame, output random starting positions and velocities
     if(position) {
       // Position
       if(xy.y == -1.0) {
+        // First should be black in the matte output, we don't use it
         gl_FragColor.a = 0.0;
       } else {
         gl_FragColor.a = 1.0;
       }
       xy += vec2(1.2345); // Offset away from 0.0, snoise is black there
-      gl_FragColor.x = 400.0 * snoise(vec4(xy*1.234567, 1.0, 1.0));
-      gl_FragColor.y = 400.0 * snoise(vec4(xy*7.654321, 2.0, 1.0));
-      gl_FragColor.z = 400.0 * snoise(vec4(xy*2.345678, 3.0, 1.0));
+      gl_FragColor.x = 400.0 * snoise(vec4(xy*1.234567, 1.0, 7.0));
+      gl_FragColor.y = 400.0 * snoise(vec4(xy*7.654321, 2.0, 8.0));
+      gl_FragColor.z = 400.0 * snoise(vec4(xy*2.345678, 3.0, 9.0));
     } else {
       // Velocity
       xy += vec2(1.2345); // Offset away from 0.0, snoise is black there
-      vec3 v = startrand * vec3(rand(xy/res * 2.1), rand(xy/res * 11.5), rand(xy/res * 4.2));
-      v += startdir * startv;
-      gl_FragColor.xyz = v;
+      gl_FragColor.x = snoise(vec4(xy*1.234567, 4.0, 10.0));
+      gl_FragColor.y = snoise(vec4(xy*7.654321, 5.0, 11.0));
+      gl_FragColor.z = snoise(vec4(xy*2.345678, 6.0, 12.0));
+      gl_FragColor.xyz *= startrand;
+      gl_FragColor.xyz += startdir * startv;
       gl_FragColor.a = 0.0;
     }
     return;
@@ -243,7 +252,7 @@ void main() {
     // We're outputting a position pixel
     // Move this particle along its velocity vector and get out of here
     // This means that there's a 1-frame lag between velocity being updated
-    // and position changing, but that's not unlike real life
+    // and position changing, but that's not unlike inertia in real life
     oldp = p(xy);
     oldv = v(xy);
     newp = oldp + oldv;
@@ -258,7 +267,7 @@ void main() {
   newv = oldv;
   // Loop over every other particle, allowing it to influence this one
   // We ignore the first line of pixels because it causes problems in Action
-  for(vec2 i = vec2(0.0, 0.0); i.y * res.x + i.x < float(count); i.x += 1.0) {
+  for(vec2 i = vec2(0.0, 0.0); i.y * res.x + i.x < countlimit; i.x += 1.0) {
     vec3 thisp = p(i);
     vec3 thisv = v(i);
     vec3 to = thisp - oldp;
