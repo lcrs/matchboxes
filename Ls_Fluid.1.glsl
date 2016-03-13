@@ -1,8 +1,8 @@
 // Pass 1: advect the vectors by themselves
 // lewis@lewissaunders.com
 
-uniform sampler2D vecs, adsk_accum_texture;
-uniform float adsk_result_w, adsk_result_h, velocity, spacing, sidestep;
+uniform sampler2D vecs, adsk_accum_texture, obstacles;
+uniform float adsk_result_w, adsk_result_h, velocity, spacing, sidestep, obstacleweight;
 uniform vec2 offset;
 uniform int samples, oversamples;
 uniform bool adsk_accum_no_prev_frame;
@@ -12,7 +12,11 @@ vec4 get(vec2 uv) {
 		// First frame is input vectors in rg, UV map in ba
 		return vec4(texture2D(vecs, uv).rg, uv);
 	} else {
-		return texture2D(adsk_accum_texture, uv);
+		vec4 v = texture2D(adsk_accum_texture, uv);
+		v.xy += offset/100.0;
+		float obs = texture2D(obstacles, uv).b;
+		v.xy *= 1.0 - obstacleweight * obs;
+		return v;
 	}
 }
 
@@ -34,7 +38,7 @@ void main() {
 					// No gradient at this point in the map, early out
 					break;
 				}
-				xy -= v * (velocity/sam) + sidestep/100.0 * vec2(-v.y, v.x) + offset;
+				xy -= v * (velocity/sam) + sidestep/100.0 * vec2(-v.y, v.x);
 			}
 			// Sample front image where our walk ended up
 			acc += get(xy * px);

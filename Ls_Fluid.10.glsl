@@ -5,6 +5,7 @@
 uniform sampler2D adsk_results_pass9, img;
 uniform float adsk_result_w, adsk_result_h;
 uniform int rgbout, matteout;
+vec2 res = vec2(adsk_result_w, adsk_result_h);
 
 void main() {
 	vec2 xy = gl_FragCoord.xy;
@@ -23,6 +24,8 @@ void main() {
 		rgb = texture2D(img, uvs).rgb;
 	} else if(rgbout == 3) {
 		rgb = vec3(length(vecs));
+	} else if(rgbout == 4) {
+		rgb = vec3(xy - res/2.0, length(vecs) * 100.0);
 	}
 
 	matte = length(vecs);

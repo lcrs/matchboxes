@@ -1,7 +1,8 @@
 <ShaderNodePreset AccumulatePass="9" TimelineUseBack="False" Description="" ShaderType="Matchbox" AccumulatePass="9" SupportsAdaptiveDegradation="False" SoftwareVersion="2016.0.0" Version="1" SupportsAction="False" SupportsTimeline="False" Name="Ls_Fluid" MatteProvider="False" LimitInputsToTexture="True" CommercialUsePermitted="True" SupportsTransition="False" >
  <Shader GridSubdivision="1" OutputBitDepth="Output" ClearColor="0, 0, 0, 0" Index="1">
   <Uniform Name="adsk_accum_texture" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
-  <Uniform Name="vecs"               DisplayName="Input vectors"               Type="sampler2D"  Index="1" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" Tooltip="" InputColor="67, 77, 83" NoInput="Black" GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
+  <Uniform Name="vecs"               DisplayName="Input vectors"      Type="sampler2D"  Index="1" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" Tooltip="" InputColor="67, 77, 83" NoInput="Black" GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
+  <Uniform Name="obstacles"          DisplayName="Obstacles"          Type="sampler2D"  Index="2" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" Tooltip="" InputColor="67, 77, 83" NoInput="Black" GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
   <Uniform Name="velocity"           DisplayName="Velocity"           Page="3" Col="0" Row="0" Type="float"      Default="1.0"        Min="-1000000.0" Max="1000000.0"  Inc="0.1"        ResDependent="None"       Tooltip="" ChannelName="velocity"></Uniform>
   <Uniform Name="sidestep"           DisplayName="Sidestep"           Page="3" Col="0" Row="1" Type="float"      Default="0.0"        Min="-1000000.0" Max="1000000.0"  Inc="1.0"        ResDependent="None"       Tooltip="" ChannelName="sidestep"></Uniform>
   <Uniform Name="offset"             DisplayName="Gravity"            Page="0" Col="0" Row="1" Type="vec2"                                                              Inc="0.01"                                 IconType="None" Tooltip="" ChannelName="offset">
@@ -10,6 +11,7 @@
   <Uniform Name="samples"            DisplayName="Advect steps"       Page="3" Col="0" Row="2" Type="int"        Default="8"          Min="-1000000"   Max="1000000"    Inc="1"                                    Tooltip="" ChannelName="samples"></Uniform>
   <Uniform Name="spacing"            DisplayName="Sample softness"    Page="3" Col="0" Row="4" Type="float"      Default="0.5"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip="" ChannelName="spacing"></Uniform>
   <Uniform Name="oversamples"        DisplayName="Advect samples"     Page="3" Col="0" Row="3" Type="int"        Default="1"          Min="-1000000"   Max="1000000"    Inc="1"                                    Tooltip="" ChannelName="oversamples"></Uniform>
+  <Uniform Name="obstacleweight"     DisplayName="Obstacle weight"    Page="2" Col="1" Row="2" Type="float"      Default="1.0"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip="" ChannelName="obstacleweight"></Uniform>
  </Shader>
  <Shader GridSubdivision="1" OutputBitDepth="Output" ClearColor="0, 0, 0, 0" Index="2">
   <Uniform Name="adsk_results_pass1" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
@@ -63,6 +65,7 @@
     <PopupEntry Title="UVs" Value="1">    </PopupEntry>
     <PopupEntry Title="Image" Value="2">    </PopupEntry>
     <PopupEntry Title="Velocity" Value="3">    </PopupEntry>
+    <PopupEntry Title="Position map" Value="4">    </PopupEntry>
   </Uniform>
  </Shader>
  <Page Page="0" Name="Sources">
