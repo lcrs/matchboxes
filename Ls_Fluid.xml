@@ -97,8 +97,13 @@
     <PopupEntry Title="Vectors" Value="0">    </PopupEntry>
     <PopupEntry Title="UVs" Value="1">    </PopupEntry>
     <PopupEntry Title="Image" Value="2">    </PopupEntry>
-    <PopupEntry Title="Velocity" Value="3">    </PopupEntry>
-    <PopupEntry Title="Position map" Value="4">    </PopupEntry>
+    <PopupEntry Title="Image (EWA filtering)" Value="3">    </PopupEntry>
+    <PopupEntry Title="Velocity" Value="4">    </PopupEntry>
+    <PopupEntry Title="Position map" Value="5">    </PopupEntry>
+  </Uniform>
+  <Uniform Max="1000000" Min="1" Default="1" Inc="1" Tooltip="" Row="2" Col="3" Page="2" Type="int" ChannelName="imagesamples" DisplayName="Image samples" Name="isamples">
+  </Uniform>
+  <Uniform Max="1000000" Min="1" Default="16" Inc="1" Tooltip="" Row="3" Col="3" Page="2" Type="int" ChannelName="texellimit" DisplayName="EWA samples" Name="texellimit" UIConditionSource="rgbout" UIConditionValue="3" UIConditionType="Hide">
   </Uniform>
  </Shader>
  <Page Page="0" Name="Jets">
