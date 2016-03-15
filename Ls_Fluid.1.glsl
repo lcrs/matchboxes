@@ -2,7 +2,7 @@
 // lewis@lewissaunders.com
 
 uniform sampler2D vecs, adsk_accum_texture, obstacles;
-uniform float adsk_result_w, adsk_result_h, velocity, spacing, sidestep, obstacleweight;
+uniform float adsk_result_w, adsk_result_h, velocity, sidestep, obstacleweight;
 uniform vec2 offset;
 uniform int samples, oversamples;
 uniform bool adsk_accum_no_prev_frame;
@@ -30,7 +30,7 @@ void main() {
 	for(int j = 0; j < oversamples; j++) {
 		for(int k = 0; k < oversamples; k++) {
 			// Starting point for this sample
-			xy = gl_FragCoord.xy + spacing * vec2(float(j) / (float(oversamples) + 1.0), float(k) / (float(oversamples) + 1.0));
+			xy = gl_FragCoord.xy + vec2(float(j) / (float(oversamples) + 1.0), float(k) / (float(oversamples) + 1.0));
 			// Walk along path by sampling vector image, moving, sampling, moving...
 			for(float i = 0.0; i < sam; i++) {
 				v = get(xy * px).rg;

@@ -5,6 +5,7 @@
 uniform sampler2D adsk_results_pass8, adsk_results_pass1, vecs;
 uniform float adsk_result_w, adsk_result_h;
 uniform float dpressure, amountmaster, excitablity, inputamount;
+uniform float speedlimit;
 uniform vec2 source1pos, source1aim, source2pos, source2aim;
 uniform float source1velocity, source1size, source2velocity, source2size;
 uniform vec2 sink1pos, sink2pos;
@@ -210,6 +211,10 @@ void main() {
 	vec4 n = vec4(xy * 1.0/noisescale, 1.0, noiseevolve);
 	vec4 n2 = vec4(xy * 1.0/noisescale, 123.0, noiseevolve);
 	undiverged += noisepower/100.0 * (vec2(snoise(n), snoise(n2)));
+
+	// Speed limit
+	float speed = length(undiverged);
+	undiverged *= min(1.0, speedlimit/speed);
 
 	gl_FragColor = vec4(undiverged.r, undiverged.g, v.b, v.a);
 }

@@ -9,7 +9,6 @@
                                                                                                      <SubUniform Default="0.0"        Min="-1000000.0" Max="1000000.0"                   ResDependent="None"></SubUniform>
                                                                                                      <SubUniform Default="0.0"        Min="-1000000.0" Max="1000000.0"                   ResDependent="None"></SubUniform></Uniform>
   <Uniform Name="samples"            DisplayName="Advect steps"       Page="3" Col="0" Row="2" Type="int"        Default="8"          Min="-1000000"   Max="1000000"    Inc="1"                                    Tooltip="" ChannelName="samples"></Uniform>
-  <Uniform Name="spacing"            DisplayName="Sample softness"    Page="3" Col="0" Row="4" Type="float"      Default="0.5"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip="" ChannelName="spacing"></Uniform>
   <Uniform Name="oversamples"        DisplayName="Advect samples"     Page="3" Col="0" Row="3" Type="int"        Default="1"          Min="-1000000"   Max="1000000"    Inc="1"                                    Tooltip="" ChannelName="oversamples"></Uniform>
   <Uniform Name="obstacleweight"     DisplayName="Obstacle weight"    Page="2" Col="2" Row="1" Type="float"      Default="1.0"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip="" ChannelName="obstacleweight"></Uniform>
  </Shader>
@@ -54,7 +53,7 @@
   <Uniform Name="vecs"               DisplayName="Input vectors"               Type="sampler2D"  Index="0" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" Tooltip="" InputColor="67, 77, 83" NoInput="Error" GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
   <Uniform Name="dpressure"          DisplayName="Delta pressure"     Page="3" Col="2" Row="3" Type="float"      Default="1.0"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip="" ChannelName="dpressure"></Uniform>
   <Uniform Name="amountmaster"       DisplayName="Undivergence"       Page="3" Col="3" Row="3" Type="float"      Default="1.0"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip="" ChannelName="amountmaster"></Uniform>
-  <Uniform Name="excitablity"        DisplayName="Excitablity"        Page="3" Col="1" Row="4" Type="float"      Default="100.0"      Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip="" ChannelName="excitablity"></Uniform>
+  <Uniform Name="excitablity"        DisplayName="Excitablity"        Page="3" Col="0" Row="4" Type="float"      Default="100.0"      Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip="" ChannelName="excitablity"></Uniform>
   <Uniform Name="inputamount"        DisplayName="Input vectors"      Page="2" Col="0" Row="1" Type="float"      Default="0.0"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip="" ChannelName="inputamount"></Uniform>
   <Uniform Name="source1pos"         DisplayName="Position"           Page="0" Col="0" Row="0" Type="vec2"                                                              Inc="0.01"                                 IconType="Light" Tooltip="" ChannelName="source1position">
                                                                                                      <SubUniform Default="0.4"        Min="-1000000.0" Max="1000000.0"                   ResDependent="None"></SubUniform>
@@ -86,9 +85,10 @@
   <Uniform Name="sink2spin"          DisplayName="Spin"               Page="1" Col="3" Row="0" Type="float"      Default="0.0"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip="" ChannelName="sink2spin"></Uniform>
   <Uniform Name="sink2power"         DisplayName="Power"              Page="1" Col="2" Row="3" Type="float"      Default="0.0"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip="" ChannelName="sink2power"></Uniform>
 
-  <Uniform Name="noisepower"         DisplayName="Noise power"        Page="2" Col="1" Row="1" Type="float"      Default="1.0"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip="" ChannelName="noisepower"></Uniform>
+  <Uniform Name="noisepower"         DisplayName="Noise power"        Page="2" Col="1" Row="1" Type="float"      Default="10.0"       Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip="" ChannelName="noisepower"></Uniform>
   <Uniform Name="noisescale"         DisplayName="Noise scale"        Page="2" Col="1" Row="2" Type="float"      Default="200.0"      Min="-1000000.0" Max="1000000.0"  Inc="0.1"        ResDependent="None"       Tooltip="" ChannelName="noisescale"></Uniform>
   <Uniform Name="noiseevolve"        DisplayName="Noise evolve"       Page="2" Col="1" Row="3" Type="float"      Default="0.0"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip="" ChannelName="noiseevolve"></Uniform>
+  <Uniform Name="speedlimit"         DisplayName="Speed limit"        Page="2" Col="2" Row="3" Type="float"      Default="100.0"      Min="00000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip="" ChannelName="speedlimit"></Uniform>
  </Shader>
  <Shader GridSubdivision="1" OutputBitDepth="Output" ClearColor="0, 0, 0, 0" Index="10">
    <Uniform Name="adsk_results_pass9" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
@@ -101,9 +101,9 @@
     <PopupEntry Title="Velocity" Value="4">    </PopupEntry>
     <PopupEntry Title="Position map" Value="5">    </PopupEntry>
   </Uniform>
-  <Uniform Max="1000000" Min="1" Default="1" Inc="1" Tooltip="" Row="2" Col="3" Page="2" Type="int" ChannelName="imagesamples" DisplayName="Image samples" Name="isamples">
+  <Uniform Max="1000000" Min="1" Default="5" Inc="1" Tooltip="" Row="2" Col="3" Page="2" Type="int" ChannelName="imagesamples" DisplayName="Image samples" Name="isamples">
   </Uniform>
-  <Uniform Max="1000000" Min="1" Default="16" Inc="1" Tooltip="" Row="3" Col="3" Page="2" Type="int" ChannelName="texellimit" DisplayName="EWA samples" Name="texellimit" UIConditionSource="rgbout" UIConditionValue="3" UIConditionType="Hide">
+  <Uniform Max="1000000" Min="1" Default="4" Inc="1" Tooltip="" Row="3" Col="3" Page="2" Type="int" ChannelName="texellimit" DisplayName="EWA samples" Name="texellimit" UIConditionSource="rgbout" UIConditionValue="3" UIConditionType="Hide">
   </Uniform>
  </Shader>
  <Page Page="0" Name="Jets">

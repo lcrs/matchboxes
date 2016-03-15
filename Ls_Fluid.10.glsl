@@ -93,20 +93,50 @@ void main() {
 	vec2 uvs = texture2D(adsk_results_pass9, xy * px).ba;
 
 	if(rgbout == 0) {
+		// Output vectors
 		rgb.rg = vecs;
 	} else if(rgbout == 1) {
+		// Output UVs
 		rgb.rg = uvs;
 	} else if(rgbout == 2) {
-		rgb = texture2D(img, uvs).rgb;
+		// Output distorted image
+		if(isamples == 1) {
+			rgb = texture2D(img, uvs).rgb;
+		} else {
+			float samps = float(isamples);
+			for(float i = 0.0; i < samps; i++) {
+				for(float j = 0.0; j < samps; j++) {
+					vec2 sample_xy = gl_FragCoord.xy + vec2(i/(samps + 1.0), j/(samps + 1.0)) - vec2(0.5);
+					vec2 sample_uv = texture2D(adsk_results_pass9, sample_xy * px).ba;
+					rgb += texture2D(img, sample_uv).rgb;
+				}
+			}
+			rgb /= samps * samps;
+		}
 	} else if(rgbout == 3) {
-		// isamples
-		rgb = texture2DEWA(img, uvs).rgb;
+		// Output distorted image with EWA filtering
+		if(isamples == 1) {
+			rgb = texture2DEWA(img, uvs).rgb;
+		} else {
+			float samps = float(isamples);
+			for(float i = 0.0; i < samps; i++) {
+				for(float j = 0.0; j < samps; j++) {
+					vec2 sample_xy = gl_FragCoord.xy + vec2(i/(samps + 1.0), j/(samps + 1.0)) - vec2(0.5);
+					vec2 sample_uv = texture2D(adsk_results_pass9, sample_xy * px).ba;
+					rgb += texture2DEWA(img, sample_uv).rgb;
+				}
+			}
+			rgb /= samps * samps;
+		}
 	} else if(rgbout == 4) {
+		// Output velocity
 		rgb = vec3(length(vecs));
 	} else if(rgbout == 5) {
+		// Output position map
 		rgb = vec3(xy - res/2.0, length(vecs) * 100.0);
 	}
 
+	// Matte output gets velocity
 	matte = length(vecs);
 
 	gl_FragColor = vec4(rgb, matte);
