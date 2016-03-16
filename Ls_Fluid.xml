@@ -11,7 +11,7 @@ Remember to disable Adaptive Degradation on this node if viewing downstream!
 Demo:
 
 lewis@lewissaunders.com" ShaderType="Matchbox" SupportsAdaptiveDegradation="False" SoftwareVersion="2017.0.0" Version="1" SupportsAction="False" SupportsTimeline="False" MatteProvider="False" LimitInputsToTexture="True" CommercialUsePermitted="True" SupportsTransition="False" Name="Ls_Fluid">
- <Shader GridSubdivision="1" OutputBitDepth="Output" ClearColor="0, 0, 0, 0" Index="1">
+ <Shader GridSubdivision="1" OutputBitDepth="Float32" ClearColor="0, 0, 0, 0" Index="1">
   <Uniform Name="obstacles"          DisplayName="Obstacles"          Type="sampler2D"  Index="2" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" Tooltip="" InputColor="67, 77, 83" NoInput="Black" GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE"></Uniform>
   <Uniform Name="vecs"               DisplayName="Input vectors"      Type="sampler2D"  Index="1" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" Tooltip="" InputColor="67, 77, 83" NoInput="Black" GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE"></Uniform>
   <Uniform Name="adsk_accum_texture" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
@@ -24,31 +24,31 @@ lewis@lewissaunders.com" ShaderType="Matchbox" SupportsAdaptiveDegradation="Fals
   <Uniform Name="oversamples"        DisplayName="Advect samples"     ChannelName="advectsamples"      Page="3" Col="0" Row="3" Type="int"        Default="1"          Min="00000001"   Max="0000050"    Inc="1"                                    Tooltip="This oversamples the advection process, should not be nessecary unless vector output shows sparkling along edges"></Uniform>
   <Uniform Name="obstacleweight"     DisplayName="Obstacle weight"    ChannelName="obstacleweight"     Page="2" Col="2" Row="1" Type="float"      Default="1.0"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip="How much the white areas of the obstacle image input block the fluid"></Uniform>
  </Shader>
- <Shader GridSubdivision="1" OutputBitDepth="Output" ClearColor="0, 0, 0, 0" Index="2">
+ <Shader GridSubdivision="1" OutputBitDepth="Float32" ClearColor="0, 0, 0, 0" Index="2">
   <Uniform Name="adsk_results_pass1" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
   <Uniform Name="blur1size"          DisplayName="Size 1"             ChannelName="blur1size"          Page="3" Col="1" Row="0" Type="float"      Default="5.0"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip="These blur sizes control the neighbourhood used to prevent the fluid crossing over itself.  There are 3 independent blurs, with size, gradient delta and amount for each.  Effects can be unpredictable, but generally larger blurs with higher amounts make far-away parts of the fluid push each other away more, making the whole thing less runny"></Uniform>
  </Shader>
- <Shader GridSubdivision="1" OutputBitDepth="Output" ClearColor="0, 0, 0, 0" Index="3">
+ <Shader GridSubdivision="1" OutputBitDepth="Float32" ClearColor="0, 0, 0, 0" Index="3">
   <Uniform Name="adsk_results_pass2" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
   <Uniform Name="blur1size"          DisplayName="Size 1"             ChannelName="blur1size"          Type="float"><Duplicate></Duplicate></Uniform>
  </Shader>
- <Shader GridSubdivision="1" OutputBitDepth="Output" ClearColor="0, 0, 0, 0" Index="4">
+ <Shader GridSubdivision="1" OutputBitDepth="Float32" ClearColor="0, 0, 0, 0" Index="4">
   <Uniform Name="adsk_results_pass3" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
   <Uniform Name="blur2size"          DisplayName="Size 2"             ChannelName="blur2size"          Page="3" Col="1" Row="1" Type="float"      Default="15.0"       Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
  </Shader>
- <Shader GridSubdivision="1" OutputBitDepth="Output" ClearColor="0, 0, 0, 0" Index="5">
+ <Shader GridSubdivision="1" OutputBitDepth="Float32" ClearColor="0, 0, 0, 0" Index="5">
   <Uniform Name="adsk_results_pass4" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
   <Uniform Name="blur2size"          DisplayName="Size 2"             ChannelName="blur2size"          Type="float"><Duplicate></Duplicate></Uniform>
  </Shader>
- <Shader GridSubdivision="1" OutputBitDepth="Output" ClearColor="0, 0, 0, 0" Index="6">
+ <Shader GridSubdivision="1" OutputBitDepth="Float32" ClearColor="0, 0, 0, 0" Index="6">
   <Uniform Name="adsk_results_pass5" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
   <Uniform Name="blur3size"          DisplayName="Size 3"             ChannelName="blur3size"          Page="3" Col="1" Row="2" Type="float"      Default="25.0"       Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
  </Shader>
- <Shader GridSubdivision="1" OutputBitDepth="Output" ClearColor="0, 0, 0, 0" Index="7">
+ <Shader GridSubdivision="1" OutputBitDepth="Float32" ClearColor="0, 0, 0, 0" Index="7">
   <Uniform Name="adsk_results_pass6" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
   <Uniform Name="blur3size"          DisplayName="Size 3"             ChannelName="blur3size"          Type="float"><Duplicate></Duplicate></Uniform>
  </Shader>
- <Shader GridSubdivision="1" OutputBitDepth="Output" ClearColor="0, 0, 0, 0" Index="8">
+ <Shader GridSubdivision="1" OutputBitDepth="Float32" ClearColor="0, 0, 0, 0" Index="8">
   <Uniform Name="adsk_results_pass5" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
   <Uniform Name="adsk_results_pass3" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
   <Uniform Name="adsk_results_pass7" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
@@ -59,7 +59,7 @@ lewis@lewissaunders.com" ShaderType="Matchbox" SupportsAdaptiveDegradation="Fals
   <Uniform Name="d1"                 DisplayName="Delta 1"            ChannelName="delta1"             Page="3" Col="2" Row="0" Type="float"      Default="3.0"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip="These are the pixel offsets used to calculate the gradient of each blur pass.  Increasing them leads to less accuracy in small details, but can help remove the noise in flat areas of the velocity output"></Uniform>
   <Uniform Name="d2"                 DisplayName="Delta 2"            ChannelName="delta2"             Page="3" Col="2" Row="1" Type="float"      Default="7.0"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
  </Shader>
- <Shader GridSubdivision="1" OutputBitDepth="Output" ClearColor="0, 0, 0, 0" Index="9">
+ <Shader GridSubdivision="1" OutputBitDepth="Float32" ClearColor="0, 0, 0, 0" Index="9">
   <Uniform Name="vecs"               DisplayName="Input vectors"      Type="sampler2D"  Index="1" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" Tooltip="" InputColor="67, 77, 83" NoInput="Error" GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE"><Duplicate></Duplicate></Uniform>
   <Uniform Name="adsk_results_pass8" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
   <Uniform Name="adsk_results_pass1" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
@@ -100,16 +100,16 @@ lewis@lewissaunders.com" ShaderType="Matchbox" SupportsAdaptiveDegradation="Fals
   <Uniform Name="noiseevolve"        DisplayName="Noise evolve"       ChannelName="noiseevolve"        Page="2" Col="1" Row="3" Type="float"      Default="0.0"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip="Animate to change the added noise over time, and avoid consistent patterns forming"></Uniform>
   <Uniform Name="speedlimit"         DisplayName="Speed limit"        ChannelName="speedlimit"         Page="2" Col="2" Row="3" Type="float"      Default="100.0"      Min="00000000.0" Max="1000000.0"  Inc="0.10"       ResDependent="None"       Tooltip="Lowering this can prevent sudden spikes, but does reduce how interesting things get"></Uniform>
  </Shader>
- <Shader GridSubdivision="1" OutputBitDepth="Output" ClearColor="0, 0, 0, 0" Index="10">
+ <Shader GridSubdivision="1" OutputBitDepth="Float32" ClearColor="0, 0, 0, 0" Index="10">
   <Uniform Name="img"                DisplayName="Front"              Type="sampler2D"  Index="0" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" Tooltip="" InputColor="67, 77, 83" NoInput="Black" GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE"></Uniform>
   <Uniform Name="adsk_results_pass9" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
   <Uniform Name="rgbout"             DisplayName="RGB output"         Page="2" Col="3" Row="1" Type="int"        Default="2" ValueType="Popup" Tooltip="">
--    <PopupEntry Title="Vectors" Value="0">    </PopupEntry>
--    <PopupEntry Title="UVs" Value="1">    </PopupEntry>
--    <PopupEntry Title="Image" Value="2">    </PopupEntry>
--    <PopupEntry Title="Image (EWA filtering)" Value="3">    </PopupEntry>
--    <PopupEntry Title="Velocity" Value="4">    </PopupEntry>
--    <PopupEntry Title="Position map" Value="5">    </PopupEntry></Uniform>
+    <PopupEntry Title="Vectors" Value="0">    </PopupEntry>
+    <PopupEntry Title="UVs" Value="1">    </PopupEntry>
+    <PopupEntry Title="Image" Value="2">    </PopupEntry>
+    <PopupEntry Title="Image (EWA filtering)" Value="3">    </PopupEntry>
+    <PopupEntry Title="Velocity" Value="4">    </PopupEntry>
+    <PopupEntry Title="Position map" Value="5">    </PopupEntry></Uniform>
   <Uniform Name="isamples"           DisplayName="Image samples"      ChannelName="imagesamples"       Page="2" Col="3" Row="2" Type="int"        Default="5"          Min="1"          Max="1000000"    Inc="1"  Tooltip="Oversampling for image mapping, increase to remove sparkles in distorted areas"></Uniform>
   <Uniform Name="texellimit"         DisplayName="EWA samples"        ChannelName="ewasamples"         Page="2" Col="3" Row="3" Type="int"        Default="4"          Min="1"          Max="1000000"    Inc="1"  UIConditionValue="3" UIConditionType="Hide" UIConditionSource="rgbout" Tooltip="Number of pixels used in EWA filtering for each output pixel, which can perhaps help with sparkles, but is much slower than the above image samples control"></Uniform>
  </Shader>
