@@ -1,4 +1,8 @@
-// Pass 1: advect the vectors by themselves
+// Pass 1: advect the vectors by themselves, including the effect
+// of the obstacle input and the gravity vector.  This takes its
+// input from the accumulation texture, or the vector input on frame 1.
+// It outputs the advected motion vectors in red/green, and a UV map in
+// blue/alpha
 // lewis@lewissaunders.com
 
 uniform sampler2D vecs, adsk_accum_texture, obstacles;

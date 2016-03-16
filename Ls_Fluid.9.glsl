@@ -1,5 +1,7 @@
 // Undiverge a vector field
-// Pass 9 - get gradient of pressure field and subtract from original
+// Pass 9 - get gradient of pressure field and subtract from original to reduce
+// divergence.  Also adds the effect of the jet sources, sinks, speed limit
+// and damping
 // lewis@lewissaunders.com
 
 uniform sampler2D adsk_results_pass8, adsk_results_pass1, vecs;

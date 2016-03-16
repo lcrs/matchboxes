@@ -1,5 +1,6 @@
 // Undiverge a vector field
-// Pass 8 - combine to get pressure field
+// Pass 8 - combine the three blurs, and differentiate to get an approximation of the
+// pressure field
 // lewis@lewissaunders.com
 
 uniform sampler2D adsk_results_pass3, adsk_results_pass5, adsk_results_pass7;
