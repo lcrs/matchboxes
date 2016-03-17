@@ -1,4 +1,4 @@
-<ShaderNodePreset AccumulatePass="9" TimelineUseBack="False" Description="Fluid - a 2D fluid simulation.
+<ShaderNodePreset AccumulatePass="9" TimelineUseBack="False" Description="Fluid - a 2D fluid simulation. Make sure bit depth is 16-bit fp!
 
 The vector input can be fed motion vectors to affect the fluid, and the obstacle input can be fed with a matte for areas which the fluid should move around.
 
