@@ -122,10 +122,15 @@ vec3 graph(vec3 i, vec2 xy) {
 	float bdist = abs(by - pos.y);
 
 	// http://iquilezles.org/www/articles/distance/distance.htm
-    rdist /= length(vec2(dFdx(rdist), dFdy(rdist)));
-    gdist /= length(vec2(dFdx(gdist), dFdy(gdist)));
-    bdist /= length(vec2(dFdx(bdist), dFdy(bdist)));
-	
+  // (sadly dFd... sometimes returns really wrong things)
+  /*rdist /= min(length(vec2(dFdx(rdist), dFdy(rdist))), 0.005);
+  gdist /= min(length(vec2(dFdx(gdist), dFdy(gdist))), 0.005);
+  bdist /= min(length(vec2(dFdx(bdist), dFdy(bdist))), 0.005);
+*/
+  rdist *= 200.0;
+  gdist *= 200.0;
+  bdist *= 200.0;
+
 	float rgraph = 1.0 - smoothstep(0.0, 2.0, rdist);
 	float ggraph = 1.0 - smoothstep(0.0, 2.0, gdist);
 	float bgraph = 1.0 - smoothstep(0.0, 2.0, bdist);
