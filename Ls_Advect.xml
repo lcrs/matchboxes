@@ -16,9 +16,9 @@ lewis@lewissaunders.com" Name="Advect">
       </Uniform>
       <Uniform Mipmaps="False" GL_TEXTURE_WRAP_T="GL_REPEAT" GL_TEXTURE_WRAP_S="GL_REPEAT" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass1">
       </Uniform>
-      <Uniform ResDependent="Width" Max="2048.0" Min="-2048.0" Default="8.0" Inc="0.2" Tooltip="Distance to move by" Row="0" Col="1" Page="0" DisplayName="Length" Type="float" Name="blength">
+      <Uniform ResDependent="None" Max="2048.0" Min="-2048.0" Default="8.0" Inc="0.2" Tooltip="Distance to move by" Row="0" Col="1" Page="0" DisplayName="Length" Type="float" Name="blength">
       </Uniform>
-      <Uniform ResDependent="Width" Max="1024.0" Min="-1024.0" Default="0.0" Inc="0.1" Tooltip="Slide to the side on each step" Row="1" Col="1" Page="0" DisplayName="Sidestep" Type="float" Name="sidestep">
+      <Uniform ResDependent="None" Max="1024.0" Min="-1024.0" Default="0.0" Inc="0.1" Tooltip="Slide to the side on each step" Row="1" Col="1" Page="0" DisplayName="Sidestep" Type="float" Name="sidestep">
       </Uniform>
       <Uniform Inc="0.01" Tooltip="" Row="2" Col="1" Page="0" DisplayName="Offset" Type="vec2" Name="offset">
 	      <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
@@ -36,7 +36,7 @@ lewis@lewissaunders.com" Name="Advect">
       </Uniform>
       <Uniform Row="1" Col="3" Page="0" Default="False" Tooltip="Darken samples the further they move" DisplayName="Fade out" Type="bool" Name="fadeout">
       </Uniform>
-      <Uniform ResDependent="Width" Max="16.0" Min="0.0001" Default="4.0" Inc="0.01" Tooltip="Distance by which brightness dies, as a ratio of the path length" Row="2" Col="3" Page="0" DisplayName="Lifetime" Type="float" Name="maxlength">
+      <Uniform ResDependent="None" Max="16.0" Min="0.0001" Default="4.0" Inc="0.01" Tooltip="Distance by which brightness dies, as a ratio of the path length" Row="2" Col="3" Page="0" DisplayName="Lifetime" Type="float" Name="maxlength">
       </Uniform>
       <Uniform Row="3" Col="3" Page="0" Default="False" Tooltip="Output gradient vectors from map input instead of distorting, for use with MotionBlur et al" DisplayName="Output vectors" Type="bool" Name="vectors">
       </Uniform>

@@ -18,7 +18,7 @@ lewis@lewissaunders.com" Name="Splineblur">
       </Uniform>
       <Uniform Mipmaps="False" GL_TEXTURE_WRAP_T="GL_REPEAT" GL_TEXTURE_WRAP_S="GL_REPEAT" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass1">
       </Uniform>
-      <Uniform ResDependent="Width" Max="2048.0" Min="0.0" Default="8.0" Inc="0.1" Tooltip="Amount to blur by" Row="0" Col="1" Page="0" DisplayName="Length" Type="float" Name="blength">
+      <Uniform ResDependent="None" Max="2048.0" Min="0.0" Default="8.0" Inc="0.1" Tooltip="Amount to blur by" Row="0" Col="1" Page="0" DisplayName="Length" Type="float" Name="blength">
       </Uniform>
       <Uniform Max="2048" Min="1" Default="32" Inc="1" Tooltip="Number of samples, increase for smoothness" Row="1" Col="1" Page="0" DisplayName="Samples" Type="int" Name="samples">
       </Uniform>
