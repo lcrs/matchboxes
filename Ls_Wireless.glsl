@@ -9,6 +9,7 @@
 //  o overlay colours
 //  o respond to image contours/gradients/edges somehow... somehow?
 //  o try adaptive median a la IRank - pull in pixels that are most different to the wire colour
+//  o sort out the whole resolution/pixels/proxy mode/ResDependent mess!
 
 uniform sampler2D front;
 uniform float adsk_result_w, adsk_result_h, adsk_result_pixelratio;
@@ -66,7 +67,7 @@ void main() {
 	// Combine pixel tracks and 0-1 offsets
 	vec2 start = starttrack / vec2(adsk_result_pixelratio, 1.0) + (startoffset * res);
 	vec2 end = endtrack / vec2(adsk_result_pixelratio, 1.0) + (endoffset * res);
-	
+
 	// Figure out bend, our actual b-spline control point
 	vec2 slope = normalize(end - start);
 	vec2 across = vec2(-slope.y, slope.x);
@@ -98,10 +99,10 @@ void main() {
 	// We assume the wire is straight here, without much damage it seems
 	vec2 closest = coords - splinesdf(coords, start, bend, end) * (tangent / cos(deg2rad(angle)));
 	vec2 closestdirect = coords - splinesdf(coords, start, bend, end) * normalize(vec2(dFdx(f), dFdy(f)));
-	
+
 	vec3 o;
 	float m;
-	
+
 	if(abs(splinesdf(coords, start, bend, end)) > radius) {
 		// Miles away from the wire, get outta here
 		o = frontpix;
