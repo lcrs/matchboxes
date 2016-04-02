@@ -224,7 +224,8 @@ void main() {
     if(position) {
       // Position
       if(xy.y == -1.0) {
-        // First should be black in the matte output, we don't use it
+        // First row should be black in the matte output, we don't use it because
+        // Action doesn't seem to start drawing points until it has a full row...
         gl_FragColor.a = 0.0;
       } else {
         gl_FragColor.a = 1.0;
