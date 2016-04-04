@@ -24,7 +24,7 @@ uniform float attractradius, attract;
 uniform float repelradius, repel;
 uniform float followradius, follow;
 uniform float strayradius, stray;
-uniform float speedlimit;
+uniform float speedlimit, seed;
 
 // ===============================================================================
 // ==================== Begin ashima's noise ====================================
@@ -231,15 +231,15 @@ void main() {
         gl_FragColor.a = 1.0;
       }
       xy += vec2(1.2345); // Offset away from 0.0, snoise is black there
-      gl_FragColor.x = 400.0 * snoise(vec4(xy*1.234567, 1.0, 7.0));
-      gl_FragColor.y = 400.0 * snoise(vec4(xy*7.654321, 2.0, 8.0));
-      gl_FragColor.z = 400.0 * snoise(vec4(xy*2.345678, 3.0, 9.0));
+      gl_FragColor.x = 400.0 * snoise(vec4(xy*1.234567, seed + 1.0, 7.0));
+      gl_FragColor.y = 400.0 * snoise(vec4(xy*7.654321, seed + 2.0, 8.0));
+      gl_FragColor.z = 400.0 * snoise(vec4(xy*2.345678, seed + 3.0, 9.0));
     } else {
       // Velocity
       xy += vec2(1.2345); // Offset away from 0.0, snoise is black there
-      gl_FragColor.x = snoise(vec4(xy*1.234567, 4.0, 10.0));
-      gl_FragColor.y = snoise(vec4(xy*7.654321, 5.0, 11.0));
-      gl_FragColor.z = snoise(vec4(xy*2.345678, 6.0, 12.0));
+      gl_FragColor.x = snoise(vec4(xy*1.234567, seed + 4.0, 10.0));
+      gl_FragColor.y = snoise(vec4(xy*7.654321, seed + 5.0, 11.0));
+      gl_FragColor.z = snoise(vec4(xy*2.345678, seed + 6.0, 12.0));
       gl_FragColor.xyz *= startrand;
       gl_FragColor.xyz += startdir * startv;
       gl_FragColor.a = 0.0;
