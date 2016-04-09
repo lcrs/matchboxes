@@ -45,7 +45,7 @@ void main() {
   // are limited to powers of two
 
   float s = max(size, 0.0001);
-  float downfactor = quality / s;
+  float downfactor = min(quality / s, 1.0);
   float downlod = floor(log2(1.0/downfactor));
   downfactor = 1.0 / pow(2.0, downlod);
   float downs = downfactor * s;

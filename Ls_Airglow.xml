@@ -1,8 +1,8 @@
 <ShaderNodePreset TimelineUseBack="False" Description="Airglow - fires" ShaderType="Matchbox" SupportsAdaptiveDegradation="False" SoftwareVersion="2016.0.0" Version="1" SupportsAction="False" SupportsTimeline="False" Name="Airglow" MatteProvider="False" LimitInputsToTexture="True" CommercialUsePermitted="True" SupportsTransition="False">
  <Shader OutputBitDepth="Output" Index="1">
   <Uniform Name="front"              DisplayName="Front"              Type="sampler2D"  Index="0" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR_MIPMAP_LINEAR" Mipmaps="True" Tooltip="" InputColor="67, 77, 83" InputType="Front" NoInput="Error" GL_TEXTURE_MIN_FILTER="GL_LINEAR_MIPMAP_LINEAR" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
-  <Uniform Name="size"               DisplayName="Size"               Page="0" Col="0" Row="0" Type="float"      Default="0.0"        Min="0.0" Max="1000000.0"  Inc="1.0"       ResDependent="None"       Tooltip=""></Uniform>
-  <Uniform Name="quality"            DisplayName="Quality"            Page="0" Col="0" Row="1" Type="float"      Default="0.0"        Min="1.0" Max="1000000.0"  Inc="1.0"       ResDependent="None"       Tooltip=""></Uniform>
+  <Uniform Name="size"               DisplayName="Size"               Page="0" Col="1" Row="1" Type="float"      Default="75.0"        Min="0.0" Max="1000000.0"  Inc="0.3"       ResDependent="None"       Tooltip=""></Uniform>
+  <Uniform Name="quality"            DisplayName="Quality"            Page="0" Col="1" Row="2" Type="float"      Default="10.0"        Min="1.0" Max="1000000.0"  Inc="1.0"       ResDependent="None"       Tooltip=""></Uniform>
  </Shader>
  <Shader OutputBitDepth="Output" Index="2">
   <Uniform Name="adsk_results_pass1" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR_MIPMAP_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR_MIPMAP_LINEAR" Mipmaps="True" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
@@ -86,8 +86,15 @@
   <Uniform Name="adsk_results_pass14" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
   <Uniform Name="quality"            DisplayName="quality"            Type="float"><Duplicate></Duplicate></Uniform>
   <Uniform Name="size"               DisplayName="size"               Type="float"><Duplicate></Duplicate></Uniform>
+  <Uniform Inc="1.0" Tooltip="" Row="0" Col="2" Page="0" IconType="None" ValueType="ColourWheel" Type="vec3" DisplayName="Tint" Name="tint" HueShift="False" AngleName="H" IntensityName1="S" IntensityName2="V">
+   <SubUniform ResDependent="None" Max="1000.0" Min="-1000.0" Default="0.0">     </SubUniform>
+   <SubUniform ResDependent="None" Max="1000.0" Min="-1000.0" Default="0.0">     </SubUniform>
+   <SubUniform ResDependent="None" Max="1000.0" Min="0.0" Default="100.0">       </SubUniform>
+  </Uniform>
+  <Uniform Name="mixx"            DisplayName="Mix"            Page="0" Col="1" Row="4" Type="float"      Default="1.0"        Min="0.0" Max="1.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
  </Shader>
- <Page Page="0" Name="Page 1">
-  <Col Page="0" Col="0" Name="Column 1"></Col>
+ <Page Page="0" Name="">
+  <Col Page="0" Col="1" Name="Master"></Col>
+  <Col Page="0" Col="2" Name="Tint"></Col>
  </Page>
 </ShaderNodePreset>
