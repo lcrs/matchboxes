@@ -119,20 +119,20 @@ void main() {
   vec3 f = texture2D(front, gl_FragCoord.xy / res).rgb;
   // Convert front pixel to linear so we can add it to the glow
   if(colourspace == 0) {
-    // Log
-    f = adsk_log2scene(f);
+     // Log
+     f = adsk_log2scene(f);
   } else if(colourspace == 1) {
-    // Video - inverse tonemapping to get some highlights back
-    f = untonemap(f);
+     // Video - inverse tonemapping to get some highlights back
+     f = untonemap(f);
   } else if(colourspace == 2) {
-    // Video (gamma only)
-    f = max(f, 0.0);
-    f.r = pow(f.r, 2.4);
-    f.g = pow(f.g, 2.4);
-    f.b = pow(f.b, 2.4);
+     // Video (gamma only)
+     f = max(f, 0.0);
+     f.r = pow(f.r, 2.4);
+     f.g = pow(f.g, 2.4);
+     f.b = pow(f.b, 2.4);
   } else if(colourspace == 3) {
-    // Linear
-    f = f;
+     // Linear
+     f = f;
   }
 
   // Per-blur weights from curve in UI - alpha curve is used as master
@@ -166,31 +166,31 @@ void main() {
   a *= tintrgb;
 
   if(maintain) {
-    a /= 9.0;
-    if(!glowonly) a.rgb += f / 9.0;
+     a /= 9.0;
+     if(!glowonly) a.rgb += f / 9.0;
   } else {
-    a /= 8.0;
-    if(!glowonly) a.rgb += f;
+     a /= 8.0;
+     if(!glowonly) a.rgb += f;
   }
 
   a.rgb = mix(f, a.rgb, mixx);
 
   // Convert from linear to whatever the input space was
   if(colourspace == 0) {
-    // Log
-    a.rgb = adsk_scene2log(a.rgb);
+     // Log
+     a.rgb = adsk_scene2log(a.rgb);
   } else if(colourspace == 1) {
-    // Video - tonemap from linear
-    a.rgb = tonemap(a.rgb);
+     // Video - tonemap from linear
+     a.rgb = tonemap(a.rgb);
   } else if(colourspace == 2) {
-    // Video (gamma only)
-    a = max(a, 0.0);
-    a.r = pow(a.r, 1.0/2.4);
-    a.g = pow(a.g, 1.0/2.4);
-    a.b = pow(a.b, 1.0/2.4);
+     // Video (gamma only)
+     a = max(a, 0.0);
+     a.r = pow(a.r, 1.0/2.4);
+     a.g = pow(a.g, 1.0/2.4);
+     a.b = pow(a.b, 1.0/2.4);
   } else if(colourspace == 3) {
-    // Linear
-    a = a;
+     // Linear
+     a = a;
   }
 
   gl_FragColor = a;
