@@ -3,7 +3,7 @@
 
 #extension GL_ARB_shader_texture_lod : enable
 
-uniform sampler2D adsk_results_pass16;
+uniform sampler2D strength, adsk_results_pass16;
 uniform float size, quality;
 uniform float adsk_result_w, adsk_result_h;
 
@@ -60,6 +60,7 @@ vec4 gaussianblur(sampler2D tex, float lod, vec2 xy, vec2 res, float sizered, fl
 
 void main() {
   vec2 res = vec2(adsk_result_w, adsk_result_h);
+  float strength = texture2D(strength, gl_FragCoord.xy / res).b;
 
   // We do the blur in two stages: a box filter downres followed by a proper
   // Gaussian blur on that low res image.  We get the downres for free
@@ -68,7 +69,7 @@ void main() {
   // We balance the amount of downres against the amount of true convolution with
   // the quality parameter, which is the approximate size of the second stage blur
   // in pixels;  it's not exact because the downres is limited to powers of two
-  float s = max(size / 128.000000, 0.0001);
+  float s = max(size * strength / 128.000000, 0.0001);
   float downfactor = min(quality / s, 1.0);
   float downlod = floor(log2(1.0/downfactor));
   downfactor = 1.0 / pow(2.0, downlod);
@@ -91,28 +92,20 @@ void main() {
   vec4 w1, w2, w3, w4, w5, w6, w7, w8;
   w1 = max(adskEvalDynCurves(weights, vec4(0.0/7.0)), 0.0);
   w1.rgb *= w1.a;
-  w1.a = 1.0;
   w2 = max(adskEvalDynCurves(weights, vec4(1.0/7.0)), 0.0);
   w2.rgb *= w2.a;
-  w2.a = 1.0;
   w3 = max(adskEvalDynCurves(weights, vec4(2.0/7.0)), 0.0);
   w3.rgb *= w3.a;
-  w3.a = 1.0;
   w4 = max(adskEvalDynCurves(weights, vec4(3.0/7.0)), 0.0);
   w4.rgb *= w4.a;
-  w4.a = 1.0;
   w5 = max(adskEvalDynCurves(weights, vec4(4.0/7.0)), 0.0);
   w5.rgb *= w5.a;
-  w5.a = 1.0;
   w6 = max(adskEvalDynCurves(weights, vec4(5.0/7.0)), 0.0);
   w6.rgb *= w6.a;
-  w6.a = 1.0;
   w7 = max(adskEvalDynCurves(weights, vec4(6.0/7.0)), 0.0);
   w7.rgb *= w7.a;
-  w7.a = 1.0;
   w8 = max(adskEvalDynCurves(weights, vec4(7.0/7.0)), 0.0);
   w8.rgb *= w8.a;
-  w8.a = 1.0;
 
   vec4 a = gb17                                              * w1;
   a += texture2D(adsk_results_pass15, gl_FragCoord.xy / res) * w2;

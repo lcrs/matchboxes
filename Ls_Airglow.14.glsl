@@ -3,7 +3,7 @@
 
 #extension GL_ARB_shader_texture_lod : enable
 
-uniform sampler2D adsk_results_pass1;
+uniform sampler2D strength, adsk_results_pass1;
 uniform float size, quality;
 uniform float adsk_result_w, adsk_result_h;
 
@@ -52,6 +52,7 @@ vec4 gaussianblur(sampler2D tex, float lod, vec2 xy, vec2 res, float sizered, fl
 
 void main() {
   vec2 res = vec2(adsk_result_w, adsk_result_h);
+  float strength = texture2D(strength, gl_FragCoord.xy / res).b;
 
   // We do the blur in two stages: a box filter downres followed by a proper
   // Gaussian blur on that low res image.  We get the downres for free
@@ -60,7 +61,7 @@ void main() {
   // We balance the amount of downres against the amount of true convolution with
   // the quality parameter, which is the approximate size of the second stage blur
   // in pixels;  it's not exact because the downres is limited to powers of two
-  float s = max(size / 64.000000, 0.0001);
+  float s = max(size * strength / 64.000000, 0.0001);
   float downfactor = min(quality / s, 1.0);
   float downlod = floor(log2(1.0/downfactor));
   downfactor = 1.0 / pow(2.0, downlod);

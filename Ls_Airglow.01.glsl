@@ -1,5 +1,9 @@
 // Airglow
-// Pass 1: pack front RGB and glow source A together
+// This has a lot of passes.  I used a little Python script to generate
+// most of them, because they're just a lot of Gaussian blurring
+// See Ls_Airglow_builder.py
+//
+// Pass 1: multiply front RGB and glow source A together
 // lewis@lewissaunders.com
 
 uniform sampler2D front, source;
