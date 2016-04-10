@@ -10,8 +10,10 @@ uniform float adsk_result_w, adsk_result_h;
 uniform sampler2D front, adsk_results_pass1, adsk_results_pass3, adsk_results_pass5, adsk_results_pass7, adsk_results_pass9, adsk_results_pass11, adsk_results_pass13, adsk_results_pass15;
 uniform vec3 tint;
 uniform float mixx;
-vec3 adsk_hsv2rgb(vec3 hsv);
 uniform bool glowonly;
+uniform ivec4 weights;
+vec3 adsk_hsv2rgb(vec3 hsv);
+vec4 adskEvalDynCurves(ivec4 curve, vec4 x);
 
 // Return a 1D Gaussian blur from texture tex, sampling from mipmap level lod
 // xy: centre of blur in pixels
@@ -76,7 +78,7 @@ void main() {
 
   vec4 gb17 = gaussianblur(adsk_results_pass16, downlod, downxy, downres, downs, downs, downs, downs, vec2(0.0, 1.0));
 
-  // Blend and comp 'em all
+  // Blend 'em all
   vec3 tintc = tint;
   tintc.x /= 360.0;
   tintc.yz /= 100.0;
@@ -85,17 +87,44 @@ void main() {
   vec4 front = texture2D(front, gl_FragCoord.xy / res);
   vec4 frontmulted = texture2D(adsk_results_pass1, gl_FragCoord.xy / res);
 
-  vec4 a = gb17;
-  a += texture2D(adsk_results_pass15, gl_FragCoord.xy / res);
-  a += texture2D(adsk_results_pass13, gl_FragCoord.xy / res);
-  a += texture2D(adsk_results_pass11, gl_FragCoord.xy / res);
-  a += texture2D(adsk_results_pass9, gl_FragCoord.xy / res);
-  a += texture2D(adsk_results_pass7, gl_FragCoord.xy / res);
-  a += texture2D(adsk_results_pass5, gl_FragCoord.xy / res);
-  a += texture2D(adsk_results_pass3, gl_FragCoord.xy / res);
+  // Per-blur weights from curve in UI - alpha curve is used master
+  vec4 w1, w2, w3, w4, w5, w6, w7, w8;
+  w1 = max(adskEvalDynCurves(weights, vec4(0.0/7.0)), 0.0);
+  w1.rgb *= w1.a;
+  w1.a = 1.0;
+  w2 = max(adskEvalDynCurves(weights, vec4(1.0/7.0)), 0.0);
+  w2.rgb *= w2.a;
+  w2.a = 1.0;
+  w3 = max(adskEvalDynCurves(weights, vec4(2.0/7.0)), 0.0);
+  w3.rgb *= w3.a;
+  w3.a = 1.0;
+  w4 = max(adskEvalDynCurves(weights, vec4(3.0/7.0)), 0.0);
+  w4.rgb *= w4.a;
+  w4.a = 1.0;
+  w5 = max(adskEvalDynCurves(weights, vec4(4.0/7.0)), 0.0);
+  w5.rgb *= w5.a;
+  w5.a = 1.0;
+  w6 = max(adskEvalDynCurves(weights, vec4(5.0/7.0)), 0.0);
+  w6.rgb *= w6.a;
+  w6.a = 1.0;
+  w7 = max(adskEvalDynCurves(weights, vec4(6.0/7.0)), 0.0);
+  w7.rgb *= w7.a;
+  w7.a = 1.0;
+  w8 = max(adskEvalDynCurves(weights, vec4(7.0/7.0)), 0.0);
+  w8.rgb *= w8.a;
+  w8.a = 1.0;
+
+  vec4 a = gb17                                              * w1;
+  a += texture2D(adsk_results_pass15, gl_FragCoord.xy / res) * w2;
+  a += texture2D(adsk_results_pass13, gl_FragCoord.xy / res) * w3;
+  a += texture2D(adsk_results_pass11, gl_FragCoord.xy / res) * w4;
+  a += texture2D(adsk_results_pass9,  gl_FragCoord.xy / res) * w5;
+  a += texture2D(adsk_results_pass7,  gl_FragCoord.xy / res) * w6;
+  a += texture2D(adsk_results_pass5,  gl_FragCoord.xy / res) * w7;
+  a += texture2D(adsk_results_pass3,  gl_FragCoord.xy / res) * w8;
   a *= tintrgb;
   a /= 8.0;
-  
+
   if(!glowonly) a.rgb += front.rgb;
 
   a.rgb = mix(front.rgb, a.rgb, mixx);

@@ -97,10 +97,20 @@
       <SubUniform ResDependent="None" Max="10000.0" Min="0.0" Default="100.0">      </SubUniform>
     </Uniform>
     <Uniform Name="mixx"                DisplayName="Mix" Page="0" Col="1" Row="1" Type="float"      Default="1.0"        Min="0.0" Max="1.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
-    <Uniform Row="2" Col="1" Page="0" Default="False" Tooltip="" Type="bool" DisplayName="Output glow only" Name="glowonly"></Uniform>
+    <Uniform Row="2" Col="1" Page="0"   Default="False" Tooltip="" Type="bool" DisplayName="Output glow only" Name="glowonly"></Uniform>
+    <Uniform Inc="1" Tooltip="" Row="0" Col="1" Page="1" Type="ivec4" DisplayName="Diffusion curve" Name="weights" CurveBackground="0" ValueType="Curve" CurveWrapArround="0" CurveMinY="-8" CurveMaxY="10" CurveShape="6">
+      <SubUniform Max="1000000" Min="-1000000" Default="0" CurveName="Red" CurveR="255" CurveG="0" CurveB="0"></SubUniform>
+      <SubUniform Max="1000000" Min="-1000000" Default="0" CurveName="Green" CurveR="0" CurveG="255" CurveB="0"></SubUniform>
+      <SubUniform Max="1000000" Min="-1000000" Default="0" CurveName="Blue" CurveR="0" CurveG="0" CurveB="255"></SubUniform>
+      <SubUniform Max="1000000" Min="-1000000" Default="0" CurveName="Master" CurveR="0" CurveG="0" CurveB="0"></SubUniform>
+    </Uniform>
   </Shader>
   <Page Page="0" Name="Master">
     <Col Page="0" Col="1" Name="Diffusion"></Col>
-    <Col Page="0" Col="2" Name="Tint"></Col>
+    <Col Page="0" Col="2" Name="Gain"></Col>
+  </Page>
+  <Page Page="1" Name="Falloff">
+    <Col Page="1" Col="1" Name=""></Col>
+    <Col Page="1" Col="2" Name=""></Col>
   </Page>
 </ShaderNodePreset>
