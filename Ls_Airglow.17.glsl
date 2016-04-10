@@ -10,7 +10,7 @@ uniform float adsk_result_w, adsk_result_h;
 uniform sampler2D front, adsk_results_pass1, adsk_results_pass3, adsk_results_pass5, adsk_results_pass7, adsk_results_pass9, adsk_results_pass11, adsk_results_pass13, adsk_results_pass15;
 uniform vec3 tint;
 uniform float mixx;
-uniform bool glowonly;
+uniform bool glowonly, maintain;
 uniform ivec4 weights;
 uniform int colourspace;
 vec3 adsk_hsv2rgb(vec3 hsv);
@@ -164,9 +164,14 @@ void main() {
   a += texture2D(adsk_results_pass5,  gl_FragCoord.xy / res) * w7;
   a += texture2D(adsk_results_pass3,  gl_FragCoord.xy / res) * w8;
   a *= tintrgb;
-  a /= 8.0;
 
-  if(!glowonly) a.rgb += f;
+  if(maintain) {
+    a /= 9.0;
+    if(!glowonly) a.rgb += f / 9.0;
+  } else {
+    a /= 8.0;
+    if(!glowonly) a.rgb += f;
+  }
 
   a.rgb = mix(f, a.rgb, mixx);
 
