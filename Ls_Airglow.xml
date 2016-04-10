@@ -1,15 +1,21 @@
-<ShaderNodePreset TimelineUseBack="False" Description="Airglow - exponential falloff glow modelled on what light does in an isotropically scattering optically thick medium.  A bunch of blurs added together, using mipmaps to keep it fast
+<ShaderNodePreset TimelineUseBack="False" Description="Airglow - exponential falloff glow modelled on what light does in an isotropically scattering optically thick medium...  a bunch of blurs added up. Using mipmaps to keep it fast.
 
 lewis@lewissaunders.com" ShaderType="Matchbox" SupportsAdaptiveDegradation="False" SoftwareVersion="2016.0.0" Version="1" SupportsAction="False" SupportsTimeline="False" Name="Airglow" MatteProvider="False" LimitInputsToTexture="True" CommercialUsePermitted="True" SupportsTransition="False">
   <Shader OutputBitDepth="Output" Index="1">
     <Uniform Name="front"              DisplayName="Front"              Type="sampler2D"  Index="0" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" Tooltip="" InputColor="67, 77, 83" InputType="Front" NoInput="Error" GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
     <Uniform Name="source"             DisplayName="Source matte"       Type="sampler2D"  Index="1" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" Tooltip="" InputColor="67, 77, 83" InputType="Matte" NoInput="White" GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
+    <Uniform Max="1000000" Min="-1000000" Default="1" Inc="1" Tooltip="Internally convert from this colourspace to linear to do the glowing.  The video mode attempts unwraps the highlights to get some hot values back - if problems arise try the gamma-only option but this is one of the few situations where it really pays to have proper linear sources!" Row="0" Col="0" Page="0" Type="int" DisplayName="Colourspace" Name="colourspace" ValueType="Popup">
+    <PopupEntry Title="Log" Value="0"></PopupEntry>
+    <PopupEntry Title="Video" Value="1"></PopupEntry>
+    <PopupEntry Title="Video (gamma only)" Value="2"></PopupEntry>
+    <PopupEntry Title="Linear" Value="3"></PopupEntry>
+    </Uniform>
   </Shader>
   <Shader OutputBitDepth="Output" Index="2">
     <Uniform Index="2" NoInput="White" Tooltip="" DisplayName="Strength" InputColor="80, 80, 20" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="strength"></Uniform>
     <Uniform Name="adsk_results_pass1" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR_MIPMAP_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR_MIPMAP_LINEAR" Mipmaps="True" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
     <Uniform Name="size"               DisplayName="Size"               Page="0" Col="1" Row="0" Type="float"      Default="75.0"        Min="0.0" Max="1000000.0"  Inc="0.3"       ResDependent="None"       Tooltip=""></Uniform>
-    <Uniform Name="quality"            DisplayName="Quality"            Page="0" Col="1" Row="4" Type="float"      Default="15.0"        Min="1.0" Max="1000000.0"  Inc="1.0"       ResDependent="None"       Tooltip=""></Uniform>
+    <Uniform Name="quality"            DisplayName="Quality"            Page="0" Col="1" Row="4" Type="float"      Default="15.0"        Min="1.0" Max="1000000.0"  Inc="1.0"       ResDependent="None"       Tooltip="Turning this up may reduce artifacts, but it will get slower"></Uniform>
   </Shader>
   <Shader OutputBitDepth="Output" Index="3">
     <Uniform Index="2" Tooltip="" DisplayName="Strength" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="strength"><Duplicate></Duplicate></Uniform>
@@ -116,19 +122,19 @@ lewis@lewissaunders.com" ShaderType="Matchbox" SupportsAdaptiveDegradation="Fals
     </Uniform>
     <Uniform Name="mixx"                DisplayName="Mix" Page="0" Col="1" Row="1" Type="float"      Default="1.0"        Min="0.0" Max="1.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
     <Uniform Row="2" Col="1" Page="0"   Default="False" Tooltip="" Type="bool" DisplayName="Output glow only" Name="glowonly"></Uniform>
-    <Uniform Inc="1" Tooltip="" Row="0" Col="1" Page="1" Type="ivec4" DisplayName="Diffusion curve" Name="weights" CurveBackground="0" ValueType="Curve" CurveWrapArround="0" CurveMinY="-8" CurveMaxY="10" CurveShape="6">
+    <Uniform Inc="1" Tooltip="Adjust the weights of the blurs - smaller on the left to larger on the right.  Reducing the left can bring back some sharp edges" Row="0" Col="1" Page="1" Type="ivec4" DisplayName="Diffusion curve" Name="weights" CurveBackground="0" ValueType="Curve" CurveWrapArround="0" CurveMinY="-8" CurveMaxY="10" CurveShape="6">
       <SubUniform Max="1000000" Min="-1000000" Default="0" CurveName="Red" CurveR="255" CurveG="0" CurveB="0"></SubUniform>
       <SubUniform Max="1000000" Min="-1000000" Default="0" CurveName="Green" CurveR="0" CurveG="255" CurveB="0"></SubUniform>
       <SubUniform Max="1000000" Min="-1000000" Default="0" CurveName="Blue" CurveR="0" CurveG="0" CurveB="255"></SubUniform>
       <SubUniform Max="1000000" Min="-1000000" Default="0" CurveName="Master" CurveR="0" CurveG="0" CurveB="0"></SubUniform>
     </Uniform>
+    <Uniform Type="int" DisplayName="colourspace" Name="colourspace"><Duplicate></Duplicate></Uniform>
   </Shader>
   <Page Page="0" Name="Master">
+    <Col Page="0" Col="0" Name="Input is..."></Col>
     <Col Page="0" Col="1" Name="Diffusion"></Col>
     <Col Page="0" Col="2" Name="Gain"></Col>
   </Page>
   <Page Page="1" Name="Falloff">
-    <Col Page="1" Col="1" Name=""></Col>
-    <Col Page="1" Col="2" Name=""></Col>
   </Page>
 </ShaderNodePreset>

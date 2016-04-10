@@ -102,66 +102,133 @@ for blur in range(1, 9):
 
 """
 
-pass 17 then needs this type of stuff as well...
-
-
+pass 17 then needs this stuff as well:
 uniform sampler2D front, adsk_results_pass1, adsk_results_pass3, adsk_results_pass5, adsk_results_pass7, adsk_results_pass9, adsk_results_pass11, adsk_results_pass13, adsk_results_pass15;
 uniform vec3 tint;
 uniform float mixx;
 uniform bool glowonly;
 uniform ivec4 weights;
+uniform int colourspace;
 vec3 adsk_hsv2rgb(vec3 hsv);
 vec4 adskEvalDynCurves(ivec4 curve, vec4 x);
+vec3 adsk_log2scene(vec3 log);
+vec3 adsk_scene2log(vec3 lin);
+
+// These two functions need to be in sync with pass 1!
+// Convert from linear to video a simple, invertible way, but with smooth highlight rolloff
+vec3 tonemap(vec3 x) {
+  x = max(x, 0.0);
+  x = adsk_scene2log(x);
+  x -= 95.0 / 1023.0;
+  x *= 3.14159265;
+  x = cos(x);
+  x = 1.0 - x;
+  x /= 2.0;
+  x = max(x, 0.0);
+  return x;
+}
+
+// Convert from video to linear, the inverse of above - unrolls highlights to above 1.0
+vec3 untonemap(vec3 x) {
+  x = max(x, 0.0);
+  x *= 2.0;
+  x = 1.0 - x;
+  x = acos(x);
+  x /= 3.14159265;
+  x += 95.0 / 1023.0;
+  x = max(x, 0.0);
+  x = adsk_log2scene(x);
+  x = max(x, 0.0);
+  return x;
+}
 
 
 
-vec4 gb17 = gaussianblur(adsk_results_pass16, downlod, downxy, downres, downs, downs, downs, downs, vec2(0.0, 1.0));
 
-// Blend 'em all
-vec3 tintc = tint;
-tintc.x /= 360.0;
-tintc.yz /= 100.0;
-vec4 tintrgb = vec4(adsk_hsv2rgb(tintc), 1.0);
 
-vec4 front = texture2D(front, gl_FragCoord.xy / res);
-vec4 frontmulted = texture2D(adsk_results_pass1, gl_FragCoord.xy / res);
 
-// Per-blur weights from curve in UI - alpha curve is used master
-vec4 w1, w2, w3, w4, w5, w6, w7, w8;
-w1 = max(adskEvalDynCurves(weights, vec4(0.0/7.0)), 0.0);
-w1.rgb *= w1.a;
-w2 = max(adskEvalDynCurves(weights, vec4(1.0/7.0)), 0.0);
-w2.rgb *= w2.a;
-w3 = max(adskEvalDynCurves(weights, vec4(2.0/7.0)), 0.0);
-w3.rgb *= w3.a;
-w4 = max(adskEvalDynCurves(weights, vec4(3.0/7.0)), 0.0);
-w4.rgb *= w4.a;
-w5 = max(adskEvalDynCurves(weights, vec4(4.0/7.0)), 0.0);
-w5.rgb *= w5.a;
-w6 = max(adskEvalDynCurves(weights, vec4(5.0/7.0)), 0.0);
-w6.rgb *= w6.a;
-w7 = max(adskEvalDynCurves(weights, vec4(6.0/7.0)), 0.0);
-w7.rgb *= w7.a;
-w8 = max(adskEvalDynCurves(weights, vec4(7.0/7.0)), 0.0);
-w8.rgb *= w8.a;
+and at the end:
+  vec4 gb17 = gaussianblur(adsk_results_pass16, downlod, downxy, downres, downs, downs, downs, downs, vec2(0.0, 1.0));
 
-vec4 a = gb17                                              * w1;
-a += texture2D(adsk_results_pass15, gl_FragCoord.xy / res) * w2;
-a += texture2D(adsk_results_pass13, gl_FragCoord.xy / res) * w3;
-a += texture2D(adsk_results_pass11, gl_FragCoord.xy / res) * w4;
-a += texture2D(adsk_results_pass9,  gl_FragCoord.xy / res) * w5;
-a += texture2D(adsk_results_pass7,  gl_FragCoord.xy / res) * w6;
-a += texture2D(adsk_results_pass5,  gl_FragCoord.xy / res) * w7;
-a += texture2D(adsk_results_pass3,  gl_FragCoord.xy / res) * w8;
-a *= tintrgb;
-a /= 8.0;
+  // Blend 'em all
+  vec3 tintc = tint;
+  tintc.x /= 360.0;
+  tintc.yz /= 100.0;
+  vec4 tintrgb = vec4(adsk_hsv2rgb(tintc), 1.0);
 
-if(!glowonly) a.rgb += front.rgb;
+  vec3 f = texture2D(front, gl_FragCoord.xy / res).rgb;
+  // Convert front pixel to linear so we can add it to the glow
+  if(colourspace == 0) {
+    // Log
+    f = adsk_log2scene(f);
+  } else if(colourspace == 1) {
+    // Video - inverse tonemapping to get some highlights back
+    f = untonemap(f);
+  } else if(colourspace == 2) {
+    // Video (gamma only)
+    f = max(f, 0.0);
+    f.r = pow(f.r, 2.4);
+    f.g = pow(f.g, 2.4);
+    f.b = pow(f.b, 2.4);
+  } else if(colourspace == 3) {
+    // Linear
+    f = f;
+  }
 
-a.rgb = mix(front.rgb, a.rgb, mixx);
+  // Per-blur weights from curve in UI - alpha curve is used as master
+  vec4 w1, w2, w3, w4, w5, w6, w7, w8;
+  w1 = max(adskEvalDynCurves(weights, vec4(0.0/7.0)), 0.0);
+  w1.rgb *= w1.a;
+  w2 = max(adskEvalDynCurves(weights, vec4(1.0/7.0)), 0.0);
+  w2.rgb *= w2.a;
+  w3 = max(adskEvalDynCurves(weights, vec4(2.0/7.0)), 0.0);
+  w3.rgb *= w3.a;
+  w4 = max(adskEvalDynCurves(weights, vec4(3.0/7.0)), 0.0);
+  w4.rgb *= w4.a;
+  w5 = max(adskEvalDynCurves(weights, vec4(4.0/7.0)), 0.0);
+  w5.rgb *= w5.a;
+  w6 = max(adskEvalDynCurves(weights, vec4(5.0/7.0)), 0.0);
+  w6.rgb *= w6.a;
+  w7 = max(adskEvalDynCurves(weights, vec4(6.0/7.0)), 0.0);
+  w7.rgb *= w7.a;
+  w8 = max(adskEvalDynCurves(weights, vec4(7.0/7.0)), 0.0);
+  w8.rgb *= w8.a;
 
-gl_FragColor = a;
+  // Weight and add the blurs
+  vec4 a = gb17                                              * w1;
+  a += texture2D(adsk_results_pass15, gl_FragCoord.xy / res) * w2;
+  a += texture2D(adsk_results_pass13, gl_FragCoord.xy / res) * w3;
+  a += texture2D(adsk_results_pass11, gl_FragCoord.xy / res) * w4;
+  a += texture2D(adsk_results_pass9,  gl_FragCoord.xy / res) * w5;
+  a += texture2D(adsk_results_pass7,  gl_FragCoord.xy / res) * w6;
+  a += texture2D(adsk_results_pass5,  gl_FragCoord.xy / res) * w7;
+  a += texture2D(adsk_results_pass3,  gl_FragCoord.xy / res) * w8;
+  a *= tintrgb;
+  a /= 8.0;
 
+  if(!glowonly) a.rgb += f;
+
+  a.rgb = mix(f, a.rgb, mixx);
+
+  // Convert from linear to whatever the input space was
+  if(colourspace == 0) {
+    // Log
+    a.rgb = adsk_scene2log(a.rgb);
+  } else if(colourspace == 1) {
+    // Video - tonemap from linear
+    a.rgb = tonemap(a.rgb);
+  } else if(colourspace == 2) {
+    // Video (gamma only)
+    a = max(a, 0.0);
+    a.r = pow(a.r, 1.0/2.4);
+    a.g = pow(a.g, 1.0/2.4);
+    a.b = pow(a.b, 1.0/2.4);
+  } else if(colourspace == 3) {
+    // Linear
+    a = a;
+  }
+
+  gl_FragColor = a;
 
 
 """
