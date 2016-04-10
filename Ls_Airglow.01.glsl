@@ -1,15 +1,15 @@
 // Airglow
-// Pass 1: pack front RGB and strength A together
+// Pass 1: pack front RGB and glow source A together
 // lewis@lewissaunders.com
 
-uniform sampler2D front, strength;
+uniform sampler2D front, source;
 uniform float adsk_result_w, adsk_result_h;
 
 void main() {
   vec2 res = vec2(adsk_result_w, adsk_result_h);
-  vec2 xy = gl_FragColor.xy / res;
-  vec3 f = texture2D(front, xy).rgb;
-  float m = texture2D(strength, xy).b;
+  vec2 xy = gl_FragCoord.xy / res;
+  float m = texture2D(source, xy).b;
+  vec3 f = texture2D(front, xy).rgb * m;
 
   gl_FragColor = vec4(f, m);
 }
