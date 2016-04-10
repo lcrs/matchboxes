@@ -1,6 +1,6 @@
 #extension GL_ARB_shader_texture_lod : enable
 
-uniform sampler2D adsk_results_pass13;
+uniform sampler2D front;
 uniform float size, quality;
 uniform float adsk_result_w, adsk_result_h;
 const float pi = 3.141592653589793238;
@@ -52,5 +52,5 @@ void main() {
   vec2 downres = downfactor * res;
   vec2 downxy = downfactor * gl_FragCoord.xy;
 
-  gl_FragColor = gaussianblur(adsk_results_pass13, downlod, downxy, downres, downs, downs, downs, downs, vec2(0.0, 1.0));
+  gl_FragColor = gaussianblur(front, downlod, downxy, downres, downs, downs, downs, downs, vec2(1.0, 0.0));
 }

@@ -16,17 +16,22 @@ vec4 gaussianblur(sampler2D tex, float lod, vec2 xy, vec2 res, float sizered, fl
   gx = 1.0 / (sqrt(2.0 * pi) * sigmas);
   gy = exp(-0.5 / (sigmas * sigmas));
   gz = gy * gy;
+  vec4 a, sample1, sample2 = vec4(0.0);
 
   // First take the centre sample
-  vec4 a = gx * texture2DLod(tex, xy / res, lod);
+  // Samples are weighted by their alpha, the strength input
+  sample1 = texture2DLod(tex, xy / res, lod);
+  a += gx * sample1 * sample1.a;
   vec4 energy = gx;
   gx *= gy;
   gy *= gz;
 
   // Now the other samples
   for(float i = 1.0; i <= support; i++) {
-    a += gx * texture2DLod(tex, (xy - i * dir) / res, lod);
-    a += gx * texture2DLod(tex, (xy + i * dir) / res, lod);
+    sample1 = texture2DLod(tex, (xy - i * dir) / res, lod);
+    sample2 = texture2DLod(tex, (xy + i * dir) / res, lod);
+    a += gx * sample1 * sample1.a;
+    a += gx * sample2 * sample2.a;
     energy += 2.0 * gx;
     gx *= gy;
     gy *= gz;
@@ -43,7 +48,6 @@ void main() {
   // is, the less severe the downres.  It is approximately the size of the second-stage
   // Gaussian blur - not exactly so, because the downres factors we can get from the mipmaps
   // are limited to powers of two
-
   float s = max(size, 0.0001);
   float downfactor = min(quality / s, 1.0);
   float downlod = floor(log2(1.0/downfactor));
@@ -52,5 +56,5 @@ void main() {
   vec2 downres = downfactor * res;
   vec2 downxy = downfactor * gl_FragCoord.xy;
 
-  gl_FragColor = gaussianblur(adsk_results_pass1, downlod, downxy, downres, downs, downs, downs, downs, vec2(0.0, 1.0));
+  gl_FragColor = gaussianblur(front, downlod, downxy, downres, downs, downs, downs, downs, vec2(1.0, 0.0));
 }
