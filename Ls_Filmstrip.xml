@@ -2,9 +2,9 @@
 
 lewis@lewissaunders.com" Name="Filmstrip">
    <Shader ClearColor="0, 0, 0, 0" GridSubdivision="1" OutputBitDepth="Output" Index="1">
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="10.0" Inc="1.00" Tooltip="" Row="1" Col="1" Page="0" Type="float" ChannelName="Columns" DisplayName="Columns" Name="cols">
+      <Uniform ResDependent="None" Max="1000000.0" Min="1.0" Default="10.0" Inc="1.00" Tooltip="" Row="1" Col="1" Page="0" Type="float" ChannelName="Columns" DisplayName="Columns" Name="cols">
       </Uniform>
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.5" Inc="0.1" Tooltip="" Row="2" Col="1" Page="0" Type="float" ChannelName="Border" DisplayName="Border" Name="xborder">
+      <Uniform ResDependent="None" Max="1000000.0" Min="0.0" Default="1.5" Inc="0.1" Tooltip="" Row="2" Col="1" Page="0" Type="float" ChannelName="Border" DisplayName="Border" Name="xborder">
       </Uniform>
       <Uniform Row="2" Col="2" Page="0" Default="True" Tooltip="" Type="bool" ChannelName="AllFramesSame" DisplayName="All frames same" Name="allframes">
       </Uniform>
