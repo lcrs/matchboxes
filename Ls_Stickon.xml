@@ -2,6 +2,8 @@
 
 Works in version 2017 only!
 
+Demo: https://www.youtube.com/watch?v=m27XZX7dtJU
+
 lewis@lewissaunders.com" Name="Stickon">
    <Shader ClearColor="0, 0, 0, 0" GridSubdivision="1" OutputBitDepth="Float32" Index="1">
       <Uniform Row="1" Col="1" Page="0" Default="True" Tooltip="Start with a UV map and warp that per-frame instead of starting with the image itself and repeatedly warping that - this keeps the result sharper but means it can't fold over itself" Type="bool" ChannelName="accumulateUVs" DisplayName="Accumulate UVs" Name="accumulateUVs">

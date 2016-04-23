@@ -2,6 +2,8 @@
 
 Works in version 2017 only!
 
+Demo: https://www.youtube.com/watch?v=Z_HmdLqt3Xw
+
 lewis@lewissaunders.com" ShaderType="Matchbox" AccumulatePass="1" SoftwareVersion="2017.0.0" Version="1" SupportsAction="False" SupportsTimeline="False" MatteProvider="False" LimitInputsToTexture="True" CommercialUsePermitted="True" SupportsTransition="False" Name="Flock">
  <Shader GridSubdivision="1" OutputBitDepth="Float32" ClearColor="0, 0, 0, 0" Index="1" OutputWidthScaleFactor="1.0" OutputHeightScaleFactor="2.0">
   <Uniform Name="adsk_accum_texture" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_NEAREST" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_NEAREST" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
