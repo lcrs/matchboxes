@@ -1,6 +1,6 @@
 <ShaderNodePreset TimelineUseBack="False" Description="Flock - outputs a position map of points flocking and swarming about. Feed into a Position map in Action, attach an Atomize to the image, set the image's resolution slider to 1, and remember to turn Adaptive Degradation off on this Matchbox node! For speed, keep the output resolution of this shader as low as possible - view the result or matte output, and adjust the image size so there's not much black at the top. Make certain the bit depth is 16-bit fp!
 
-Demo:
+Works in version 2017 only!
 
 lewis@lewissaunders.com" ShaderType="Matchbox" AccumulatePass="1" SoftwareVersion="2017.0.0" Version="1" SupportsAction="False" SupportsTimeline="False" MatteProvider="False" LimitInputsToTexture="True" CommercialUsePermitted="True" SupportsTransition="False" Name="Flock">
  <Shader GridSubdivision="1" OutputBitDepth="Float32" ClearColor="0, 0, 0, 0" Index="1" OutputWidthScaleFactor="1.0" OutputHeightScaleFactor="2.0">
