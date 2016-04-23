@@ -1,0 +1,46 @@
+<ShaderNodePreset SupportsAdaptiveDegradation="True" SupportsAction="False" SupportsTransition="False" SupportsTimeline="False" TimelineUseBack="False" MatteProvider="False" CommercialUsePermitted="True"  AccumulatePass="1" AccumulationFromStartFrame="1" ShaderType="Matchbox" SoftwareVersion="2016.0.0" LimitInputsToTexture="True" Version="1" Description="Recursively warp an image by motion vectors, to stick it to something.  Make sure bit depth is 16-bit fp! Supply backward motion vectors to the vector input, i.e. the second output of Motion Analysis, or even better the backward channel from Nuke 9's VectorGenerator.  The front and matte inputs should normally be a still lined up on the Accumulate From frame.
+
+lewis@lewissaunders.com" Name="Stickon">
+   <Shader ClearColor="0, 0, 0, 0" GridSubdivision="1" OutputBitDepth="Float32" Index="1">
+      <Uniform Row="1" Col="1" Page="0" Default="True" Tooltip="Start with a UV map and warp that per-frame instead of starting with the image itself and repeatedly warping that - this keeps the result sharper but means it can't fold over itself" Type="bool" ChannelName="accumulateUVs" DisplayName="Accumulate UVs" Name="accumulateUVs">
+      </Uniform>
+      <Uniform Index="2" NoInput="White" Tooltip="" DisplayName="Matte" InputType="Matte" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="matte">
+      </Uniform>
+      <Uniform Index="3" NoInput="Error" Tooltip="" DisplayName="Bkwd Vectors" InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="vectors">
+      </Uniform>
+      <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="Front" InputType="Front" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="front">
+      </Uniform>
+      <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_accum_texture">
+      </Uniform>
+   </Shader>
+   <Shader ClearColor="0, 0, 0, 0" GridSubdivision="1" OutputBitDepth="Float32" Index="2">
+      <Uniform Row="1" Col="2" Page="0" Default="False" Tooltip="Output the warped UV map instead of the front image, for later UV mapping" Type="bool" ChannelName="outputUVs" DisplayName="Output UVs" Name="outputUVs" UIConditionSource="accumulateUVs" UIConditionValue="True" UIConditionType="Disable">
+      </Uniform>
+      <Uniform Type="bool" ChannelName="accumulateUVs" DisplayName="Accumulate UVs" Name="accumulateUVs">
+         <Duplicate>
+         </Duplicate>
+      </Uniform>
+      <Uniform Index="2" Tooltip="" DisplayName="Matte" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="matte">
+         <Duplicate>
+         </Duplicate>
+      </Uniform>
+      <Uniform Row="3" Col="2" Page="0" Default="False" Tooltip="Comp the warped front and matte over the back" Type="bool" ChannelName="comp" DisplayName="Comp over back" Name="comp">
+      </Uniform>
+      <Uniform Row="4" Col="2" Page="0" Default="False" Tooltip="Front input is already premultiplied on black" Type="bool" ChannelName="ispremult" DisplayName="Front is premultiplied" Name="ispremult" UIConditionSource="comp" UIConditionValue="True" UIConditionType="Disable">
+      </Uniform>
+      <Uniform Index="1" NoInput="Black" Tooltip="" DisplayName="Back" InputType="Back" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="back">
+      </Uniform>
+      <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass1">
+      </Uniform>
+      <Uniform Index="0" Tooltip="" DisplayName="Front" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="front">
+         <Duplicate>
+         </Duplicate>
+      </Uniform>
+   </Shader>
+   <Page Name="" Page="0">
+      <Col Name="Method" Col="1" Page="0">
+      </Col>
+      <Col Name="Output" Col="2" Page="0">
+      </Col>
+   </Page>
+</ShaderNodePreset>

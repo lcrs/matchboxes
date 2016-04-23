@@ -1,0 +1,38 @@
+<ShaderNodePreset TimelineUseBack="False" Description="Flock - outputs a position map of points flocking and swarming about. Feed into a Position map in Action, attach an Atomize to the image, set the image's resolution slider to 1, and remember to turn Adaptive Degradation off on this Matchbox node! For speed, keep the output resolution of this shader as low as possible - view the result or matte output, and adjust the image size so there's not much black at the top. Make certain the bit depth is 16-bit fp!
+
+Demo:
+
+lewis@lewissaunders.com" ShaderType="Matchbox" AccumulatePass="1" SoftwareVersion="2017.0.0" Version="1" SupportsAction="False" SupportsTimeline="False" MatteProvider="False" LimitInputsToTexture="True" CommercialUsePermitted="True" SupportsTransition="False" Name="Flock">
+ <Shader GridSubdivision="1" OutputBitDepth="Float32" ClearColor="0, 0, 0, 0" Index="1" OutputWidthScaleFactor="1.0" OutputHeightScaleFactor="2.0">
+  <Uniform Name="adsk_accum_texture" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_NEAREST" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_NEAREST" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
+  <Uniform Name="count"              DisplayName="Number"             ChannelName="Number"             Page="0" Col="0" Row="0" Type="int"        Default="9000"       Min="0"   Max="200000"     Inc="10"                                   Tooltip=""></Uniform>
+  <Uniform Name="startdir"           DisplayName="Start direction"    ChannelName="Start direction"    Page="0" Col="0" Row="1" Type="vec3"                                                       Inc="0.01" Action3DWidget="False" IconType="None" ValueType="Position" Tooltip="">
+                                                                                                                                      <SubUniform Default="1.0"        Min="0.0" Max="1000000.0"                   ResDependent="None"></SubUniform>
+                                                                                                                                      <SubUniform Default="1.0"        Min="0.0" Max="1000000.0"                   ResDependent="None"></SubUniform>
+                                                                                                                                      <SubUniform Default="0.0"        Min="0.0" Max="1000000.0"                   ResDependent="None"></SubUniform></Uniform>
+  <Uniform Name="startv"             DisplayName="Start speed"        ChannelName="Start speed"        Page="0" Col="0" Row="3" Type="float"      Default="5.0"        Min="0.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
+  <Uniform Name="startrand"          DisplayName="Start randomness"   ChannelName="Start randomness"   Page="0" Col="0" Row="4" Type="float"      Default="3.0"        Min="0.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
+
+  <Uniform Name="followradius"       DisplayName="Follow radius"      ChannelName="Follow radius"      Page="0" Col="1" Row="0" Type="float"      Default="50.0"       Min="0.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
+  <Uniform Name="attractradius"      DisplayName="Attract radius"     ChannelName="Attract radius"     Page="0" Col="1" Row="1" Type="float"      Default="100.0"      Min="0.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
+  <Uniform Name="repelradius"        DisplayName="Repel radius"       ChannelName="Repel radius"       Page="0" Col="1" Row="2" Type="float"      Default="75.0"       Min="0.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
+  <Uniform Name="strayradius"        DisplayName="Stray radius"       ChannelName="Stray radius"       Page="0" Col="1" Row="3" Type="float"      Default="150.0"      Min="0.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
+
+  <Uniform Name="follow"             DisplayName="Follow"             ChannelName="Follow"             Page="0" Col="2" Row="0" Type="float"      Default="2.0"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
+  <Uniform Name="attract"            DisplayName="Attract"            ChannelName="Attract"            Page="0" Col="2" Row="1" Type="float"      Default="0.01"       Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
+  <Uniform Name="repel"              DisplayName="Repel"              ChannelName="Repel"              Page="0" Col="2" Row="2" Type="float"      Default="0.3"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
+  <Uniform Name="stray"              DisplayName="Stray"              ChannelName="Stray"              Page="0" Col="2" Row="3" Type="float"      Default="0.7"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
+
+  <Uniform Name="speedlimit"         DisplayName="Speed limit"        ChannelName="Speed limit"        Page="0" Col="3" Row="0" Type="float"      Default="10.0"       Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
+  <Uniform Name="seed"               DisplayName="Seed"               ChannelName="Seed"               Page="0" Col="3" Row="4" Type="float"      Default="1"          Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
+ </Shader>
+<Shader GridSubdivision="1" OutputBitDepth="Float32" ClearColor="0, 0, 0, 0" Index="2">
+ <Uniform Name="adsk_results_pass1" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_NEAREST" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_NEAREST" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
+</Shader>
+ <Page Page="0" Name="">
+  <Col Page="0" Col="0" Name="Start"></Col>
+  <Col Page="0" Col="1" Name="Distances"></Col>
+  <Col Page="0" Col="2" Name="Forces"></Col>
+  <Col Page="0" Col="3" Name="Limits"></Col>
+ </Page>
+</ShaderNodePreset>
