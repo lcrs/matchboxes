@@ -2,6 +2,8 @@
 
 Works in version 2017 only!
 
+Demo: https://www.youtube.com/watch?v=NkS_wXSheME
+
 lewis@lewissaunders.com" Name="Filmstrip">
    <Shader ClearColor="0, 0, 0, 0" GridSubdivision="1" OutputBitDepth="Output" Index="1">
       <Uniform ResDependent="None" Max="1000000.0" Min="1.0" Default="10.0" Inc="1.00" Tooltip="" Row="1" Col="1" Page="0" Type="float" ChannelName="Columns" DisplayName="Columns" Name="cols">
