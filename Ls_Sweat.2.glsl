@@ -1,5 +1,5 @@
-// Sweat, pass 2: read drop simulation state from pixel colours and
-// render height map of drops
+// Sweat, pass 2: read drop simulation state from pixel colours, do the
+// metaball maths, render height map of drops
 // lewis@lewissaunders.com
 
 uniform sampler2D adsk_results_pass1;
@@ -17,16 +17,20 @@ void main() {
   vec2 res = vec2(adsk_result_w, adsk_result_h);
   vec2 xy = gl_FragCoord.xy;
 
-  // We loop over all drops, evaluating a Gaussian function centred on each
-  // We keep results for both distance to edge of drop, and
-  // distance to centre, which is softer
+  // We loop over all drops, evaluating and accumulating a Gaussian function
+  // centred on each, in a pretty classic "metaball" way
+  // We keep results based on both distance to edge of drop and
+  // distance to centre of drop, which is softer
   float metaballedges = 0.0;
   float metaballcentres = 0.0;
   for(float i = 0.5; i < float(drops); i+=1.0) {
+    // Get this drop's info from the accumulation texture
     vec4 drop = texture2D(adsk_results_pass1, vec2(i, 0.5)/res);
     vec2 droppos = drop.rg;
     float dropsize = drop.b;
     
+    // Compute the distance to this drop, and the value of its metaball
+    // falloff at this pixel
     vec2 here2drop = (xy/res) - droppos;
     here2drop.x *= adsk_result_frameratio;
     
@@ -39,11 +43,13 @@ void main() {
     metaballedges += metaballfunc;
   }
  
+  // Carve out a range from the complete metaball field and shape it
   metaballedges -= trim;
   metaballedges /= shoulder;
   metaballedges = clamp(metaballedges, 0.0, 1.0);
   metaballedges = sqrt(1.0 - pow(1.0 - metaballedges, 2.0)); // Quarter-circle curve LUT
   
+  // Combine with the softer drop-centres field
   metaballcentres = clamp(metaballcentres, 0.0, 100.0);
   metaballcentres *= clamp(metaballedges * 3.0, 0.0, 1.0);
   float h = mix(metaballedges, metaballcentres, curvetop);
