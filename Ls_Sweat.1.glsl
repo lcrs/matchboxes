@@ -18,6 +18,7 @@ uniform sampler2D adsk_accum_texture;
 uniform bool adsk_accum_no_prev_frame;
 uniform float adsk_result_w, adsk_result_h, adsk_result_frameratio;
 uniform float adsk_time;
+uniform float speed, dribbletime, dribblethreshold, spatscale, spatthresh, spat;
 uniform int drops;
 
 float snoise(vec4 v);
@@ -46,7 +47,17 @@ void main() {
       vec4 dropt = texture2D(adsk_accum_texture, vec2(xy.x, 1.5)/res);
       if(dropt.g > 0.0) {
         // This drop is currently dribbling downwards
-        dropp.y -= noiz(xy.x, adsk_time, 3.0, 4.0) * 0.03;
+        dropp.y -= noiz(xy.x, adsk_time, 3.0, 4.0) * (speed/100.0);
+      }
+      if(dropp.y < -0.1) {
+        // Off the bottom, add a new drop
+        vec2 pos;
+        pos.x = noiz(xy.x, adsk_time, 2.1, 3.3);
+        pos.y = noiz(xy.x, adsk_time, 5.2, 6.4);
+        float size = noiz(xy.x, adsk_time, 8.5, 9.6) * 0.01;
+        size = max(size, 0.001);
+        dropp.rg = pos;
+        dropp.b = size;
       }
       gl_FragColor = dropp;
     }
@@ -58,10 +69,10 @@ void main() {
     } else {
       // Read state and step simulation
       vec4 dropt = texture2D(adsk_accum_texture, vec2(xy.x, 1.5)/res);
-      if(noiz(xy.x, adsk_time, 1.0, 2.0) > 1.25) {
+      if(noiz(xy.x, adsk_time, 1.0, 2.0) > dribblethreshold) {
         // Let's start a dribble movement on this drop - output
         // how many frames it will move for
-        dropt.g = noiz(xy.x, adsk_time, 5.0, 6.0) * 20.0;
+        dropt.g = noiz(xy.x, adsk_time, 5.0, 6.0) * dribbletime;
       }
       dropt.r += 1.0;
       if(dropt.g > 0.0) dropt.g -= 1.0;
@@ -71,30 +82,15 @@ void main() {
     // Rest of image, non drop-related
     if(adsk_accum_no_prev_frame) {
       // Output initial state
-      vec2 n = xy / 10.0;
-      float spatter = 5.0 * clamp(noiz(n.x, n.y, 15.0, 16.0) - 1.2, 0.0, 0.1);
-      // Are we under a drop?  If so, remove ourselves
-      for(float i = 0.5; i < float(drops); i+=1.0) {
-        // We re-calculate the initial position of every drop to figure this out :/
-        vec2 pos;
-        pos.x = noiz(i, 1.0, 2.0, 3.0);
-        pos.y = noiz(i, 4.0, 5.0, 6.0);
-        float size = noiz(i, 7.0, 8.0, 9.0) * 0.01;
-        size = max(size, 0.001);
-        vec2 here2drop = (xy/res) - pos;
-        here2drop.x *= adsk_result_frameratio;
-        float distance2drop = length(here2drop);
-        if(distance2drop < size * 3.0) {
-          spatter = 0.0;
-        }
-      }
+      vec2 n = xy / spatscale;
+      float spatter = spat * 5.0 * clamp(noiz(n.x, n.y, 11.123, -16.432) - 1.0, 0.0, 0.1);
       gl_FragColor = vec4(0.0, 0.0, 0.0, spatter);
     } else {
       // Step simulation
       float spatter = texture2D(adsk_accum_texture, xy/res).a;
       // Add some more
-      vec2 n = xy / 10.0;
-      spatter += 50.0 * clamp(noiz(n.x, n.y, adsk_time, 16.0) - 1.47, 0.0, 0.1);
+      vec2 n = xy / spatscale;
+      spatter += spat * 20.0 * clamp(noiz(n.x+.01245, n.y+0.25614, adsk_time*1.234 + 17.123, 14.432) - spatthresh, 0.0, 0.1);
       // Are we under a drop?  If so, remove ourselves
       for(float i = 0.5; i < float(drops); i+=1.0) {
         // Get this drop's info from the accumulation texture
@@ -104,7 +100,7 @@ void main() {
         vec2 here2drop = (xy/res) - droppos;
         here2drop.x *= adsk_result_frameratio;
         float distance2drop = length(here2drop);
-        if(distance2drop < dropsize * 3.0) {
+        if(distance2drop < dropsize * 2.0) {
           spatter = 0.0;
         }
       }

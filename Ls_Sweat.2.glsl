@@ -62,8 +62,9 @@ void main() {
   metaballcentres *= clamp(metaballedges * 3.0, 0.0, 1.0);
   float h = mix(metaballedges, metaballcentres, curvetop);
   
-  // Spatters texture
+  // Spatters texture, held out by drops
   float s = texture2D(adsk_results_pass1, xy/res).a;
+  s *= 1.0 - clamp(metaballedges * 3.0, 0.0, 1.0);
   h += s;
   
   gl_FragColor = vec4(h, h, h, s);

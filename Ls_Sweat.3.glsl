@@ -11,7 +11,6 @@ void main() {
   vec2 res = vec2(adsk_result_w, adsk_result_h);
   vec2 xy = gl_FragCoord.xy;
   float h = texture2D(adsk_results_pass2, xy/res).r;
-  float s = texture2D(adsk_results_pass2, xy/res).a;
 
 	// Convolve by x and y Sobel matrices to get gradient vector
   vec2 d;
@@ -29,5 +28,5 @@ void main() {
 	d.y +=  1.0 * texture2D(adsk_results_pass2, (xy + ksize * vec2(+1.0, +1.0)) / res).g;
   d /= ksize;
   
-  gl_FragColor = vec4(d, h, s);
+  gl_FragColor = vec4(d, h, h);
 }

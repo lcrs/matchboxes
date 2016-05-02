@@ -1,50 +1,42 @@
-<ShaderNodePreset SupportsAdaptiveDegradation="False" SupportsAction="False" SupportsTransition="False" SupportsTimeline="False" TimelineUseBack="False" MatteProvider="False" CommercialUsePermitted="True" ShaderType="Matchbox" SoftwareVersion="2017.0.0" LimitInputsToTexture="True" Version="1" Description="" Name="Preset Name" AccumulatePass="1">
-   <Shader ClearColor="0, 0, 0, 0" GridSubdivision="1" OutputBitDepth="Float32" Index="1">
-      <Uniform Max="1000000" Min="-1000000" Default="66" Inc="1" Tooltip="" Row="0" Col="0" Page="0" Type="int" ChannelName="drops" DisplayName="drops" Name="drops">
-      </Uniform>
-      <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_accum_texture">
-      </Uniform>
-   </Shader>
-   <Shader ClearColor="0, 0, 0, 0" GridSubdivision="1" OutputBitDepth="Float32" Index="2">
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.2" Inc="0.01" Tooltip="" Row="1" Col="0" Page="0" Type="float" ChannelName="blobfactor" DisplayName="blobfactor" Name="blobfactor">
-      </Uniform>
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.5" Inc="0.01" Tooltip="" Row="2" Col="0" Page="0" Type="float" ChannelName="shoulder" DisplayName="shoulder" Name="shoulder">
-      </Uniform>
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.7" Inc="0.01" Tooltip="" Row="4" Col="0" Page="0" Type="float" ChannelName="trim" DisplayName="trim" Name="trim">
-      </Uniform>
-      <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass1">
-      </Uniform>
-      <Uniform Type="int" ChannelName="drops" DisplayName="drops" Name="drops">
-         <Duplicate>
-         </Duplicate>
-      </Uniform>
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.5" Inc="0.01" Tooltip="" Row="0" Col="1" Page="0" Type="float" ChannelName="curvetop" DisplayName="curvetop" Name="curvetop">
-      </Uniform>
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="10.0" Inc="0.01" Tooltip="" Row="4" Col="1" Page="0" Type="float" ChannelName="irreg" DisplayName="irreg" Name="irreg">
-      </Uniform>
-   </Shader>
-   <Shader ClearColor="0, 0, 0, 0" GridSubdivision="1" OutputBitDepth="Float32" Index="3">
-      <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass2">
-      </Uniform>
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0" Inc="0.01" Tooltip="" Row="3" Col="1" Page="0" Type="float" ChannelName="ksize" DisplayName="ksize" Name="ksize">
-      </Uniform>
-   </Shader>
-   <Shader ClearColor="0, 0, 0, 0" GridSubdivision="1" OutputBitDepth="Output" Index="4">
-      <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="front" InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="front">
-      </Uniform>
-      <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass3">
-      </Uniform>
-      <Uniform Max="1000000" Min="-1000000" Default="5" Inc="1" Tooltip="" Row="1" Col="1" Page="0" Type="int" ChannelName="isamples" DisplayName="isamples" Name="isamples">
-      </Uniform>
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.3" Inc="0.01" Tooltip="" Row="3" Col="0" Page="0" Type="float" ChannelName="distomult" DisplayName="distomult" Name="distomult">
-      </Uniform>
-      <Uniform Row="2" Col="1" Page="0" Default="False" Tooltip="" Type="bool" ChannelName="outputuvs" DisplayName="outputuvs" Name="outputuvs">
-      </Uniform>
-   </Shader>
-   <Page Name="Page 1" Page="0">
-      <Col Name="Column 1" Col="0" Page="0">
-      </Col>
-      <Col Name="Column 2" Col="1" Page="0">
-      </Col>
-   </Page>
+<ShaderNodePreset AccumulatePass="1" TimelineUseBack="False" Description="Sweat - makes drips :)  Turn adaptive degradation off to view downstream... works in 2017 only.
+
+Demo: https://www.youtube.com/watch?v=xcPzPV_623U
+
+lewis@lewissaunders.com" ShaderType="Matchbox" SupportsAdaptiveDegradation="False" SoftwareVersion="2017.0.0" Version="1" SupportsAction="False" SupportsTimeline="False" Name="Sweat" MatteProvider="False" LimitInputsToTexture="True" CommercialUsePermitted="True" SupportsTransition="False">
+ <Shader GridSubdivision="1" OutputBitDepth="Float32" ClearColor="0, 0, 0, 0" Index="1">
+  <Uniform Name="adsk_accum_texture" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
+  <Uniform Name="drops"              DisplayName="How many"           ChannelName="Howmany"            Page="0" Col="0" Row="0" Type="int"        Default="70"         Min="0"   Max="1000000"    Inc="1"                                    Tooltip=""></Uniform>
+  <Uniform Name="speed"              DisplayName="Speed"              ChannelName="Speed"              Page="0" Col="0" Row="2" Type="float"      Default="2.0"        Min="0.0" Max="1000.0"     Inc="0.1"       ResDependent="None"       Tooltip=""></Uniform>
+  <Uniform Name="dribbletime"        DisplayName="Dribble time"       ChannelName="Dribbletime"        Page="0" Col="0" Row="3" Type="float"      Default="30.0"       Min="0.0" Max="1000.0"     Inc="1.0"       ResDependent="None"       Tooltip=""></Uniform>
+  <Uniform Name="dribblethreshold"   DisplayName="Dribble threshold"  ChannelName="Dribblethreshold"   Page="0" Col="0" Row="4" Type="float"      Default="1.15"       Min="0.0" Max="2.0"        Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
+  <Uniform Name="spatscale"          DisplayName="Spatter size"       ChannelName="Spattersize"        Page="0" Col="1" Row="0" Type="float"      Default="11.0"       Min="0.0" Max="200.0"      Inc="0.1"       ResDependent="None"       Tooltip=""></Uniform>
+  <Uniform Name="spatthresh"         DisplayName="Spatter threshold"  ChannelName="Spatterthreshold"   Page="0" Col="1" Row="1" Type="float"      Default="1.485"      Min="0.0" Max="2.0"        Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
+  <Uniform Name="spat"               DisplayName="Spatter dissolve"   ChannelName="Spatterdissolve"    Page="0" Col="1" Row="2" Type="float"      Default="1.0"        Min="0.0" Max="2.0"        Inc="0.1"       ResDependent="None"       Tooltip=""></Uniform>
+ </Shader>
+ <Shader GridSubdivision="1" OutputBitDepth="Float32" ClearColor="0, 0, 0, 0" Index="2">
+  <Uniform Name="adsk_results_pass1" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
+  <Uniform Name="blobfactor"         DisplayName="Goopyness"          ChannelName="Goopyness"          Page="0" Col="0" Row="1" Type="float"      Default="0.2"        Min="0.0" Max="1000.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
+  <Uniform Name="shoulder"           DisplayName="Shoulder"           ChannelName="Shoulder"           Page="0" Col="2" Row="2" Type="float"      Default="0.5"        Min="0.0" Max="1.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
+  <Uniform Name="trim"               DisplayName="Trim edges"         ChannelName="Trimedges"          Page="0" Col="2" Row="3" Type="float"      Default="0.7"        Min="0.0" Max="1.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
+  <Uniform Name="drops"              DisplayName="How many"           ChannelName="Howmanys"           Type="int"><Duplicate></Duplicate></Uniform>
+  <Uniform Name="curvetop"           DisplayName="Curve tops"         ChannelName="Curvetops"          Page="0" Col="2" Row="1" Type="float"      Default="0.5"        Min="-10.0" Max="10.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
+  <Uniform Name="irreg"              DisplayName="Irregularity"       ChannelName="Irregularity"       Page="0" Col="2" Row="0" Type="float"      Default="10.0"       Min="-1000000.0" Max="1000000.0"  Inc="0.1"       ResDependent="None"       Tooltip=""></Uniform>
+ </Shader>
+ <Shader GridSubdivision="1" OutputBitDepth="Float32" ClearColor="0, 0, 0, 0" Index="3">
+  <Uniform Name="adsk_results_pass2" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
+  <Uniform Name="ksize"              DisplayName="Normal soften"      ChannelName="Normalsoften"              Page="0" Col="2" Row="4" Type="float"      Default="1.0"        Min="0.0" Max="100.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
+ </Shader>
+ <Shader GridSubdivision="1" OutputBitDepth="Output" ClearColor="0, 0, 0, 0" Index="4">
+  <Uniform Name="adsk_results_pass3" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
+  <Uniform Name="front"              DisplayName="Front"              Type="sampler2D"  Index="0" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" Tooltip="" InputColor="67, 77, 83" NoInput="Error" GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
+  <Uniform Name="isamples"           DisplayName="Oversampling"       ChannelName="Oversampling"       Page="0" Col="3" Row="2" Type="int"        Default="5"          Min="1"   Max="64"    Inc="1"                                    Tooltip=""></Uniform>
+  <Uniform Name="distomult"          DisplayName="Distortion"         ChannelName="Distortion"         Page="0" Col="3" Row="1" Type="float"      Default="0.3"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
+  <Uniform Name="outputuvs"          DisplayName="Output UVs"         ChannelName="OutputUVs"          Page="0" Col="3" Row="3" Type="bool"       Default="False"                                                                                   Tooltip=""></Uniform>
+ </Shader>
+ <Page Page="0" Name="">
+  <Col Page="0" Col="0" Name="Big huge drops"></Col>
+  <Col Page="0" Col="1" Name="Little tiny ones"></Col>
+  <Col Page="0" Col="2" Name="Tweaks"></Col>
+  <Col Page="0" Col="3" Name="Output"></Col>
+ </Page>
 </ShaderNodePreset>
