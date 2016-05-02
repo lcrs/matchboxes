@@ -1,7 +1,24 @@
+/* Sweat, pass 1: output drop simulation state to pixel colours
+   lewis@lewissaunders.com
+
+   In the accumulation texture we store properties of each drop as colours
+   To avoid filtering we use pixel centre coordinates for texture2D()
+   The x-coordinate is drop id, [0..1920] or whatever image width so 0.5, 1.5, 2.5 etc
+   In row y == 0.5:
+      .rg is drop position xy in [0..1] coords
+      .b is drop size as fraction of image width
+   In row y == 1.5:
+      .r is age in frames
+      .g is frames left in current movement
+   Whole image's .a channel is tiny droplets matte, and matte for trail left by
+   big drop movements
+*/
+
 uniform sampler2D adsk_accum_texture;
 uniform bool adsk_accum_no_prev_frame;
 uniform float adsk_result_w, adsk_result_h, adsk_result_frameratio;
 uniform float adsk_time;
+uniform int drops;
 
 float snoise(vec4 v);
 
@@ -13,20 +30,21 @@ void main() {
   vec2 res = vec2(adsk_result_w, adsk_result_h);
   vec2 xy = gl_FragCoord.xy;
 
-  if(xy.y == 0.5) {
-    // This is the row of drop data pixels
+  if(xy.y == 0.5 && xy.x < float(drops)) {
+    // This is the row of drop position data pixels
     if(adsk_accum_no_prev_frame) {
       // Output initial state
       vec2 pos;
       pos.x = noiz(xy.x, 1.0, 2.0, 3.0);
       pos.y = noiz(xy.x, 4.0, 5.0, 6.0);
       float size = noiz(xy.x, 7.0, 8.0, 9.0) * 0.01;
+      size = max(size, 0.001);
       gl_FragColor = vec4(pos.x, pos.y, size, 0.0);
     } else {
       // Read current drop state and step simulation forward
       vec4 drop = texture2D(adsk_accum_texture, vec2(xy.x, 0.5)/res);
-      if(noiz(xy.x, adsk_time, 1.0, 2.0) > 0.8) {
-        drop.y -= noiz(xy.x, adsk_time, 3.0, 4.0) * 0.01;
+      if(noiz(xy.x, adsk_time, 1.0, 2.0) > 0.9) {
+        drop.y -= noiz(xy.x, adsk_time, 3.0, 4.0) * 0.05;
       }
       gl_FragColor = drop;
     }

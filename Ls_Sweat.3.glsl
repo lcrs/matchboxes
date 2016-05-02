@@ -1,11 +1,9 @@
-// Sweat, pass 2: read drop simulation state from pixel colours and
-// render height map of drops
+// Sweat, pass 3: read sim matte and derive UVs
 // lewis@lewissaunders.com
 
-uniform sampler2D adsk_results_pass1;
+uniform sampler2D adsk_results_pass2, front;
 uniform float adsk_result_w, adsk_result_h, adsk_result_frameratio;
-uniform float blobfactor, trim, shoulder, curvetop;
-uniform int drops;
+uniform float ksize;
 
 float snoise(vec4 v);
 
@@ -16,39 +14,25 @@ float noiz(float a, float b, float c, float d) {
 void main() {
   vec2 res = vec2(adsk_result_w, adsk_result_h);
   vec2 xy = gl_FragCoord.xy;
+  float h = texture2D(adsk_results_pass2, xy/res).r;
 
-  // We loop over all drops, evaluating a Gaussian function centred on each
-  // We keep results for both distance to edge of drop, and
-  // distance to centre, which is softer
-  float metaballedges = 0.0;
-  float metaballcentres = 0.0;
-  for(float i = 0.5; i < float(drops); i+=1.0) {
-    vec4 drop = texture2D(adsk_results_pass1, vec2(i, 0.5)/res);
-    vec2 droppos = drop.rg;
-    float dropsize = drop.b;
-    
-    vec2 here2drop = (xy/res) - droppos;
-    here2drop.x *= adsk_result_frameratio;
-    
-    float distance2drop = length(here2drop);
-    float metaballfunc = pow(2.718281828, (-1000.0/blobfactor) * pow(distance2drop, 2.0));
-    metaballcentres += metaballfunc;
-        
-    float distance2edge = max(distance2drop - dropsize, 0.0);
-    metaballfunc = pow(2.718281828, (-2000.0/blobfactor) * pow(distance2edge, 2.0));
-    metaballedges += metaballfunc;
-  }
- 
-  metaballedges -= trim;
-  metaballedges /= shoulder;
-  metaballedges = clamp(metaballedges, 0.0, 1.0);
-  metaballedges = sqrt(1.0 - pow(1.0 - metaballedges, 2.0)); // Quarter-circle curve LUT
+	// Convolve by x and y Sobel matrices to get gradient vector
+  vec2 d;
+	d.x  = -1.0 * texture2D(adsk_results_pass2, (xy + ksize * vec2(-1.0, -1.0)) / res).g;
+	d.x += -2.0 * texture2D(adsk_results_pass2, (xy + ksize * vec2(-1.0,  0.0)) / res).g;
+	d.x += -1.0 * texture2D(adsk_results_pass2, (xy + ksize * vec2(-1.0, +1.0)) / res).g;
+	d.x +=  1.0 * texture2D(adsk_results_pass2, (xy + ksize * vec2(+1.0, -1.0)) / res).g;
+	d.x +=  2.0 * texture2D(adsk_results_pass2, (xy + ksize * vec2(+1.0,  0.0)) / res).g;
+	d.x +=  1.0 * texture2D(adsk_results_pass2, (xy + ksize * vec2(+1.0, +1.0)) / res).g;
+	d.y += -1.0 * texture2D(adsk_results_pass2, (xy + ksize * vec2(-1.0, -1.0)) / res).g;
+	d.y += -2.0 * texture2D(adsk_results_pass2, (xy + ksize * vec2( 0.0, -1.0)) / res).g;
+	d.y += -1.0 * texture2D(adsk_results_pass2, (xy + ksize * vec2(+1.0, -1.0)) / res).g;
+	d.y +=  1.0 * texture2D(adsk_results_pass2, (xy + ksize * vec2(-1.0, +1.0)) / res).g;
+	d.y +=  2.0 * texture2D(adsk_results_pass2, (xy + ksize * vec2( 0.0, +1.0)) / res).g;
+	d.y +=  1.0 * texture2D(adsk_results_pass2, (xy + ksize * vec2(+1.0, +1.0)) / res).g;
+  d /= ksize;
   
-  metaballcentres = clamp(metaballcentres, 0.0, 100.0);
-  metaballcentres *= clamp(metaballedges * 3.0, 0.0, 1.0);
-  float h = mix(metaballedges, metaballcentres, curvetop);
-  
-  gl_FragColor = vec4(h);
+  gl_FragColor = vec4(d, h, h);
 }
 
 
@@ -181,7 +165,7 @@ float snoise(vec4 v)
            + i.y + vec4(i1.y, i2.y, i3.y, 1.0 ))
            + i.x + vec4(i1.x, i2.x, i3.x, 1.0 ));
 
-// Gradients: 7x7x6 points over a cube, mapped onto a 4-cross polytope
+// Gradients: 7x7x6 points over a cube, adsk_results_pass2ped onto a 4-cross polytope
 // 7*7*6 = 294, which is close to the ring size 17*17 = 289.
   vec4 ip = vec4(1.0/294.0, 1.0/49.0, 1.0/7.0, 0.0) ;
 
