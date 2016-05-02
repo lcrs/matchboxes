@@ -4,7 +4,7 @@
 
 uniform sampler2D adsk_results_pass1;
 uniform float adsk_result_w, adsk_result_h, adsk_result_frameratio;
-uniform float blobfactor, trim, shoulder, curvetop;
+uniform float blobfactor, trim, shoulder, curvetop, irreg;
 uniform int drops;
 
 float snoise(vec4 v);
@@ -16,6 +16,14 @@ float noiz(float a, float b, float c, float d) {
 void main() {
   vec2 res = vec2(adsk_result_w, adsk_result_h);
   vec2 xy = gl_FragCoord.xy;
+
+  // Warp space a bit before we do this to get more interesting shapes
+  vec2 n = xy / 70.0;
+  xy.x += irreg * (noiz(n.x, n.y, 11.0, 12.0) - 0.5);
+  xy.y += irreg * (noiz(n.x, n.y, 11.0, 13.0) - 0.5);
+  n = xy / 30.0;
+  xy.x += irreg * 0.2 * (noiz(n.x, n.y, 14.0, 12.0) - 0.5);
+  xy.y += irreg * 0.2 * (noiz(n.x, n.y, 14.0, 13.0) - 0.5);
 
   // We loop over all drops, evaluating and accumulating a Gaussian function
   // centred on each, in a pretty classic "metaball" way
@@ -54,7 +62,11 @@ void main() {
   metaballcentres *= clamp(metaballedges * 3.0, 0.0, 1.0);
   float h = mix(metaballedges, metaballcentres, curvetop);
   
-  gl_FragColor = vec4(h);
+  // Spatters texture
+  float s = texture2D(adsk_results_pass1, xy/res).a;
+  h += s;
+  
+  gl_FragColor = vec4(h, h, h, s);
 }
 
 
