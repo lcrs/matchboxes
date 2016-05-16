@@ -12,6 +12,11 @@
       .g is frames left in current movement
    Whole image's .a channel is tiny droplets matte, and matte for trail left by
    big drop movements
+   
+   TODO:
+    o Drop size control for big drops!
+    o transform and rotate controls for both big and small drops
+    o maybe explicit position pickers for say... 5 big drops?
 */
 
 uniform sampler2D adsk_accum_texture;
