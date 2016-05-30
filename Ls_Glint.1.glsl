@@ -1,12 +1,11 @@
-// Glint
-// Directly from the floor of Studio 54 in 1979
+// Glint pass 1: convolve with a dynamically generated star function
 // lewis@lewissaunders.com
 
 uniform sampler2D front, matte;
 uniform float adsk_result_w, adsk_result_h;
-uniform float threshold, gain, size, rays, spin, falloff, twirl, barrel, barrelbend, saturation, extrasize, extrarays;
+uniform float threshold, thresholdclamp, gain, size, rays, spin, falloff, twirl, barrel, barrelbend, saturation, extrasize, extrarays;
 uniform vec3 tint;
-uniform bool screen, usematte, useblendmatte, outputglints, dirton;
+uniform bool dirton, useblendmatte, usematte;
 uniform float dispersion, dispersionoffset, dispersioncycles, dirt, dirtfreq;
 uniform float aspect, aa;
 #define realsize (size*extrasize)
@@ -39,9 +38,6 @@ void main(void) {
     // If matte is being used to blend with, we can take a massive shortcut where it's black
     if(useblendmatte && (length(mattepix) < 0.0001)) {
         gl_FragColor = vec4(frontpix, 0.0);
-        if(outputglints) {
-            gl_FragColor = vec4(0.0);
-        }
         return;
     }
 
@@ -76,6 +72,7 @@ void main(void) {
             }
             
             // Only keep pixels over threshold
+            sample = min(sample, thresholdclamp);
             sample *= max(sample - threshold, 0.0);
 
             // Falloff darkens the ray ends
@@ -126,22 +123,6 @@ void main(void) {
     tinty.gb *= glinty.r; // If U/V aren't 0 when Y is black, bad things happen...
     glinty.gb = mix(glinty.gb, tinty.gb, 4.0*length(tinty.gb));
     glint = rgb(glinty);
-    
-    // Blend with front input
-    vec3 result;
-    if(useblendmatte) {
-        glint *= mattepix;
-        glinty *= mattepix; // Luma is used for matte output below
-    }
-    if(screen) {
-        result = max(max(frontpix, glint), glint+frontpix-(glint*frontpix));
-    } else {
-        result = frontpix + glint;
-    }
-    if(outputglints) {
-        result = glint;
-    }
 
-    // Matte output is luma of glint only
-    gl_FragColor = vec4(result, glinty.r);
+    gl_FragColor = vec4(glint, 0.0);
 }
