@@ -27,11 +27,11 @@ vec4 gaussianblur(sampler2D tex, vec2 xy, vec2 res, float sizered, float sizegre
     gx = 1.0 / (sqrt(2.0 * 3.141592653589793238) * sigmas);
     gy = exp(-0.5 / (sigmas * sigmas));
     gz = gy * gy;
-    vec4 a, sample1, sample2 = vec4(0.0);
+    vec4 a, centre, sample1, sample2 = vec4(0.0);
 
     // First take the centre sample
-    sample1 = texture2D(tex, xy / res);
-    a += gx * sample1;
+    centre = texture2D(tex, xy / res);
+    a += gx * centre;
     vec4 energy = gx;
     gx *= gy;
     gy *= gz;
@@ -50,9 +50,9 @@ vec4 gaussianblur(sampler2D tex, vec2 xy, vec2 res, float sizered, float sizegre
 
     a /= energy;
     
-    if(sizered < 0.1) a.r = sample1.r;
-    if(sizegreen < 0.1) a.g = sample1.g;
-    if(sizeblue < 0.1) a.b = sample1.b;
+    if(sizered < 0.1) a.r = centre.r;
+    if(sizegreen < 0.1) a.g = centre.g;
+    if(sizeblue < 0.1) a.b = centre.b;
     
     return a;
 }
