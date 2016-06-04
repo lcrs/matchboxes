@@ -6,6 +6,7 @@ lewis@lewissaunders.com" ShaderType="Matchbox" SupportsAdaptiveDegradation="Fals
  <Shader GridSubdivision="1" OutputBitDepth="Float32" ClearColor="0, 0, 0, 0" Index="1">
   <Uniform Name="adsk_accum_texture" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
   <Uniform Name="drops"              DisplayName="How many"           ChannelName="Howmany"            Page="0" Col="0" Row="0" Type="int"        Default="70"         Min="0"   Max="1000000"    Inc="1"                                    Tooltip=""></Uniform>
+  <Uniform Name="dropsz"             DisplayName="How big"            ChannelName="Howbig"             Page="0" Col="0" Row="1" Type="float"      Default="10.0"       Min="0.0" Max="1000.0"     Inc="0.1"       ResDependent="None"       Tooltip=""></Uniform>
   <Uniform Name="speed"              DisplayName="Speed"              ChannelName="Speed"              Page="0" Col="0" Row="2" Type="float"      Default="2.0"        Min="0.0" Max="1000.0"     Inc="0.1"       ResDependent="None"       Tooltip=""></Uniform>
   <Uniform Name="dribbletime"        DisplayName="Dribble time"       ChannelName="Dribbletime"        Page="0" Col="0" Row="3" Type="float"      Default="30.0"       Min="0.0" Max="1000.0"     Inc="1.0"       ResDependent="None"       Tooltip=""></Uniform>
   <Uniform Name="dribblethreshold"   DisplayName="Dribble threshold"  ChannelName="Dribblethreshold"   Page="0" Col="0" Row="4" Type="float"      Default="1.15"       Min="0.0" Max="2.0"        Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
@@ -15,7 +16,7 @@ lewis@lewissaunders.com" ShaderType="Matchbox" SupportsAdaptiveDegradation="Fals
  </Shader>
  <Shader GridSubdivision="1" OutputBitDepth="Float32" ClearColor="0, 0, 0, 0" Index="2">
   <Uniform Name="adsk_results_pass1" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
-  <Uniform Name="blobfactor"         DisplayName="Goopyness"          ChannelName="Goopyness"          Page="0" Col="0" Row="1" Type="float"      Default="0.2"        Min="0.0" Max="1000.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
+  <Uniform Name="blobfactor"         DisplayName="Goopyness"          ChannelName="Goopyness"          Page="0" Col="2" Row="4" Type="float"      Default="0.2"        Min="0.0" Max="1000.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
   <Uniform Name="shoulder"           DisplayName="Shoulder"           ChannelName="Shoulder"           Page="0" Col="2" Row="2" Type="float"      Default="0.5"        Min="0.0" Max="1.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
   <Uniform Name="trim"               DisplayName="Trim edges"         ChannelName="Trimedges"          Page="0" Col="2" Row="3" Type="float"      Default="0.7"        Min="0.0" Max="1.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
   <Uniform Name="drops"              DisplayName="How many"           ChannelName="Howmanys"           Type="int"><Duplicate></Duplicate></Uniform>
@@ -24,13 +25,13 @@ lewis@lewissaunders.com" ShaderType="Matchbox" SupportsAdaptiveDegradation="Fals
  </Shader>
  <Shader GridSubdivision="1" OutputBitDepth="Float32" ClearColor="0, 0, 0, 0" Index="3">
   <Uniform Name="adsk_results_pass2" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
-  <Uniform Name="ksize"              DisplayName="Normal soften"      ChannelName="Normalsoften"              Page="0" Col="2" Row="4" Type="float"      Default="1.0"        Min="0.0" Max="100.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
+  <Uniform Name="ksize"              DisplayName="Normal soften"      ChannelName="Normalsoften"              Page="0" Col="3" Row="1" Type="float"      Default="1.0"        Min="0.0" Max="100.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
  </Shader>
  <Shader GridSubdivision="1" OutputBitDepth="Output" ClearColor="0, 0, 0, 0" Index="4">
   <Uniform Name="adsk_results_pass3" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
   <Uniform Name="front"              DisplayName="Front"              Type="sampler2D"  Index="0" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" Tooltip="" InputColor="67, 77, 83" NoInput="Error" GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
   <Uniform Name="isamples"           DisplayName="Oversampling"       ChannelName="Oversampling"       Page="0" Col="3" Row="2" Type="int"        Default="5"          Min="1"   Max="64"    Inc="1"                                    Tooltip=""></Uniform>
-  <Uniform Name="distomult"          DisplayName="Distortion"         ChannelName="Distortion"         Page="0" Col="3" Row="1" Type="float"      Default="0.3"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
+  <Uniform Name="distomult"          DisplayName="Distortion"         ChannelName="Distortion"         Page="0" Col="3" Row="0" Type="float"      Default="0.3"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
   <Uniform Name="outputuvs"          DisplayName="Output UVs"         ChannelName="OutputUVs"          Page="0" Col="3" Row="3" Type="bool"       Default="False"                                                                                   Tooltip=""></Uniform>
  </Shader>
  <Page Page="0" Name="">

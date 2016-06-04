@@ -23,7 +23,7 @@ uniform sampler2D adsk_accum_texture;
 uniform bool adsk_accum_no_prev_frame;
 uniform float adsk_result_w, adsk_result_h, adsk_result_frameratio;
 uniform float adsk_time;
-uniform float speed, dribbletime, dribblethreshold, spatscale, spatthresh, spat;
+uniform float speed, dribbletime, dribblethreshold, spatscale, spatthresh, spat, dropsz;
 uniform int drops;
 
 float snoise(vec4 v);
@@ -43,7 +43,7 @@ void main() {
       vec2 pos;
       pos.x = noiz(xy.x, 1.0, 2.0, 3.0);
       pos.y = noiz(xy.x, 4.0, 5.0, 6.0);
-      float size = noiz(xy.x, 7.0, 8.0, 9.0) * 0.01;
+      float size = noiz(xy.x, 7.0, 8.0, 9.0) * (dropsz/1000.0);
       size = max(size, 0.001);
       gl_FragColor = vec4(pos.x, pos.y, size, 0.0);
     } else {
@@ -59,7 +59,7 @@ void main() {
         vec2 pos;
         pos.x = noiz(xy.x, adsk_time, 2.1, 3.3);
         pos.y = noiz(xy.x, adsk_time, 5.2, 6.4);
-        float size = noiz(xy.x, adsk_time, 8.5, 9.6) * 0.01;
+        float size = noiz(xy.x, adsk_time, 8.5, 9.6) * (dropsz/1000.0);
         size = max(size, 0.001);
         dropp.rg = pos;
         dropp.b = size;
