@@ -6,7 +6,8 @@
 #version 120
 uniform float adsk_result_w, adsk_result_h, adsk_result_frameratio;
 uniform sampler2D front, adsk_texture_grid;
-uniform vec2 t;
+uniform vec2 chip1pos;
+uniform vec3 chip1col;
 
 vec2 res = vec2(adsk_result_w, adsk_result_h);
 vec2 xy = gl_FragCoord.xy / res;
@@ -38,7 +39,8 @@ int getch(int s, int i) {
 
 // Returns contribution of string s at position where
 float print(int s, vec2 where) {
-  vec2 stringuv = xy - where;
+  float tracking = 0.011;
+  vec2 stringuv = (xy - where) * 4.5;
   if(stringuv.x < 0.0 || stringuv.y > 0.1 || stringuv.y < 0.0) return 0.0;
 
   // Which character are we in?  Sum widths of characters in string left to right
@@ -49,7 +51,7 @@ float print(int s, vec2 where) {
   for(int i = 0; i < 40; i++) {
     thischar = getch(s, i);
     if(thischar == 0) break; // End of string, they're null terminated in the texture
-    float thischarwidth = (charwidths[thischar] + 0.0055) / adsk_result_frameratio;
+    float thischarwidth = (charwidths[thischar] + tracking) / adsk_result_frameratio;
     prevcharswidth += thischarwidth;
     if(prevcharswidth > stringuv.x) {
       thischaridx = i;
@@ -70,20 +72,60 @@ float print(int s, vec2 where) {
   int row = nth / 10;
   int col = nth - (row * 10);
   vec2 charorigin = vec2(col, row) / 10.0;
-  charorigin.x += 0.025;
+  charorigin.x += 0.021;
   vec2 fontuv = charorigin + charuv;
 
   // Look up the SDF and step to it for antialiasing
   float sdf = texture2D(adsk_texture_grid, fontuv).r;
-  float aa = 1.0 - smoothstep(0.0, 1.0, sdf);
+  float aa = 1.0 - smoothstep(0.0, 4.0, sdf);
 
   return aa;
 }
 
-void main() {
-  vec3 bg = getcol(int(t.y));
-  float letters = print(int(t.y), vec2(0.1));
-  vec3 comped = mix(bg, vec3(1.0), letters);
+// Return the index of the RAL colour closest to col
+int bestcol(vec3 col) {
+  int best = -1;
+  float lowest = 999.0;
+  for(int i = 0; i < 213; i++) {
+    float dist = length(col - getcol(i));
+    if(dist < lowest) {
+      lowest = dist;
+      best = i;
+    }
+  }
+  return best;
+}
 
+// Transform into UV coords in a chip rectangle
+vec2 rectuv(vec2 origin, vec2 size) {
+    return (xy - origin) / size;
+}
+
+// Return signed distance to a rounded rectable
+float roundedrect(vec2 origin, vec2 size, float round) {
+  vec2 uv = rectuv(origin, size);
+  vec2 d = max(vec2(0.0, 0.0) - uv, uv - vec2(1.0, 1.0));
+  return length(max(vec2(0.0), d)) + min(0.0, max(d.x, d.y));
+}
+
+void main() {
+  vec3 frontpix = texture2D(front, xy).rgb;
+
+  vec2 chipsize = vec2(0.1, 0.125 * adsk_result_frameratio);
+
+  vec2 chip1origin = chip1pos - vec2(0.0, 0.18);
+  vec3 chip1pickcol = texture2D(front, chip1pos).rgb;
+  int chip1bestcol = bestcol(chip1pickcol);
+  float chip1patchmatte = smoothstep(0.25, 0.252, rectuv(chip1origin, chipsize).y);
+  vec3 chip1fill = mix(vec3(1.0), getcol(chip1bestcol), chip1patchmatte);
+  float chip1name = print(chip1bestcol, chip1origin + vec2(0.003, 0.027));
+  chip1fill -= chip1name;
+  float chip1matte = 1.0 - smoothstep(0.03, 0.035, roundedrect(chip1origin, chipsize, 1.0));
+
+  float chip1shadow = mix(1.0, pow(smoothstep(0.0, 0.3, roundedrect(chip1origin + vec2(0.001, -0.001), chipsize, 1.0)), 0.1), 0.5);
+
+  frontpix *= chip1shadow;
+
+  vec3 comped = mix(frontpix, chip1fill, chip1matte);
   gl_FragColor = vec4(comped, 1.0);
 }
