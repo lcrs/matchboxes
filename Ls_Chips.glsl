@@ -4,7 +4,7 @@
 //  o extract kerning pair metrics from the Source Sans font and try to use them?
 
 #version 120
-uniform float adsk_result_w, adsk_result_h;
+uniform float adsk_result_w, adsk_result_h, adsk_result_frameratio;
 uniform sampler2D front, adsk_texture_grid;
 uniform vec2 t;
 
@@ -49,7 +49,7 @@ float print(int s, vec2 where) {
   for(int i = 0; i < 40; i++) {
     thischar = getch(s, i);
     if(thischar == 0) break; // End of string, they're null terminated in the texture
-    float thischarwidth = charwidths[thischar] + 0.0055;
+    float thischarwidth = (charwidths[thischar] + 0.0055) / adsk_result_frameratio;
     prevcharswidth += thischarwidth;
     if(prevcharswidth > stringuv.x) {
       thischaridx = i;
@@ -63,6 +63,7 @@ float print(int s, vec2 where) {
 
   // Where are we in the character?
   vec2 charuv = stringuv - vec2(prevcharswidth, 0.0);
+  charuv.x *= adsk_result_frameratio;
 
   // Where is that in the font texture?
   int nth = thischar - 32;
