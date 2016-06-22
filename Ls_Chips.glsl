@@ -2,12 +2,19 @@
 // lewis@lewissaunders.com
 // TODO:
 //  o extract kerning pair metrics from the Source Sans font and try to use them?
+//  o AA the voronoi
 
 #version 120
+#extension GL_ARB_shader_texture_lod : enable
+
 uniform float adsk_result_w, adsk_result_h, adsk_result_frameratio;
 uniform sampler2D front, adsk_texture_grid;
-uniform vec2 chip1pos;
-uniform vec3 chip1col;
+uniform vec2 chip1pos, chip2pos, chip3pos;
+uniform vec3 chip1col, chip2col, chip3col;
+uniform bool chip1nearest, chip2nearest, chip3nearest;
+uniform float blockup;
+uniform bool showblocky;
+uniform bool voronoi;
 
 vec2 res = vec2(adsk_result_w, adsk_result_h);
 vec2 xy = gl_FragCoord.xy / res;
@@ -26,7 +33,7 @@ vec3 getcol(int i) {
   return texel;
 }
 
-// Retrieves a character code from string s at index i
+// Retrieves i'th character code from string at index s
 int getch(int s, int i) {
   vec2 uv;
   uv.y = float(s);
@@ -37,8 +44,12 @@ int getch(int s, int i) {
   return int(texel);
 }
 
-// Returns contribution of string s at position where
+// Returns contribution of string from index s at position where
 float print(int s, vec2 where) {
+  if(s == -1) {
+    return 0.0;
+  }
+
   float tracking = 0.011;
   vec2 stringuv = (xy - where) * 4.5;
   if(stringuv.x < 0.0 || stringuv.y > 0.1 || stringuv.y < 0.0) return 0.0;
@@ -82,7 +93,7 @@ float print(int s, vec2 where) {
   return aa;
 }
 
-// Return the index of the RAL colour closest to col
+// Return the index of the colour closest to col
 int bestcol(vec3 col) {
   int best = -1;
   float lowest = 999.0;
@@ -102,30 +113,86 @@ vec2 rectuv(vec2 origin, vec2 size) {
 }
 
 // Return signed distance to a rounded rectable
-float roundedrect(vec2 origin, vec2 size, float round) {
+float roundedrect(vec2 origin, vec2 size) {
   vec2 uv = rectuv(origin, size);
   vec2 d = max(vec2(0.0, 0.0) - uv, uv - vec2(1.0, 1.0));
   return length(max(vec2(0.0), d)) + min(0.0, max(d.x, d.y));
 }
 
+// Return barycentric coordinates for p in triangle v1, v2, v3
+vec3 barycentrics(vec2 v1, vec2 v2, vec2 v3) {
+	float det = (v2.y-v3.y)*(v1.x-v3.x)+(v3.x-v2.x)*(v1.y-v3.y);
+	float b1 = ((v2.y-v3.y)*(xy.x-v3.x)+(v3.x-v2.x)*(xy.y-v3.y))/det;
+	float b2 = ((v3.y-v1.y)*(xy.x-v3.x)+(v1.x-v3.x)*(xy.y-v3.y))/det;
+	float b3 = 1.0 - b1 - b2;
+	return vec3(b1, b2, b3);
+}
+
 void main() {
   vec3 frontpix = texture2D(front, xy).rgb;
+  if(showblocky) {
+    frontpix = texture2DLod(front, xy, blockup + 0.4).rgb;
+  }
+  vec2 chipsize = vec2(0.15, 0.05 * adsk_result_frameratio);
+  vec4 chips = vec4(0.0);
+  float closestchipdist = 999.0;
 
-  vec2 chipsize = vec2(0.1, 0.125 * adsk_result_frameratio);
+  for(int i = 0; i < 3; i++) {
+    vec2 pos = chip1pos;
+    vec3 col = chip1col;
+    bool nearest = chip1nearest;
+    if(i == 1) {
+      pos = chip2pos;
+      col = chip2col;
+      nearest = chip2nearest;
+    }
+    if(i == 2) {
+      pos = chip3pos;
+      col = chip3col;
+      nearest = chip3nearest;
+    }
 
-  vec2 chip1origin = chip1pos - vec2(0.0, 0.18);
-  vec3 chip1pickcol = texture2D(front, chip1pos).rgb;
-  int chip1bestcol = bestcol(chip1pickcol);
-  float chip1patchmatte = smoothstep(0.25, 0.252, rectuv(chip1origin, chipsize).y);
-  vec3 chip1fill = mix(vec3(1.0), getcol(chip1bestcol), chip1patchmatte);
-  float chip1name = print(chip1bestcol, chip1origin + vec2(0.003, 0.027));
-  chip1fill -= chip1name;
-  float chip1matte = 1.0 - smoothstep(0.03, 0.035, roundedrect(chip1origin, chipsize, 1.0));
+    vec3 pickcol = texture2DLod(front, pos, blockup + 0.4).rgb;
+    int bestcolidx;
+    vec3 bestcol;
+    if(nearest) {
+      bestcolidx = bestcol(pickcol);
+      bestcol = getcol(bestcolidx);
+    } else {
+      bestcolidx = -1;
+      bestcol = pickcol;
+    }
 
-  float chip1shadow = mix(1.0, pow(smoothstep(0.0, 0.3, roundedrect(chip1origin + vec2(0.001, -0.001), chipsize, 1.0)), 0.1), 0.5);
+    float thischipdist = length(xy - pos);
+    if(voronoi && thischipdist < closestchipdist) {
+      closestchipdist = thischipdist;
+      frontpix = bestcol;
+    }
 
-  frontpix *= chip1shadow;
+    vec2 origin = pos + vec2(0.025, -chipsize.y/2.0);
+    float patchmatte = 1.0 - smoothstep(0.4, 0.401, rectuv(origin, chipsize).x);
+    vec3 tagcol = vec3(0.9);
+    vec3 fill = mix(tagcol, bestcol, patchmatte);
 
-  vec3 comped = mix(frontpix, chip1fill, chip1matte);
+    float name = print(bestcolidx, origin + chipsize * vec2(0.42, 0.72));
+    fill = mix(fill, vec3(0.0), name);
+
+    float matte = 1.0 - smoothstep(0.00, 0.001, roundedrect(origin, chipsize));
+    vec3 trib = barycentrics(origin + vec2(0.0001, 0.0), origin + vec2(0.0001, chipsize.y), origin + vec2(-0.025, chipsize.y/2.0));
+    float trid = -min(trib.x, min(trib.y, trib.z));
+    matte = max(matte, 1.0 - smoothstep(-0.004, 0.008, trid));
+
+    float shadow = smoothstep(0.00, 0.2, roundedrect(origin + vec2(0.007, 0.0), chipsize * vec2(0.9, 1.1)));
+    shadow = 1.0 - mix(1.0, pow(shadow, 0.5), 0.15);
+    if(voronoi) shadow *= 0.4;
+
+    chips.rgb *= 1.0 - shadow;
+    chips.rgb = mix(chips.rgb, fill, matte);
+    chips.a = max(chips.a, matte);
+    chips.a = max(chips.a, shadow);
+  }
+
+  vec3 comped = frontpix * (1.0 - chips.a) + chips.rgb;
+
   gl_FragColor = vec4(comped, 1.0);
 }
