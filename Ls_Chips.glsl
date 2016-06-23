@@ -2,7 +2,6 @@
 // lewis@lewissaunders.com
 // TODO:
 //  o extract kerning pair metrics from the Source Sans font and try to use them?
-//  o AA the voronoi
 
 #version 120
 #extension GL_ARB_shader_texture_lod : enable
@@ -112,11 +111,11 @@ vec2 rectuv(vec2 origin, vec2 size) {
     return (xy - origin) / size;
 }
 
-// Return signed distance to a rounded rectable
-float roundedrect(vec2 origin, vec2 size) {
-  vec2 uv = rectuv(origin, size);
-  vec2 d = max(vec2(0.0, 0.0) - uv, uv - vec2(1.0, 1.0));
-  return length(max(vec2(0.0), d)) + min(0.0, max(d.x, d.y));
+// Return signed distance to rectangle
+float rectsdf(vec2 origin, vec2 size) {
+    vec2 d = max(origin - xy, xy - origin - size);
+    d.x *= adsk_result_frameratio;
+    return length(max(vec2(0.0), d)) + min(0.0, max(d.x, d.y));
 }
 
 // Return barycentric coordinates for p in triangle v1, v2, v3
@@ -129,13 +128,15 @@ vec3 barycentrics(vec2 v1, vec2 v2, vec2 v3) {
 }
 
 void main() {
-  vec3 frontpix = texture2D(front, xy).rgb;
+  vec3 bg = texture2D(front, xy).rgb;
   if(showblocky) {
-    frontpix = texture2DLod(front, xy, blockup + 0.4).rgb;
+    bg = texture2DLod(front, xy, blockup + 0.4).rgb;
   }
   vec2 chipsize = vec2(0.15, 0.05 * adsk_result_frameratio);
   vec4 chips = vec4(0.0);
-  float closestchipdist = 999.0;
+
+  vec2 voronoi_pos[3];
+  vec3 voronoi_col[3];
 
   for(int i = 0; i < 3; i++) {
     vec2 pos = chip1pos;
@@ -163,10 +164,9 @@ void main() {
       bestcol = pickcol;
     }
 
-    float thischipdist = length(xy - pos);
-    if(voronoi && thischipdist < closestchipdist) {
-      frontpix = bestcol;
-      closestchipdist = thischipdist;
+    if(voronoi) {
+      voronoi_pos[i] = pos;
+      voronoi_col[i] = bestcol;
     }
 
     vec2 origin = pos + vec2(0.025, -chipsize.y/2.0);
@@ -178,23 +178,46 @@ void main() {
     float name = print(bestcolidx, origin + chipsize * vec2(0.42, 0.72));
     fill = mix(fill, vec3(0.0), name);
 
-    float matte = 1.0 - smoothstep(0.00, 0.001, roundedrect(origin, chipsize));
-    vec3 trib = barycentrics(origin + vec2(0.0001, 0.0), origin + vec2(0.0001, chipsize.y), origin + vec2(-0.025, chipsize.y/2.0));
-    float trid = -min(trib.x, min(trib.y, trib.z));
-    matte = max(matte, 1.0 - smoothstep(-0.004, 0.008, trid));
-    if(voronoi) matte = 1.0 - smoothstep(0.00, 0.001, roundedrect(origin, chipsize));
+    float rectmatte = 1.0 - smoothstep(0.005, 0.006, rectsdf(origin, chipsize));
+    //vec3 trib = barycentrics(origin + vec2(0.0001, 0.0), origin + vec2(0.0001, chipsize.y), origin + vec2(-0.025, chipsize.y/2.0));
+    //float trisdf = -min(trib.x, min(trib.y, trib.z));
+    //float matte = max(rectmatte, 1.0 - smoothstep(-0.004, 0.008, trisdf));
+    float matte = rectmatte;
+    if(voronoi) matte = rectmatte;
 
-    float shadow = smoothstep(0.00, 0.4, roundedrect(origin + vec2(0.007, 0.0), chipsize * vec2(0.9, 1.1)));
-    shadow = 1.0 - mix(1.0, pow(shadow, 0.5), 0.4);
-    if(voronoi) shadow = 0.0;
+    //float shadow = smoothstep(0.0, 0.4, roundedrect(origin + vec2(0.007, 0.0), chipsize * vec2(0.9, 1.1)));
+    //float sdf = rectsdf(origin + vec2(0.0, 0.0), chipsize * vec2(1.0, 1.0));
+    //float shadow = smoothstep(0.0, 0.1, sdf);
+    //shadow = 1.0 - shadow;
+    //if(voronoi) shadow = 0.0;
 
-    chips.rgb *= 1.0 - shadow;
-    chips.rgb = mix(chips.rgb, fill, matte);
-    chips.a = max(chips.a, matte);
-    chips.a = max(chips.a, shadow);
+    fill *= matte;
+    chips = chips * (1.0 - matte) + vec4(fill, matte);
   }
 
-  vec3 comped = frontpix * (1.0 - chips.a) + chips.rgb;
+  if(voronoi) {
+    vec3 accum = vec3(0.0);
+    float samples = 0.0;
+    for(float sx = -0.5; sx <= 0.5; sx += 0.3333) {
+      for(float sy = -0.5; sy <= 0.5; sy += 0.3333) {
+        vec2 ixy = xy + (vec2(sx, sy) / res);
+        float closest = 999.0;
+        vec3 col = vec3(0.0);
+        for(int i = 0; i < 3; i++) {
+          float dist = length(ixy - voronoi_pos[i]);
+          if(dist < closest) {
+            closest = dist;
+            col = voronoi_col[i];
+          }
+        }
+        accum += col;
+        samples++;
+      }
+    }
+    bg = accum / samples;
+  }
+
+  vec3 comped = bg * (1.0 - chips.a) + chips.rgb;
 
   gl_FragColor = vec4(comped, chips.a);
 }
