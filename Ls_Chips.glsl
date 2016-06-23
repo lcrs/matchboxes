@@ -165,11 +165,12 @@ void main() {
 
     float thischipdist = length(xy - pos);
     if(voronoi && thischipdist < closestchipdist) {
-      closestchipdist = thischipdist;
       frontpix = bestcol;
+      closestchipdist = thischipdist;
     }
 
     vec2 origin = pos + vec2(0.025, -chipsize.y/2.0);
+    if(voronoi) origin.x -= chipsize.x * 0.4;
     float patchmatte = 1.0 - smoothstep(0.4, 0.401, rectuv(origin, chipsize).x);
     vec3 tagcol = vec3(0.9);
     vec3 fill = mix(tagcol, bestcol, patchmatte);
@@ -181,10 +182,11 @@ void main() {
     vec3 trib = barycentrics(origin + vec2(0.0001, 0.0), origin + vec2(0.0001, chipsize.y), origin + vec2(-0.025, chipsize.y/2.0));
     float trid = -min(trib.x, min(trib.y, trib.z));
     matte = max(matte, 1.0 - smoothstep(-0.004, 0.008, trid));
+    if(voronoi) matte = 1.0 - smoothstep(0.00, 0.001, roundedrect(origin, chipsize));
 
-    float shadow = smoothstep(0.00, 0.2, roundedrect(origin + vec2(0.007, 0.0), chipsize * vec2(0.9, 1.1)));
-    shadow = 1.0 - mix(1.0, pow(shadow, 0.5), 0.15);
-    if(voronoi) shadow *= 0.4;
+    float shadow = smoothstep(0.00, 0.4, roundedrect(origin + vec2(0.007, 0.0), chipsize * vec2(0.9, 1.1)));
+    shadow = 1.0 - mix(1.0, pow(shadow, 0.5), 0.4);
+    if(voronoi) shadow = 0.0;
 
     chips.rgb *= 1.0 - shadow;
     chips.rgb = mix(chips.rgb, fill, matte);
@@ -194,5 +196,5 @@ void main() {
 
   vec3 comped = frontpix * (1.0 - chips.a) + chips.rgb;
 
-  gl_FragColor = vec4(comped, 1.0);
+  gl_FragColor = vec4(comped, chips.a);
 }
