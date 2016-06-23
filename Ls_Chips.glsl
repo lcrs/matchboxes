@@ -108,23 +108,22 @@ int bestcol(vec3 col) {
 
 // Transform into UV coords in a chip rectangle
 vec2 rectuv(vec2 origin, vec2 size) {
-    return (xy - origin) / size;
+  return (xy - origin) / size;
 }
 
 // Return signed distance to rectangle
 float rectsdf(vec2 origin, vec2 size) {
-    vec2 d = max(origin - xy, xy - origin - size);
-    d.x *= adsk_result_frameratio;
-    return length(max(vec2(0.0), d)) + min(0.0, max(d.x, d.y));
+  vec2 d = max(origin - xy, xy - origin - size);
+  d.x *= adsk_result_frameratio;
+  return length(max(vec2(0.0), d)) + min(0.0, max(d.x, d.y));
 }
 
-// Return barycentric coordinates for p in triangle v1, v2, v3
-vec3 barycentrics(vec2 v1, vec2 v2, vec2 v3) {
-	float det = (v2.y-v3.y)*(v1.x-v3.x)+(v3.x-v2.x)*(v1.y-v3.y);
-	float b1 = ((v2.y-v3.y)*(xy.x-v3.x)+(v3.x-v2.x)*(xy.y-v3.y))/det;
-	float b2 = ((v3.y-v1.y)*(xy.x-v3.x)+(v1.x-v3.x)*(xy.y-v3.y))/det;
-	float b3 = 1.0 - b1 - b2;
-	return vec3(b1, b2, b3);
+// Return contribution of a ring
+float ring(vec2 origin, float size, float thick) {
+  vec2 to = xy - origin;
+  to.x *= adsk_result_frameratio;
+  float len = length(to);
+  return smoothstep(size-thick, size+thick, len) * (1.0 - smoothstep(size-thick, size+thick, len));
 }
 
 void main() {
@@ -132,9 +131,8 @@ void main() {
   if(showblocky) {
     bg = texture2DLod(front, xy, blockup + 0.4).rgb;
   }
-  vec2 chipsize = vec2(0.15, 0.05 * adsk_result_frameratio);
-  vec4 chips = vec4(0.0);
 
+  vec4 chips = vec4(0.0);
   vec2 voronoi_pos[3];
   vec3 voronoi_col[3];
 
@@ -169,21 +167,20 @@ void main() {
       voronoi_col[i] = bestcol;
     }
 
-    vec2 origin = pos + vec2(0.025, -chipsize.y/2.0);
-    if(voronoi) origin.x -= chipsize.x * 0.4;
-    float patchmatte = 1.0 - smoothstep(0.4, 0.401, rectuv(origin, chipsize).x);
+    vec2 chipsize = vec2(0.07, 0.07 * adsk_result_frameratio);
+    vec2 origin = pos + vec2(0.018, -chipsize.y + 0.014);
+    float tagmatte = 1.0 - smoothstep(0.2, 0.201, rectuv(origin, chipsize).y);
     vec3 tagcol = vec3(0.9);
-    vec3 fill = mix(tagcol, bestcol, patchmatte);
+    vec3 fill = mix(bestcol, tagcol, tagmatte);
 
-    float name = print(bestcolidx, origin + chipsize * vec2(0.42, 0.72));
+    float name = print(bestcolidx, origin + vec2(0.00, 0.00));
     fill = mix(fill, vec3(0.0), name);
 
-    float rectmatte = 1.0 - smoothstep(0.005, 0.006, rectsdf(origin, chipsize));
-    //vec3 trib = barycentrics(origin + vec2(0.0001, 0.0), origin + vec2(0.0001, chipsize.y), origin + vec2(-0.025, chipsize.y/2.0));
-    //float trisdf = -min(trib.x, min(trib.y, trib.z));
-    //float matte = max(rectmatte, 1.0 - smoothstep(-0.004, 0.008, trisdf));
-    float matte = rectmatte;
-    if(voronoi) matte = rectmatte;
+    float rectmatte = 1.0 - smoothstep(0.003, 0.004, rectsdf(origin, chipsize));
+    float bridgematte = 1.0 - smoothstep(0.0, 0.001, rectsdf(origin + vec2(-0.014, chipsize.y - 0.015), vec2(0.016, 0.0025)));
+    float matte = rectmatte + bridgematte - (bridgematte * rectmatte);
+    float ringmatte = clamp(0.0, 1.0, 16.0 * ring(origin + vec2(-0.018, chipsize.y - 0.014), 0.008, 0.002));
+    matte = matte + ringmatte - (ringmatte * matte);
 
     //float shadow = smoothstep(0.0, 0.4, roundedrect(origin + vec2(0.007, 0.0), chipsize * vec2(0.9, 1.1)));
     //float sdf = rectsdf(origin + vec2(0.0, 0.0), chipsize * vec2(1.0, 1.0));
