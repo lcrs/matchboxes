@@ -10,7 +10,7 @@ uniform float adsk_result_w, adsk_result_h, adsk_result_frameratio;
 uniform sampler2D front, adsk_texture_grid;
 uniform vec2 chip1pos, chip2pos, chip3pos;
 uniform vec3 chip1col, chip2col, chip3col;
-uniform bool chip1nearest, chip2nearest, chip3nearest;
+uniform bool chip1nearest, chip2nearest, chip3nearest, chip1override, chip2override, chip3override;
 uniform float blockup;
 uniform bool showblocky;
 uniform bool voronoi;
@@ -32,25 +32,25 @@ vec3 getcol(int i) {
   return texel;
 }
 
-// Retrieves i'th character code from string at index s
-int getch(int s, int i) {
+// Retrieves i'th character code in string from row, col
+int getch(int row, int col, int i) {
   vec2 uv;
-  uv.y = float(s);
-  uv.x = float(i + 1);
+  uv.y = float(row);
+  uv.x = float(col + i);
   uv += 0.5;
   uv /= 1024.0;
   float texel = texture2D(adsk_texture_grid, uv).g;
   return int(texel);
 }
 
-// Returns contribution of string from index s at position where
-float print(int s, vec2 where) {
-  if(s == -1) {
+// Returns contribution of string from row, col at position where
+float print(int row, int col, vec2 where, float size) {
+  if(row == -1) {
     return 0.0;
   }
 
   float tracking = 0.011;
-  vec2 stringuv = (xy - where) * 4.5;
+  vec2 stringuv = (xy - where) * (5.5 - size);
   if(stringuv.x < 0.0 || stringuv.y > 0.1 || stringuv.y < 0.0) return 0.0;
 
   // Which character are we in?  Sum widths of characters in string left to right
@@ -59,7 +59,7 @@ float print(int s, vec2 where) {
   int thischar = -1;
   float prevcharswidth = 0.0;
   for(int i = 0; i < 40; i++) {
-    thischar = getch(s, i);
+    thischar = getch(row, col, i);
     if(thischar == 0) break; // End of string, they're null terminated in the texture
     float thischarwidth = (charwidths[thischar] + tracking) / adsk_result_frameratio;
     prevcharswidth += thischarwidth;
@@ -79,15 +79,15 @@ float print(int s, vec2 where) {
 
   // Where is that in the font texture?
   int nth = thischar - 32;
-  int row = nth / 10;
-  int col = nth - (row * 10);
-  vec2 charorigin = vec2(col, row) / 10.0;
+  int chrow = nth / 10;
+  int chcol = nth - (chrow * 10);
+  vec2 charorigin = vec2(chcol, chrow) / 10.0;
   charorigin.x += 0.021;
   vec2 fontuv = charorigin + charuv;
 
   // Look up the SDF and step to it for antialiasing
   float sdf = texture2D(adsk_texture_grid, fontuv).r;
-  float aa = 1.0 - smoothstep(0.0, 4.0, sdf);
+  float aa = 1.0 - smoothstep(0.5, 4.5, sdf);
 
   return aa;
 }
@@ -118,14 +118,6 @@ float rectsdf(vec2 origin, vec2 size) {
   return length(max(vec2(0.0), d)) + min(0.0, max(d.x, d.y));
 }
 
-// Return contribution of a ring
-float ring(vec2 origin, float size, float thick) {
-  vec2 to = xy - origin;
-  to.x *= adsk_result_frameratio;
-  float len = length(to);
-  return smoothstep(size-thick, size+thick, len) * (1.0 - smoothstep(size-thick, size+thick, len));
-}
-
 void main() {
   vec3 bg = texture2D(front, xy).rgb;
   if(showblocky) {
@@ -140,18 +132,23 @@ void main() {
     vec2 pos = chip1pos;
     vec3 col = chip1col;
     bool nearest = chip1nearest;
+    bool override = chip1override;
     if(i == 1) {
       pos = chip2pos;
       col = chip2col;
       nearest = chip2nearest;
+      override = chip2override;
     }
     if(i == 2) {
       pos = chip3pos;
       col = chip3col;
       nearest = chip3nearest;
+      override = chip3override;
     }
 
     vec3 pickcol = texture2DLod(front, pos, blockup + 0.4).rgb;
+    if(override) pickcol = col;
+
     int bestcolidx;
     vec3 bestcol;
     if(nearest) {
@@ -167,36 +164,43 @@ void main() {
       voronoi_col[i] = bestcol;
     }
 
-    vec2 chipsize = vec2(0.07, 0.07 * adsk_result_frameratio);
-    vec2 origin = pos + vec2(0.018, -chipsize.y + 0.014);
-    float tagmatte = 1.0 - smoothstep(0.2, 0.201, rectuv(origin, chipsize).y);
+    vec2 chipsize = vec2(0.08, 0.09 * adsk_result_frameratio);
+    vec2 origin = pos + vec2(0.003, -chipsize.y-0.005);
+    origin = max(origin, vec2(0.01, 0.01 * adsk_result_frameratio));
+    origin = min(origin, vec2(0.99 - chipsize.x, 1.0 - 0.01 * adsk_result_frameratio - chipsize.y));
+    vec2 chiptopleft = origin - vec2(0.003, -chipsize.y-0.005);
+    float tagmatte = 1.0 - smoothstep(0.3333, 0.33334, rectuv(origin, chipsize).y);
     vec3 tagcol = vec3(0.9);
     vec3 fill = mix(bestcol, tagcol, tagmatte);
 
-    float name = print(bestcolidx, origin + vec2(0.00, 0.00));
+    float name = print(bestcolidx, 1, origin + vec2(0.00, 0.025), 1.0);
     fill = mix(fill, vec3(0.0), name);
+    float line2 = print(bestcolidx+2, 1, origin + vec2(0.00, 0.01), -1.0);
+    fill = mix(fill, vec3(0.4), line2);
 
-    float rectmatte = 1.0 - smoothstep(0.003, 0.004, rectsdf(origin, chipsize));
-    float bridgematte = 1.0 - smoothstep(0.0, 0.001, rectsdf(origin + vec2(-0.014, chipsize.y - 0.015), vec2(0.016, 0.0025)));
-    float matte = rectmatte + bridgematte - (bridgematte * rectmatte);
-    float ringmatte = clamp(0.0, 1.0, 16.0 * ring(origin + vec2(-0.018, chipsize.y - 0.014), 0.008, 0.002));
-    matte = matte + ringmatte - (ringmatte * matte);
+    float rectmatte = 1.0 - smoothstep(0.005, 0.006, rectsdf(origin, chipsize));
+    float cornermatte = 1.0 - smoothstep(0.0, 0.001, rectsdf(chiptopleft + vec2(0.0003, -0.02), vec2(0.02)));
+    float matte = rectmatte + cornermatte - (cornermatte * rectmatte);
 
-    //float shadow = smoothstep(0.0, 0.4, roundedrect(origin + vec2(0.007, 0.0), chipsize * vec2(0.9, 1.1)));
-    //float sdf = rectsdf(origin + vec2(0.0, 0.0), chipsize * vec2(1.0, 1.0));
-    //float shadow = smoothstep(0.0, 0.1, sdf);
-    //shadow = 1.0 - shadow;
-    //if(voronoi) shadow = 0.0;
+    float shadow = 1.0 - smoothstep(0.0, 0.1, rectsdf(origin, chipsize));
+    shadow = pow(shadow, 4.0) * 0.75;
+    float radial = smoothstep(0.0, 0.4, length((xy - chiptopleft) * vec2(adsk_result_frameratio, 1.0)));
+    if(voronoi) {
+      shadow = pow(shadow, 4.0) * 0.66;
+    } else {
+      shadow *= radial;
+    }
 
     fill *= matte;
+    matte = matte + shadow - (matte * shadow);
     chips = chips * (1.0 - matte) + vec4(fill, matte);
   }
 
   if(voronoi) {
     vec3 accum = vec3(0.0);
     float samples = 0.0;
-    for(float sx = -0.5; sx <= 0.5; sx += 0.3333) {
-      for(float sy = -0.5; sy <= 0.5; sy += 0.3333) {
+    for(float sx = -0.5; sx <= 0.5; sx += 0.25) {
+      for(float sy = -0.5; sy <= 0.5; sy += 0.25) {
         vec2 ixy = xy + (vec2(sx, sy) / res);
         float closest = 999.0;
         vec3 col = vec3(0.0);
