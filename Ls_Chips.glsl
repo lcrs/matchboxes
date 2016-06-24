@@ -175,7 +175,7 @@ void main() {
 
     float name = print(bestcolidx, 1, origin + vec2(0.00, 0.025), 1.0);
     fill = mix(fill, vec3(0.0), name);
-    float line2 = print(bestcolidx+2, 1, origin + vec2(0.00, 0.01), -1.0);
+    float line2 = print(bestcolidx, 100, origin + vec2(0.00, 0.01), -1.0);
     fill = mix(fill, vec3(0.4), line2);
 
     float rectmatte = 1.0 - smoothstep(0.005, 0.006, rectsdf(origin, chipsize));
