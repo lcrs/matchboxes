@@ -6,32 +6,32 @@
 <Uniform Inc="0.01" Tooltip="" Row="0" Col="0" Page="0" Action3DWidget="False" IconType="Pick" Type="vec2" ChannelName="Chip1Position" DisplayName="Position" Name="chip1pos">
 <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.2"></SubUniform>
 <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.3"></SubUniform></Uniform>
-<Uniform Row="2" Col="0" Page="0" Default="True" Tooltip="" Type="bool" ChannelName="Chip1Nearest" DisplayName="Nearest named colour" Name="chip1nearest"></Uniform>
-<Uniform Inc="0.01" Tooltip="" Row="3" Col="0" Page="0" Action3DWidget="False" IconType="None" ValueType="Colour" Type="vec3" ChannelName="Chip1colour" DisplayName="Override colour" Name="chip1col">
+<Uniform Inc="0.01" Tooltip="" Row="2" Col="0" Page="0" Action3DWidget="False" IconType="None" ValueType="Colour" Type="vec3" ChannelName="Chip1colour" DisplayName="Override colour" Name="chip1col">
 <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.2"></SubUniform>
 <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.2"></SubUniform>
 <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.2"></SubUniform></Uniform>
-<Uniform Row="4" Col="0" Page="0" Default="False" Tooltip="" Type="bool" ChannelName="Chip1Override" DisplayName="Use override colour" Name="chip1override"></Uniform>
+<Uniform Row="3" Col="0" Page="0" Default="False" Tooltip="" Type="bool" ChannelName="Chip1Override" DisplayName="Use override colour" Name="chip1override"></Uniform>
+<Uniform Row="4" Col="0" Page="0" Default="True" Tooltip="" Type="bool" ChannelName="Chip1Nearest" DisplayName="Nearest named colour" Name="chip1nearest"></Uniform>
 
 <Uniform Inc="0.01" Tooltip="" Row="0" Col="1" Page="0" Action3DWidget="False" IconType="Pick" Type="vec2" ChannelName="Chip2Position" DisplayName="Position" Name="chip2pos">
 <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.4"></SubUniform>
 <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.7"></SubUniform></Uniform>
-<Uniform Row="2" Col="1" Page="0" Default="True" Tooltip="" Type="bool" ChannelName="Chip2Nearest" DisplayName="Nearest named colour" Name="chip2nearest"></Uniform>
-<Uniform Inc="0.01" Tooltip="" Row="3" Col="1" Page="0" Action3DWidget="False" IconType="None" ValueType="Colour" Type="vec3" ChannelName="Chip2colour" DisplayName="Override colour" Name="chip2col">
+<Uniform Inc="0.01" Tooltip="" Row="2" Col="1" Page="0" Action3DWidget="False" IconType="None" ValueType="Colour" Type="vec3" ChannelName="Chip2colour" DisplayName="Override colour" Name="chip2col">
 <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.3"></SubUniform>
 <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.3"></SubUniform>
 <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.3"></SubUniform></Uniform>
-<Uniform Row="4" Col="1" Page="0" Default="False" Tooltip="" Type="bool" ChannelName="Chip2Override" DisplayName="Use override colour" Name="chip2override"></Uniform>
+<Uniform Row="3" Col="1" Page="0" Default="False" Tooltip="" Type="bool" ChannelName="Chip2Override" DisplayName="Use override colour" Name="chip2override"></Uniform>
+<Uniform Row="4" Col="1" Page="0" Default="True" Tooltip="" Type="bool" ChannelName="Chip2Nearest" DisplayName="Nearest named colour" Name="chip2nearest"></Uniform>
 
 <Uniform Inc="0.01" Tooltip="" Row="0" Col="2" Page="0" Action3DWidget="False" IconType="Pick" Type="vec2" ChannelName="Chip3Position" DisplayName="Position" Name="chip3pos">
 <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.7"></SubUniform>
 <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.5"></SubUniform></Uniform>
-<Uniform Row="2" Col="2" Page="0" Default="True" Tooltip="" Type="bool" ChannelName="Chip3Nearest" DisplayName="Nearest named colour" Name="chip3nearest"></Uniform>
-<Uniform Inc="0.01" Tooltip="" Row="3" Col="2" Page="0" Action3DWidget="False" IconType="None" ValueType="Colour" Type="vec3" ChannelName="Chip3colour" DisplayName="Override colour" Name="chip3col">
+<Uniform Inc="0.01" Tooltip="" Row="2" Col="2" Page="0" Action3DWidget="False" IconType="None" ValueType="Colour" Type="vec3" ChannelName="Chip3colour" DisplayName="Override colour" Name="chip3col">
 <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.4"></SubUniform>
 <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.4"></SubUniform>
 <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.4"></SubUniform></Uniform>
-<Uniform Row="4" Col="2" Page="0" Default="False" Tooltip="" Type="bool" ChannelName="Chip3Override" DisplayName="Use override colour" Name="chip3override"></Uniform>
+<Uniform Row="3" Col="2" Page="0" Default="False" Tooltip="" Type="bool" ChannelName="Chip3Override" DisplayName="Use override colour" Name="chip3override"></Uniform>
+<Uniform Row="4" Col="2" Page="0" Default="True" Tooltip="" Type="bool" ChannelName="Chip3Nearest" DisplayName="Nearest named colour" Name="chip3nearest"></Uniform>
 
 <Uniform ResDependent="None" Max="20.0" Min="0.0" Default="3.0" Inc="1.00" Tooltip="" Row="0" Col="3" Page="0" Type="float" ChannelName="BlockUp" DisplayName="Block up" Name="blockup"></Uniform>
 <Uniform Row="1" Col="3" Page="0" Default="False" Tooltip="" Type="bool" ChannelName="Showblocky" DisplayName="Show blocky" Name="showblocky"></Uniform>
