@@ -152,7 +152,7 @@ float print(vec2 where, float size) {
   // Where is that in the font texture?
   int nth = thischar - 32;
   int row = nth / 10;
-  int ccol = nth - (row * 10);
+  int col = nth - (row * 10);
   vec2 charorigin = vec2(col, row) / 10.0;
   charorigin.x += 0.021;
   vec2 fontuv = charorigin + charuv;
