@@ -34,7 +34,7 @@ void getstr(int row, int col) {
   for(int i = 0; i < 20; i++) {
     vec2 uv;
     uv.y = float(row);
-    uv.x = float(col + i);
+    uv.x = float(col * 25 + i + 1);
     uv += 0.5;
     uv /= 1024.0;
     float texel = texture2D(adsk_texture_grid, uv).g;
@@ -164,29 +164,34 @@ float print(vec2 where, float size) {
   return aa;
 }
 
-// Retrieves a colour from row i in the texture grid
-vec3 getcol(int i) {
+// Retrieves a colour from the texture grid
+vec3 getcol(int row, int col) {
   vec2 uv;
-  uv.y = float(i);
-  uv.x = 0.0;
+  uv.y = float(row);
+  uv.x = float(col * 25.0);
   uv += 0.5;
   uv /= 1024.0;
   vec3 texel = texture2D(adsk_texture_grid, uv).gba;
   return texel;
 }
 
-// Return the index of the dictionary colour closest to col
-int bestcol(vec3 col) {
+// Return the row and col of the dictionary colour closest to c
+ivec2 bestcol(vec3 c) {
   int best = -1;
   float lowest = 999.0;
-  for(int i = 0; i < 1023; i++) {
-    float dist = length(col - getcol(i));
+  // In the grid texture, the colours are binned into 40
+  // columns by green value.  There's overlap between
+  // what's in adjacent columns, so we only need to search in
+  // one of them
+  int col = int(c.g * 39.0);
+  for(int i = 0; i < 101; i++) {
+    float dist = length(c - getcol(i, col));
     if(dist < lowest) {
       lowest = dist;
       best = i;
     }
   }
-  return best;
+  return ivec2(best, col);
 }
 
 // Transform into UV coords in a chip rectangle
@@ -229,10 +234,10 @@ void main() {
     // Use override colour pot if it's not negative
     if(min(col.r, min(col.g, col.b)) > -0.01) pickcol = col;
 
-    int bestcolidx = bestcol(pickcol);
-    vec3 bestcol = getcol(bestcolidx);;
+    ivec2 bestcolidx = bestcol(pickcol);
+    vec3 bestcol = getcol(bestcolidx.x, bestcolidx.y);
     if(!nearest) {
-      if(bestcol != pickcol) bestcolidx = -1;
+      if(bestcol != pickcol) bestcolidx = ivec2(-1, -1);
       bestcol = pickcol;
     }
 
@@ -255,8 +260,8 @@ void main() {
       vec3 tagcol = vec3(0.9);
       fill = mix(bestcol, tagcol, tagmatte);
 
-      if(bestcolidx > -1) {
-        getstr(bestcolidx, 1);
+      if(bestcolidx.x != -1) {
+        getstr(bestcolidx.x, bestcolidx.y);
       } else {
         hexstr(bestcol);
       }
