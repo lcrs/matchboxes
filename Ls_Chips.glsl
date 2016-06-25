@@ -22,21 +22,10 @@ vec2 xy = gl_FragCoord.xy / res;
 const float charwidths[] = float[](0.013000, 0.005811, 0.013125, 0.028232, 0.024609, 0.049561, 0.035957, 0.003486, 0.010869, 0.010869, 0.017432, 0.028096, 0.007998, 0.015039, 0.005811, 0.023447, 0.026113, 0.022832, 0.026934, 0.027207, 0.029531, 0.027686, 0.026250, 0.026865, 0.027139, 0.026182, 0.005811, 0.007998, 0.028096, 0.028096, 0.028096, 0.021533, 0.048603, 0.034863, 0.029805, 0.032266, 0.030898, 0.025361, 0.024541, 0.032676, 0.030420, 0.003145, 0.022285, 0.030830, 0.023926, 0.035000, 0.030215, 0.037119, 0.027686, 0.037256, 0.028574, 0.029668, 0.031855, 0.030352, 0.033018, 0.048672, 0.030625, 0.030146, 0.030078, 0.010938, 0.023516, 0.010938, 0.023721, 0.032539, 0.011484, 0.024199, 0.027344, 0.025362, 0.027344, 0.026865, 0.017431, 0.028985, 0.024268, 0.005469, 0.012920, 0.024609, 0.006221, 0.043477, 0.024268, 0.029463, 0.027344, 0.027344, 0.015654, 0.023105, 0.018662, 0.024063, 0.028027, 0.043545, 0.025908, 0.028164, 0.023994, 0.015244, 0.002461, 0.015244, 0.027207, 0.000000);
 
 // Global string buffer, used for all string operations
-// This avoids using any other arrays, which destroys perf
+// This avoids using any other arrays, which... slow
 int str[20];
 
-// Retrieves a colour from index i
-vec3 getcol(int i) {
-  vec2 uv;
-  uv.y = float(i);
-  uv.x = 0.0;
-  uv += 0.5;
-  uv /= 1024.0;
-  vec3 texel = texture2D(adsk_texture_grid, uv).gba;
-  return texel;
-}
-
-// Fills global str with char codes from string at row, col
+// Fills global str with char codes from string at row, col in texture grid
 void getstr(int row, int col) {
   if(row == -1) {
     str[0] = 0;
@@ -68,7 +57,7 @@ int[3] float2char(float f) {
   return int[](hundreds, tens, units);
 }
 
-// Build a string of RGB values for color c
+// Build a string of decimal RGB values for color c
 void rgbstr(vec3 c) {
   str[0] = 115; // 'sRGB: '
   str[1] = 82;
@@ -102,7 +91,7 @@ int dec2hex(float d) {
   } else {
     r = int(d) + 48;
   }
-  if(r == 64) r = 57;
+  if(r == 64) r = 57; // Compensate for mod() problems
   return r;
 }
 
@@ -119,13 +108,13 @@ void hexstr(vec3 c) {
   str[7] = 0;
 }
 
-// Build single character string for a decimal
+// Build a single character string for a decimal
 void decstr(int i) {
   str[0] = i + 48;
   str[1] = 0;
 }
 
-// Returns contribution of string at position where
+// Returns contribution of string at position 'where'
 float print(vec2 where, float size) {
   if(str[0] == 0) {
     return 0.0;
@@ -144,7 +133,7 @@ float print(vec2 where, float size) {
     thischar = str[i];
     if(thischar == 0) break; // End of string, they're null terminated in the texture
     float thischarwidth = (charwidths[thischar - 32] + tracking) / adsk_result_frameratio;
-    if(thischar == 127) thischarwidth = 0.0;
+    if(thischar == 127) thischarwidth = 0.0; // Zero-width dummy character
     prevcharswidth += thischarwidth;
     if(prevcharswidth > stringuv.x) {
       thischaridx = i;
@@ -162,9 +151,9 @@ float print(vec2 where, float size) {
 
   // Where is that in the font texture?
   int nth = thischar - 32;
-  int chrow = nth / 10;
-  int chcol = nth - (chrow * 10);
-  vec2 charorigin = vec2(chcol, chrow) / 10.0;
+  int row = nth / 10;
+  int ccol = nth - (row * 10);
+  vec2 charorigin = vec2(col, row) / 10.0;
   charorigin.x += 0.021;
   vec2 fontuv = charorigin + charuv;
 
@@ -175,7 +164,18 @@ float print(vec2 where, float size) {
   return aa;
 }
 
-// Return the index of the colour closest to col
+// Retrieves a colour from row i in the texture grid
+vec3 getcol(int i) {
+  vec2 uv;
+  uv.y = float(i);
+  uv.x = 0.0;
+  uv += 0.5;
+  uv /= 1024.0;
+  vec3 texel = texture2D(adsk_texture_grid, uv).gba;
+  return texel;
+}
+
+// Return the index of the dictionary colour closest to col
 int bestcol(vec3 col) {
   int best = -1;
   float lowest = 999.0;
@@ -226,6 +226,7 @@ void main() {
     }
 
     vec3 pickcol = texture2DLod(front, pos, blockup + 0.4).rgb;
+    // Use override colour pot if it's not negative
     if(min(col.r, min(col.g, col.b)) > -0.01) pickcol = col;
 
     int bestcolidx = bestcol(pickcol);
@@ -290,6 +291,7 @@ void main() {
     chips = chips * (1.0 - matte) + vec4(fill, matte);
   }
 
+  // Supersampled voronoi diagram of the three colours/positions
   if(voronoi) {
     vec3 accum = vec3(0.0);
     float samples = 0.0;
