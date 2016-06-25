@@ -179,7 +179,7 @@ vec3 getcol(int i) {
 int bestcol(vec3 col) {
   int best = -1;
   float lowest = 999.0;
-  for(int i = 0; i < 213; i++) {
+  for(int i = 0; i < 1023; i++) {
     float dist = length(col - getcol(i));
     if(dist < lowest) {
       lowest = dist;
