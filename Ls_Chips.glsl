@@ -1,7 +1,15 @@
-// Chips: show colour chips with names
-// lewis@lewissaunders.com
-// TODO:
-//  o extract kerning pair metrics from the Source Sans font and try to use them?
+/* Chips: show colour chips with names
+   lewis@lewissaunders.com
+
+   TODO:
+    o extract kerning pair metrics from the Source Sans font and try to use them?
+
+   This probably deserves some explanation.  We pick colours from the input, find which
+   colour in our dictionary is closest, then draw colour chips including text.  The
+   grid texture image holds the colours, their names stored as character codes in pixel
+   colours, and a texture atlas containing signed distance field characters.
+*/
+
 
 #version 120
 #extension GL_ARB_shader_texture_lod : enable
@@ -34,8 +42,9 @@ void getstr(int row, int col) {
   for(int i = 0; i < 20; i++) {
     vec2 uv;
     uv.y = float(row);
+    // Columns are 25px wide, and skip the first pixel in each
     uv.x = float(col * 25 + i + 1);
-    uv += 0.5;
+    uv += 0.5; // Sample texel centres!
     uv /= 1024.0;
     float texel = texture2D(adsk_texture_grid, uv).g;
     str[i] = int(texel);
@@ -114,7 +123,7 @@ void decstr(int i) {
   str[1] = 0;
 }
 
-// Returns contribution of string at position 'where'
+// Returns contribution of global string buffer printed at position 'where'
 float print(vec2 where, float size) {
   if(str[0] == 0) {
     return 0.0;
@@ -168,8 +177,8 @@ float print(vec2 where, float size) {
 vec3 getcol(int row, int col) {
   vec2 uv;
   uv.y = float(row);
-  uv.x = float(col * 25.0);
-  uv += 0.5;
+  uv.x = float(col * 25.0); // Columns 25px wide
+  uv += 0.5; // Sample texel centres
   uv /= 1024.0;
   vec3 texel = texture2D(adsk_texture_grid, uv).gba;
   return texel;
