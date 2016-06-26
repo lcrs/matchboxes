@@ -257,18 +257,18 @@ void main() {
       bestcol = pickcol;
     }
 
-    if(voronoi) {
-      voronoi_pos[i] = pos;
-      voronoi_col[i] = bestcol;
-    }
-
     vec2 chipsize = vec2(0.08, 0.09 * adsk_result_frameratio);
     vec2 origin = pos + vec2(0.003, -chipsize.y-0.005);
     origin = max(origin, vec2(0.01, 0.01 * adsk_result_frameratio));
     origin = min(origin, vec2(0.99 - chipsize.x, 1.0 - 0.01 * adsk_result_frameratio - chipsize.y));
     vec2 chiptopleft = origin - vec2(0.003, -chipsize.y-0.005);
 
-    vec3 fill;
+    if(voronoi) {
+      voronoi_pos[i] = pos + vec2(chipsize.x, -chipsize.y)/2.0;
+      voronoi_col[i] = bestcol;
+    }
+
+    vec3 fill = vec3(0.0);
     vec2 chipuv = rectuv(origin, chipsize);
     if(clamp(chipuv, -0.2, 1.2) == chipuv) {
       // We're inside the chip
@@ -289,9 +289,6 @@ void main() {
       decstr(i+1);
       p = print(origin + vec2(0.077, -0.002), -1.0);
       fill = mix(fill, vec3(0.4), p);
-    } else {
-      // We're outside the chip
-      fill = vec3(0.0);
     }
 
     float rectmatte = 1.0 - smoothstep(0.005, 0.006, rectsdf(origin, chipsize));
