@@ -20,8 +20,7 @@ uniform vec2 chip1pos, chip2pos, chip3pos;
 uniform vec3 chip1col, chip2col, chip3col;
 uniform bool chip1nearest, chip2nearest, chip3nearest;
 uniform float blockup;
-uniform bool showblocky;
-uniform bool voronoi;
+uniform bool showblocky, voronoi, palette;
 
 vec2 res = vec2(adsk_result_w, adsk_result_h);
 vec2 xy = gl_FragCoord.xy / res;
@@ -130,7 +129,7 @@ float print(vec2 where, float size) {
   }
 
   float tracking = 0.011;
-  vec2 stringuv = (xy - where) * (5.5 - size);
+  vec2 stringuv = (xy - where) * (5.5 - size) * (1.77777 / adsk_result_frameratio);
   if(stringuv.x < 0.0 || stringuv.y > 0.1 || stringuv.y < 0.0) return 0.0;
 
   // Which character are we in?  Sum widths of characters in string left to right
@@ -215,10 +214,24 @@ float rectsdf(vec2 origin, vec2 size) {
   return length(max(vec2(0.0), d)) + min(0.0, max(d.x, d.y));
 }
 
+// Return colour from palette at uv
+vec3 getpalette(vec2 uv) {
+  int row = int(floor(uv.y * 27.0));
+  int col = int(floor(uv.x * 38.0));
+  int i = row * 38 + col;
+  vec2 st = vec2((i + 0.5) / 1024.0, 1.0);
+  return texture2D(adsk_texture_grid, st).gba;
+}
+
 void main() {
-  float lod = 0.0;
-  if(showblocky) lod = blockup + 0.4;
-  vec3 bg = texture2DLod(front, xy, lod).rgb;
+  vec3 bg;
+  if(palette) {
+    bg = getpalette(xy);
+  } else {
+    float lod = 0.0;
+    if(showblocky) lod = blockup + 0.4;
+    bg = texture2DLod(front, xy, lod).rgb;
+  }
 
   vec4 chips = vec4(0.0);
   vec2 voronoi_pos[3];
@@ -246,7 +259,12 @@ void main() {
       continue;
     }
 
-    vec3 pickcol = texture2DLod(front, pos, blockup + 0.4).rgb;
+    vec3 pickcol;
+    if(palette) {
+      pickcol = getpalette(pos);
+    } else {
+      pickcol = texture2DLod(front, pos, blockup + 0.4).rgb;
+    }
     // Use override colour pot if it's not negative
     if(min(col.r, min(col.g, col.b)) > -0.01) pickcol = col;
 
