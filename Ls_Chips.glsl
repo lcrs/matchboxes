@@ -239,6 +239,13 @@ void main() {
       nearest = chip3nearest;
     }
 
+    if(pos != clamp(pos, -0.05, 1.05)) {
+      // Way off screen, make sure this chip isn't used for voronoi
+      voronoi_pos[i] = vec2(10.0);
+      voronoi_col[i] = vec3(0.0);
+      continue;
+    }
+
     vec3 pickcol = texture2DLod(front, pos, blockup + 0.4).rgb;
     // Use override colour pot if it's not negative
     if(min(col.r, min(col.g, col.b)) > -0.01) pickcol = col;
