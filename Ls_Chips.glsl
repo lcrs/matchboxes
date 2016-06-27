@@ -129,7 +129,7 @@ float print(vec2 where, float size) {
   }
 
   float tracking = 0.011;
-  vec2 stringuv = (xy - where) * (5.5 - size) * (1.77777 / adsk_result_frameratio);
+  vec2 stringuv = (xy - where) * (4.5 / size) * (1.77777 / adsk_result_frameratio);
   if(stringuv.x < 0.0 || stringuv.y > 0.1 || stringuv.y < 0.0) return 0.0;
 
   // Which character are we in?  Sum widths of characters in string left to right
@@ -276,10 +276,13 @@ void main() {
     }
 
     vec2 chipsize = vec2(0.08, 0.09 * adsk_result_frameratio);
-    vec2 origin = pos + vec2(0.003, -chipsize.y-0.005);
+    float csx = chipsize.x;
+    float csy = chipsize.y;
+    vec2 origin = pos + vec2(0.0375 * csx, -1.03 * csy);
+    // Keep the chip inside the image
     origin = max(origin, vec2(0.01, 0.01 * adsk_result_frameratio));
-    origin = min(origin, vec2(0.99 - chipsize.x, 1.0 - 0.01 * adsk_result_frameratio - chipsize.y));
-    vec2 chiptopleft = origin - vec2(0.003, -chipsize.y-0.005);
+    origin = min(origin, vec2(0.99 - csx, 1.0 - 0.01 * adsk_result_frameratio - csy));
+    vec2 chiptopleft = origin - vec2(0.0375 * csx, -1.03 * csy);
 
     if(voronoi) {
       voronoi_pos[i] = pos + vec2(chipsize.x, -chipsize.y)/2.0;
@@ -294,23 +297,27 @@ void main() {
       vec3 tagcol = vec3(0.9);
       fill = mix(bestcol, tagcol, tagmatte);
 
-      if(bestcolidx.x != -1) {
-        getstr(bestcolidx.x, bestcolidx.y);
-      } else {
-        hexstr(bestcol);
+      if(tagmatte > 0.5) {
+        if(bestcolidx.x != -1) {
+          // We have a colour name to print
+          getstr(bestcolidx.x, bestcolidx.y);
+        } else {
+          hexstr(bestcol);
+        }
+        float p = print(origin + vec2(0.00, 0.17 * csy), 1.0);
+        fill = mix(fill, vec3(0.0), p);
+        rgbstr(bestcol);
+        p = print(origin + vec2(0.00, 0.07 * csy), 0.7);
+        fill = mix(fill, vec3(0.4), p);
+        decstr(i+1);
+        p = print(origin + vec2(0.965 * csx, -0.01 * csy), 0.7);
+        fill = mix(fill, vec3(0.4), p);
       }
-      float p = print(origin + vec2(0.00, 0.025), 1.0);
-      fill = mix(fill, vec3(0.0), p);
-      rgbstr(bestcol);
-      p = print(origin + vec2(0.00, 0.01), -1.0);
-      fill = mix(fill, vec3(0.4), p);
-      decstr(i+1);
-      p = print(origin + vec2(0.077, -0.002), -1.0);
-      fill = mix(fill, vec3(0.4), p);
     }
 
     float rectmatte = 1.0 - smoothstep(0.005, 0.006, rectsdf(origin, chipsize));
-    float cornermatte = 1.0 - smoothstep(0.0, 0.001, rectsdf(chiptopleft + vec2(0.0003, -0.02), vec2(0.02)));
+    float aspectdiff = 0.003 * ((1.7777/adsk_result_frameratio) - 1.0);
+    float cornermatte = 1.0 - smoothstep(0.0, 0.001, rectsdf(chiptopleft + vec2(0.002 * csx, -0.2 * csy) + vec2(-aspectdiff, aspectdiff), 0.2 * chipsize));
     float matte = rectmatte + cornermatte - (cornermatte * rectmatte);
 
     float shadow = 1.0 - smoothstep(0.0, 0.1, rectsdf(origin, chipsize));
