@@ -218,6 +218,10 @@ float rectsdf(vec2 origin, vec2 size) {
 vec3 getpalette(vec2 uv) {
   int row = int(floor(uv.y * 27.0));
   int col = int(floor(uv.x * 38.0));
+  if(mod(row, 2) == 0) {
+    // Flip every other row to get a serpentine order
+    col = 38 - col;
+  }
   int i = row * 38 + col;
   vec2 st = vec2((i + 0.5) / 1024.0, 1.0);
   return texture2D(adsk_texture_grid, st).gba;
