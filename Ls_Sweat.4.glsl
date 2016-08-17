@@ -17,7 +17,7 @@ void main() {
   // Multisampled UV mapping - read from the texture a bunch
   // of times and average to reduce noise.  This seems more effective
   // than EWA filtering a lot of the time and is much faster
-  vec3 rgb;
+  vec3 rgb = vec3(0.0);
   float samps = float(isamples);
   float spacing = 1.0 / (samps + 1.0);
   for(float i = 1.0; i <= samps; i++) {
@@ -31,7 +31,7 @@ void main() {
     }
   }
   rgb /= samps * samps;
-  
+
   if(outputuvs) {
     rgb.rg = uv;
     rgb.rg *= distomult;
@@ -40,11 +40,11 @@ void main() {
     bg.rg = xy/res;
     bg.b = 0.0;
   }
-  
+
   // Comp the distorted front over the clean one with a cropped in matte
   // This removes some horrible edges
   float matte = clamp(pow((h * 2.0), 3.0), 0.0, 1.0);
   vec3 o = mix(bg, rgb, matte);
-  
+
   gl_FragColor = vec4(o, matte);
 }
