@@ -1,5 +1,5 @@
 // Poly
-// Pass 7: jump flood round 6, distance 1/64
+// Pass 7: jump flood round 6, distance 64
 
 uniform float adsk_result_w, adsk_result_h;
 uniform sampler2D adsk_results_pass6;
@@ -12,7 +12,7 @@ void main() {
   vec4 o = texture2D(adsk_results_pass6, xy);
   for(float j = -1.0; j <= 1.0; j += 1.0) {
     for(float k = -1.0; k <= 1.0; k += 1.0) {
-      vec4 s = texture2D(adsk_results_pass6, xy + (vec2(j, k) / 64.0));
+      vec4 s = texture2D(adsk_results_pass6, xy + vec2(j, k) * (vec2(64.0)/res));
       if(s.x == -999.0) {
         // This sample has not been flooded yet
         continue;
