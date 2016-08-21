@@ -3,7 +3,7 @@
 
 /*
 TODO:
-o Seed generation sucks - use max of 3x3 area? Mipmaps?
+o Seed generation clusters a lot leading to many small polys
 o Outlines? Outline-only mode?
 o Shade cells radially, random angled gradients?
 o use 1+JFA instead of standard JFA?
@@ -15,6 +15,8 @@ o Delaunay... to draw the triangles, we need to know the seed coords of all surr
   other steps: check if flooding triangles are closer than current
 */
 
+#extension GL_ARB_shader_texture_lod : enable
+
 uniform float adsk_result_w, adsk_result_h;
 uniform sampler2D front;
 uniform float seedthres;
@@ -25,9 +27,12 @@ void main() {
   vec2 xy = gl_FragCoord.xy / res;
   vec3 frontrgb = texture2D(front, xy).rgb;
   float frontluma = dot(frontrgb, vec3(0.2126, 0.7152, 0.0722));
-  float localslope = length(vec2(dFdy(frontluma), dFdx(frontluma)));
+  vec3 miprgb = texture2DLod(front, xy, 2.0).rgb;
+  float mipluma = dot(miprgb, vec3(0.2126, 0.7152, 0.0722));
+  float seedness = frontluma - mipluma;
+
   vec4 o;
-  if(localslope > seedthres) {
+  if(seedness > seedthres) {
     // This is a seed pixel, output current coords
     o = vec4(xy, 0.0, 0.0);
   } else {
