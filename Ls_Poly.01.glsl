@@ -4,6 +4,7 @@
 /*
 TODO:
 o Seed generation clusters a lot leading to many small polys
+o Need to account for aspect ratio in all distance calcs :(
 o Outlines? Outline-only mode?
 o Shade cells radially, random angled gradients?
 o use 1+JFA instead of standard JFA?
