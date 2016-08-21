@@ -20,7 +20,7 @@ void main() {
   vec3 o;
   vec3 coords = texture2D(adsk_results_pass13, xy).rgb;
   vec3 col = texture2D(front, coords.xy).rgb;
-  vec3 randomcol = mix(vec3(0.5), rand(coords.xy), 0.3);
+  vec3 randomcol = mix(vec3(0.18), rand(coords.xy), 0.1);
   o = randomcol;
 
   vec3 seeds = texture2D(adsk_results_pass1, xy).rgb;
