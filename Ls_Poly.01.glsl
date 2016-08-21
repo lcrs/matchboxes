@@ -3,12 +3,9 @@
 
 /*
 TODO:
-o Arbitrary image sizes - hard code jump distances, probably, some jumps will read off the edge?
 o Seed generation sucks - use max of 3x3 area? Mipmaps?
-o Random colours seeded from coords
 o Outlines? Outline-only mode?
 o Shade cells radially, random angled gradients?
-o AA - don't bother, FXAA looks ok?
 o use 1+JFA instead of standard JFA?
 o Delaunay... to draw the triangles, we need to know the seed coords of all surrounding cells...
   so we need to flood the seed coords from junction pixels
