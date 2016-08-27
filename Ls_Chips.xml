@@ -1,0 +1,48 @@
+<ShaderNodePreset SupportsAdaptiveDegradation="False" SupportsAction="False" SupportsTransition="False" SupportsTimeline="False" TimelineUseBack="False" MatteProvider="False" CommercialUsePermitted="True" ShaderType="Matchbox" SoftwareVersion="2017.0.0" LimitInputsToTexture="True" Version="1" Description="Chips - sample colours and show their names.  For sensible results the input should be sRGB or video - not scene linear or log!
+
+Demo: https://www.youtube.com/watch?v=VVhRQ0sqTUM
+
+lewis@lewissaunders.com" Name="Chips">
+  <Shader ClearColor="0, 0, 0, 0" GridSubdivision="1" OutputBitDepth="Output" Index="1">
+    <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_texture_grid"></Uniform>
+    <Uniform Index="0" NoInput="Black" Tooltip="" DisplayName="Front" InputType="Front" Mipmaps="True" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_NEAREST_MIPMAP_NEAREST" GL_TEXTURE_MIN_FILTER="GL_NEAREST_MIPMAP_NEAREST" Type="sampler2D" Name="front"></Uniform>
+
+    <Uniform Inc="0.001" Tooltip="" Row="0" Col="0" Page="0" Action3DWidget="False" IconType="Pick" Type="vec2" ChannelName="Chip1Position" DisplayName="Chip 1" Name="chip1pos">
+      <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.15"></SubUniform>
+      <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.382"></SubUniform></Uniform>
+    <Uniform Inc="0.01" Tooltip="Use this colour instead of picking from the image.  To return to pick mode, set this colour pot to something negative" Row="2" Col="0" Page="0" Action3DWidget="False" IconType="None" ValueType="Colour" Type="vec3" ChannelName="Chip1colour" DisplayName="Override" Name="chip1col">
+      <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="-1.0"></SubUniform>
+      <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="-1.0"></SubUniform>
+      <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="-1.0"></SubUniform></Uniform>
+    <Uniform Row="3" Col="0" Page="0" Default="True" Tooltip="" Type="bool" ChannelName="Chip1Nearest" DisplayName="Nearest name" Name="chip1nearest"></Uniform>
+
+    <Uniform Inc="0.001" Tooltip="" Row="0" Col="1" Page="0" Action3DWidget="False" IconType="Pick" Type="vec2" ChannelName="Chip2Position" DisplayName="Chip 2" Name="chip2pos">
+    <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.273"></SubUniform>
+    <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.718"></SubUniform></Uniform>
+    <Uniform Inc="0.01" Tooltip="Use this colour instead of picking from the image.  To return to pick mode, set this colour pot to something negative" Row="2" Col="1" Page="0" Action3DWidget="False" IconType="None" ValueType="Colour" Type="vec3" ChannelName="Chip2colour" DisplayName="Override" Name="chip2col">
+      <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="-1.0"></SubUniform>
+      <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="-1.0"></SubUniform>
+      <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="-1.0"></SubUniform></Uniform>
+    <Uniform Row="3" Col="1" Page="0" Default="True" Tooltip="" Type="bool" ChannelName="Chip2Nearest" DisplayName="Nearest name" Name="chip2nearest"></Uniform>
+
+    <Uniform Inc="0.001" Tooltip="" Row="0" Col="2" Page="0" Action3DWidget="False" IconType="Pick" Type="vec2" ChannelName="Chip3Position" DisplayName="Chip 3" Name="chip3pos">
+      <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.619"></SubUniform>
+      <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.494"></SubUniform></Uniform>
+    <Uniform Inc="0.01" Tooltip="Use this colour instead of picking from the image.  To return to pick mode, set this colour pot to something negative" Row="2" Col="2" Page="0" Action3DWidget="False" IconType="None" ValueType="Colour" Type="vec3" ChannelName="Chip3colour" DisplayName="Override" Name="chip3col">
+      <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="-1.0"></SubUniform>
+      <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="-1.0"></SubUniform>
+      <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="-1.0"></SubUniform></Uniform>
+    <Uniform Row="3" Col="2" Page="0" Default="True" Tooltip="" Type="bool" ChannelName="Chip3Nearest" DisplayName="Nearest name" Name="chip3nearest"></Uniform>
+
+    <Uniform ResDependent="None" Max="20.0" Min="0.0" Default="3.0" Inc="1.00" Tooltip="" Row="0" Col="3" Page="0" Type="float" ChannelName="BlockUp" DisplayName="Block up" Name="blockup"></Uniform>
+    <Uniform Row="1" Col="3" Page="0" Default="False" Tooltip="" Type="bool" ChannelName="ShowBlocky" DisplayName="Show blocky" Name="showblocky"></Uniform>
+    <Uniform Row="2" Col="3" Page="0" Default="False" Tooltip="" Type="bool" ChannelName="PickFromPalette" DisplayName="Pick from palette" Name="palette"></Uniform>
+    <Uniform Row="3" Col="3" Page="0" Default="False" Tooltip="" Type="bool" ChannelName="OutputColoursOnly" DisplayName="Output diagram" Name="voronoi"></Uniform>
+  </Shader>
+  <Page Name="" Page="0">
+    <Col Name="" Col="0" Page="0"></Col>
+    <Col Name="" Col="1" Page="0"></Col>
+    <Col Name="" Col="2" Page="0"></Col>
+    <Col Name="Options" Col="3" Page="0"></Col>
+  </Page>
+</ShaderNodePreset>
