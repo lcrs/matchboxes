@@ -1,10 +1,14 @@
 // Poly
 // Pass 4: jump flood round 3, distance 512
 
-uniform float adsk_result_w, adsk_result_h;
+uniform float adsk_result_w, adsk_result_h, adsk_result_frameratio;
 uniform sampler2D adsk_results_pass3;
-
 vec2 res = vec2(adsk_result_w, adsk_result_h);
+
+float alength(vec2 v) {
+  v.y /= adsk_result_frameratio;
+  return length(v);
+}
 
 void main() {
   vec2 xy = gl_FragCoord.xy / res;
@@ -17,7 +21,7 @@ void main() {
         // This sample has not been flooded yet
         continue;
       }
-      if(length(s.xy - xy) < length(o.xy - xy)) {
+      if(alength(s.xy - xy) < alength(o.xy - xy)) {
         // This sample is the closest yet
         o = s;
       }
