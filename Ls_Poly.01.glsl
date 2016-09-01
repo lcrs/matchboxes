@@ -14,6 +14,9 @@ o Delaunay... to draw the triangles, we need to know the seed coords of all surr
   so closest seed coord + 3 triangle coords
   on first step: output coords of right/down/diag pixels
   other steps: check if flooding triangles are closer than current
+  idea: instead of passing around triangle corner coords, just pass
+  the coords of the corner in the voronoi diagram that's the centre of the tri?
+  the pixels around that coord will then give the three triangle corners?
 */
 
 #extension GL_ARB_shader_texture_lod : enable
