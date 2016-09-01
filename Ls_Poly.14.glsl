@@ -1,8 +1,8 @@
 // Poly
-// Pass 14: render image from seed coords
+// Pass 14: output addresses of seeds at voronoi cell junctions only
 
 uniform float adsk_result_w, adsk_result_h, adsk_result_frameratio;
-uniform sampler2D adsk_results_pass13, adsk_results_pass1, front;
+uniform sampler2D adsk_results_pass13;
 vec2 res = vec2(adsk_result_w, adsk_result_h);
 
 float alength(vec2 v) {
@@ -10,27 +10,38 @@ float alength(vec2 v) {
   return length(v);
 }
 
-vec3 rand(vec2 s) {
-  vec3 r;
-  r.r = 2.0 * fract(sin(dot(s.xy, vec2(12.9898, 78.233))) * 43758.5453) - 1.0;
-  r.g = 2.0 * fract(sin(dot(s.xy, vec2(2.9898, 78.233))) * 4358.5453) - 1.0;
-  r.b = 2.0 * fract(sin(dot(s.xy, vec2(12.9898, 8.233))) * 4758.5453) - 1.0;
-  return r;
+float coords2address(vec2 c) {
+  c *= res;
+  return c.y * adsk_result_w + c.x;
+}
+
+vec2 address2coords(float a) {
+  vec2 c;
+  c.y = floor(a / adsk_result_w);
+  c.x = a - (c.y * adsk_result_w);
+  return c;
 }
 
 void main() {
   vec2 xy = gl_FragCoord.xy / res;
+  vec4 here = texture2D(adsk_results_pass13, xy);
+  vec4 right = texture2D(adsk_results_pass13, (gl_FragCoord.xy + vec2(1.0, 0.0)) / res);
+  vec4 down = texture2D(adsk_results_pass13, (gl_FragCoord.xy + vec2(0.0, -1.0)) / res);
+  vec4 diag = texture2D(adsk_results_pass13, (gl_FragCoord.xy + vec2(1.0, -1.0)) / res);
 
-  vec3 o;
-  vec3 coords = texture2D(adsk_results_pass13, xy).rgb;
-  vec3 col = texture2D(front, coords.xy).rgb;
-  vec3 randomcol = mix(vec3(0.18), rand(coords.xy), 0.1);
-  o = randomcol;
+  int uniques = 1;
+  if(right != here) uniques++;
+  if(down != here && down != right) uniques++;
+  if(diag != here && diag != down && diag != right) uniques++;
 
-  vec3 seeds = texture2D(adsk_results_pass1, xy).rgb;
-  if(seeds.x > 0.0) {
-    o += 10.0;
+  vec4 o;
+  if(uniques > 2) {
+    // We are at a junction, output the addresses of the surrounding seeds
+    
+  } else {
+    // We're not somewhere interesting, output -999.0 to indicate this pixel isn't flooded yet
+    o = vec4(-999.0);
   }
 
-  gl_FragColor = vec4(o, 0.0);
+  gl_FragColor = o;
 }
