@@ -4,7 +4,6 @@
 /*
 TODO:
 o Seed generation clusters a lot leading to many small polys
-o Need to account for aspect ratio in all distance calcs :(
 o Outlines? Outline-only mode?
 o Shade cells radially, random angled gradients?
 o use 1+JFA instead of standard JFA?
@@ -21,10 +20,9 @@ o Delaunay... to draw the triangles, we need to know the seed coords of all surr
 
 #extension GL_ARB_shader_texture_lod : enable
 
-uniform float adsk_result_w, adsk_result_h;
+uniform float adsk_result_w, adsk_result_h, adsk_result_frameratio;
 uniform sampler2D front;
 uniform float seedthres;
-
 vec2 res = vec2(adsk_result_w, adsk_result_h);
 
 void main() {

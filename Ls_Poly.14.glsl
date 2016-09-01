@@ -1,10 +1,14 @@
 // Poly
 // Pass 14: render image from seed coords
 
-uniform float adsk_result_w, adsk_result_h;
+uniform float adsk_result_w, adsk_result_h, adsk_result_frameratio;
 uniform sampler2D adsk_results_pass13, adsk_results_pass1, front;
-
 vec2 res = vec2(adsk_result_w, adsk_result_h);
+
+float alength(vec2 v) {
+  v.y /= adsk_result_frameratio;
+  return length(v);
+}
 
 vec3 rand(vec2 s) {
   vec3 r;
