@@ -29,43 +29,45 @@ vec2 address2coords(float a) {
   return c;
 }
 
+bool contains(float list[4], float t) {
+  for(int i = 0; i < 4; i++) {
+    if(list[i] == t) return true;
+  }
+  return false;
+}
+
 void main() {
   vec2 xy = gl_FragCoord.xy / res;
-  vec4 here = texture2D(adsk_results_pass13, xy);
-  vec4 right = texture2D(adsk_results_pass13, (gl_FragCoord.xy + vec2(1.0, 0.0)) / res);
-  vec4 down = texture2D(adsk_results_pass13, (gl_FragCoord.xy + vec2(0.0, -1.0)) / res);
-  vec4 diag = texture2D(adsk_results_pass13, (gl_FragCoord.xy + vec2(1.0, -1.0)) / res);
+
+  vec2 pixels[4];
+  pixels[0] = texture2D(adsk_results_pass13, xy).xy;
+  pixels[1] = texture2D(adsk_results_pass13, (gl_FragCoord.xy + vec2(1.0, 0.0)) / res).xy;
+  pixels[2] = texture2D(adsk_results_pass13, (gl_FragCoord.xy + vec2(0.0, -1.0)) / res).xy;
+  pixels[3] = texture2D(adsk_results_pass13, (gl_FragCoord.xy + vec2(1.0, -1.0)) / res).xy;
 
   // Create an array of unique addresses from this quad of pixels
-  float addresses[4];
-  int uniques = 0;
-  addresses[uniques] = here.x;
-  uniques++;
-  if(right != here) {
-    addresses[uniques] = right.x;
-    uniques++;
+  float uniques[4];
+  int uniquecount = 0;
+  for(int i = 0; i < 4; i++) {
+    float addr = coords2address(pixels[i]);
+    if(!contains(uniques, addr)) {
+      uniques[uniquecount] = addr;
+      uniquecount++;
+    }
   }
-  if(diag != here && diag != right) {
-    addresses[uniques] = down.x;
-    uniques++;
-  }
-  if(down != here && down != diag && down != right) {
-    addresses[uniques] = diag.x;
-    uniques++;
-  }
-  // Fill rest of array with -999 to indicate unused
-  for(int i = uniques; i < 4; i++) {
-    addresses[i] = -999.0;
+
+  // Fill rest of array with -999 to signal no value
+  for(int i = uniquecount; i < 4; i++) {
+    uniques[i] = -999.0;
   }
 
   vec4 o;
-  if(uniques > 2) {
+  if(uniquecount > 2) {
     // We are at a junction, output the addresses of the surrounding seeds
-    o = vec4(addresses[0], addresses[1], addresses[2], addresses[3]);
+    o = vec4(uniques[0], uniques[1], uniques[2], uniques[3]);
   } else {
-    // We're not somewhere interesting, output -999 to indicate this pixel isn't flooded yet
+    // We're not somewhere interesting, output -999 to signal that this pixel isn't flooded yet
     o = vec4(-999.0);
-    if(uniques == 2) o = vec4(0.2);
   }
 
   gl_FragColor = o;
