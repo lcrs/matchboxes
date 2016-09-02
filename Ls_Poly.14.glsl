@@ -1,5 +1,12 @@
 // Poly
-// Pass 14: output addresses of seeds at voronoi cell junctions only
+// Pass 14: at junctions between voronoi cells, output the coords of the 3 or (rarely) 4 nearest seeds
+
+// Instead of using seed texel coords, we now switch to addresses, because we need to pack
+// four seed coords into each fragment color
+// The address is simply the texel index, i.e. row*width + col
+// These addresses are then flooded out from the junction points in the next passes
+// This means each pixel in the image can determine which 3 seed points form the best
+// triangle around it
 
 uniform float adsk_result_w, adsk_result_h, adsk_result_frameratio;
 uniform sampler2D adsk_results_pass13;
@@ -29,18 +36,36 @@ void main() {
   vec4 down = texture2D(adsk_results_pass13, (gl_FragCoord.xy + vec2(0.0, -1.0)) / res);
   vec4 diag = texture2D(adsk_results_pass13, (gl_FragCoord.xy + vec2(1.0, -1.0)) / res);
 
-  int uniques = 1;
-  if(right != here) uniques++;
-  if(down != here && down != right) uniques++;
-  if(diag != here && diag != down && diag != right) uniques++;
+  // Create an array of unique addresses from this quad of pixels
+  float addresses[4];
+  int uniques = 0;
+  addresses[uniques] = here.x;
+  uniques++;
+  if(right != here) {
+    addresses[uniques] = right.x;
+    uniques++;
+  }
+  if(diag != here && diag != right) {
+    addresses[uniques] = down.x;
+    uniques++;
+  }
+  if(down != here && down != diag && down != right) {
+    addresses[uniques] = diag.x;
+    uniques++;
+  }
+  // Fill rest of array with -999 to indicate unused
+  for(int i = uniques; i < 4; i++) {
+    addresses[i] = -999.0;
+  }
 
   vec4 o;
   if(uniques > 2) {
     // We are at a junction, output the addresses of the surrounding seeds
-    
+    o = vec4(addresses[0], addresses[1], addresses[2], addresses[3]);
   } else {
-    // We're not somewhere interesting, output -999.0 to indicate this pixel isn't flooded yet
+    // We're not somewhere interesting, output -999 to indicate this pixel isn't flooded yet
     o = vec4(-999.0);
+    if(uniques == 2) o = vec4(0.2);
   }
 
   gl_FragColor = o;
