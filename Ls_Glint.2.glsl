@@ -17,11 +17,18 @@ vec4 gaussianblur(sampler2D tex, vec2 xy, vec2 res, float sizered, float sizegre
     // Set up state for incremental coefficient calculation, see GPU Gems
     // We use vec4s to store four copies of the state, for different size
     // red/green/blue/alpha blurs
-    vec4 gx, gy, gz;
+    vec4 gx = vec4(0.0);
+    vec4 gy = vec4(0.0);
+    vec4 gz = vec4(0.0);
+
     gx = 1.0 / (sqrt(2.0 * 3.141592653589793238) * sigmas);
     gy = exp(-0.5 / (sigmas * sigmas));
     gz = gy * gy;
-    vec4 a, centre, sample1, sample2 = vec4(0.0);
+    // vec4 a, centre, sample1, sample2 = vec4(0.0);
+    vec4 a = vec4(0.0);
+    vec4 centre = vec4(0.0);
+    vec4 sample1 = vec4(0.0);
+    vec4 sample2 = vec4(0.0);
 
     // First take the centre sample
     centre = texture2D(tex, xy / res);

@@ -27,7 +27,11 @@ vec4 gaussianblur(sampler2D tex, vec2 xy, vec2 res, float sizered, float sizegre
     gx = 1.0 / (sqrt(2.0 * 3.141592653589793238) * sigmas);
     gy = exp(-0.5 / (sigmas * sigmas));
     gz = gy * gy;
-    vec4 a, centre, sample1, sample2 = vec4(0.0);
+    // vec4 a, centre, sample1, sample2 = vec4(0.0);
+    vec4 a = vec4(0.0);
+    vec4 centre = vec4(0.0);
+    vec4 sample1 = vec4(0.0);
+    vec4 sample2 = vec4(0.0);
 
     // First take the centre sample
     centre = texture2D(tex, xy / res);
@@ -49,11 +53,11 @@ vec4 gaussianblur(sampler2D tex, vec2 xy, vec2 res, float sizered, float sizegre
     }
 
     a /= energy;
-    
+
     if(sizered < 0.1) a.r = centre.r;
     if(sizegreen < 0.1) a.g = centre.g;
     if(sizeblue < 0.1) a.b = centre.b;
-    
+
     return a;
 }
 
@@ -63,9 +67,9 @@ void main() {
 
     vec3 frontpix = texture2D(front, xy/res).rgb;
     vec3 mattepix = texture2D(matte, xy/res).rgb;
-    
+
     vec3 blurred = gaussianblur(adsk_results_pass2, xy, res, blursize*blursizer, blursize*blursizeg, blursize*blursizeb, 0.0, vec2(0.0, 1.0)).rgb;
-      
+
     // Blend with front input
     vec3 result;
     float blurredluma;
