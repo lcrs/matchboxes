@@ -6,7 +6,6 @@
 uniform sampler2D strength, adsk_results_pass16;
 uniform float size, quality;
 uniform float adsk_result_w, adsk_result_h;
-
 uniform sampler2D front, adsk_results_pass1, adsk_results_pass3, adsk_results_pass5, adsk_results_pass7, adsk_results_pass9, adsk_results_pass11, adsk_results_pass13, adsk_results_pass15;
 uniform vec3 tint;
 uniform float mixx;
@@ -61,11 +60,16 @@ vec4 gaussianblur(sampler2D tex, float lod, vec2 xy, vec2 res, float sizered, fl
   // doing both small and large blurs in one pass ruins the mipmap acceleration
   // trick - it means we always have to size the mipmap for the smallest blurs
   // which makes the large ones really slow
-  vec4 gx, gy, gz;
+  vec4 gx = vec4(0.0);
+  vec4 gy = vec4(0.0);
+  vec4 gz = vec4(0.0);
   gx = 1.0 / (sqrt(2.0 * 3.141592653589793238) * sigmas);
   gy = exp(-0.5 / (sigmas * sigmas));
   gz = gy * gy;
-  vec4 a, sample1, sample2 = vec4(0.0);
+  vec4 a = vec4(0.0);
+  vec4 centre = vec4(0.0);
+  vec4 sample1 = vec4(0.0);
+  vec4 sample2 = vec4(0.0);
 
   // First take the centre sample
   sample1 = texture2DLod(tex, xy / res, lod);
@@ -119,20 +123,20 @@ void main() {
   vec3 f = texture2D(front, gl_FragCoord.xy / res).rgb;
   // Convert front pixel to linear so we can add it to the glow
   if(colourspace == 0) {
-     // Log
-     f = adsk_log2scene(f);
+   // Log
+   f = adsk_log2scene(f);
   } else if(colourspace == 1) {
-     // Video - inverse tonemapping to get some highlights back
-     f = untonemap(f);
+   // Video - inverse tonemapping to get some highlights back
+   f = untonemap(f);
   } else if(colourspace == 2) {
-     // Video (gamma only)
-     f = max(f, 0.0);
-     f.r = pow(f.r, 2.4);
-     f.g = pow(f.g, 2.4);
-     f.b = pow(f.b, 2.4);
+   // Video (gamma only)
+   f = max(f, 0.0);
+   f.r = pow(f.r, 2.4);
+   f.g = pow(f.g, 2.4);
+   f.b = pow(f.b, 2.4);
   } else if(colourspace == 3) {
-     // Linear
-     f = f;
+   // Linear
+   f = f;
   }
 
   // Per-blur weights from curve in UI - alpha curve is used as master
@@ -166,32 +170,33 @@ void main() {
   a *= tintrgb;
 
   if(maintain) {
-     a /= 9.0;
-     if(!glowonly) a.rgb += f / 9.0;
+   a /= 9.0;
+   if(!glowonly) a.rgb += f / 9.0;
   } else {
-     a /= 8.0;
-     if(!glowonly) a.rgb += f;
+   a /= 8.0;
+   if(!glowonly) a.rgb += f;
   }
 
   a.rgb = mix(f, a.rgb, mixx);
 
   // Convert from linear to whatever the input space was
   if(colourspace == 0) {
-     // Log
-     a.rgb = adsk_scene2log(a.rgb);
+   // Log
+   a.rgb = adsk_scene2log(a.rgb);
   } else if(colourspace == 1) {
-     // Video - tonemap from linear
-     a.rgb = tonemap(a.rgb);
+   // Video - tonemap from linear
+   a.rgb = tonemap(a.rgb);
   } else if(colourspace == 2) {
-     // Video (gamma only)
-     a = max(a, 0.0);
-     a.r = pow(a.r, 1.0/2.4);
-     a.g = pow(a.g, 1.0/2.4);
-     a.b = pow(a.b, 1.0/2.4);
+   // Video (gamma only)
+   a = max(a, 0.0);
+   a.r = pow(a.r, 1.0/2.4);
+   a.g = pow(a.g, 1.0/2.4);
+   a.b = pow(a.b, 1.0/2.4);
   } else if(colourspace == 3) {
-     // Linear
-     a = a;
+   // Linear
+   a = a;
   }
 
   gl_FragColor = a;
+
 }
