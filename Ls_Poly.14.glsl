@@ -67,7 +67,7 @@ void main() {
     o = vec4(uniques[0], uniques[1], uniques[2], uniques[3]);
   } else {
     // We're not somewhere interesting, output -999 to signal that this pixel isn't flooded yet
-    o = vec4(-999.0);
+    o = vec4(uniquecount - 1);
   }
 
   gl_FragColor = o;
