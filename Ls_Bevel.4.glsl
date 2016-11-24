@@ -41,7 +41,7 @@ void main() {
 	float len = length(d);
 	float edge = smoothstep(0.0, smoothy/100.0, len);
 
-	d = normalize(d);
+	d /= len + 0.0001;
 
 	if(normals) {
 		vec3 n = vec3(d.x, d.y, 1.0);
