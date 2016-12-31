@@ -66,9 +66,9 @@ void main() {
     // We are at a junction, output the addresses of the surrounding seeds
     o = vec4(uniques[0], uniques[1], uniques[2], uniques[3]);
   } else {
-    // We're not somewhere interesting, output -999 to signal that this pixel isn't flooded yet
+    // We're not somewhere interesting, signal that this pixel isn't flooded yet
     o = vec4(uniquecount - 1);
   }
 
-  gl_FragColor = o;
+  gl_FragColor = texture2D(adsk_results_pass13, xy);
 }
