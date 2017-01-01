@@ -1,5 +1,5 @@
 // Bevel
-// Pass 4: gradient detection and actual beveling
+// Pass 5: gradient detection and actual beveling
 // Broadly, we use the gradient vector of the blurred
 // image as the X/Y components of a normal vector, which
 // we then dot with the light direction.
@@ -9,15 +9,16 @@
 // of the blurred image, which roughly follows the outline of
 // the text.  It ain't perfect!
 //
-// This pass outputs the bevel based on the "Height map" input
+// This pass outputs the normals of the bevel based on the
+// "Height map" input
 //
 // lewis@lewissaunders.com
 
 uniform sampler2D adsk_results_pass3, adsk_results_pass1;
 uniform float adsk_result_w, adsk_result_h;
-uniform float sigma, ambient, smoothy;
-uniform vec3 lite;
+uniform float sigma, smoothy;
 uniform bool normals;
+
 
 void main() {
 	vec2 xy = gl_FragCoord.xy;
@@ -46,12 +47,8 @@ void main() {
 
 	d /= len + 0.0001;
 
-	float l = dot(d, normalize(lite.xy - vec2(0.5)));
-	l = mix(l, fron, ambient);
-	l = mix(ambient * fron, l, edge);
-	l *= fron;
+	vec3 n = vec3(d.x, d.y, 1.0);
+	n = mix(vec3(0.0, 0.0, 1.0), n, edge);
+	gl_FragColor = vec4(n, fron);
 
-	vec4 o = vec4(l, l, l, fron);
-
-	gl_FragColor = o;
 }

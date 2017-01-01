@@ -1,18 +1,29 @@
-<ShaderNodePreset SupportsAdaptiveDegradation="False" SupportsAction="False" SupportsTransition="False" SupportsTimeline="False" TimelineUseBack="False" MatteProvider="False" CommercialUsePermitted="True" ShaderType="Matchbox" SoftwareVersion="2016.0.0" LimitInputsToTexture="True" Version="1" Description="Bevel - cheap pseudo-bevel for text, using the Gaussian Distance Transform.  Can output normals to be fed into an Action normal map for more sophisticated lighting.  Sadly it is not possible to create a displacement map this way, so it's not a true 3D surface :(
+<ShaderNodePreset SupportsAdaptiveDegradation="False" SupportsAction="False" SupportsTransition="False" SupportsTimeline="False" TimelineUseBack="False" MatteProvider="False" CommercialUsePermitted="True" ShaderType="Matchbox" SoftwareVersion="2016.0.0" LimitInputsToTexture="True" Version="2" Description="Bevel - cheap pseudo-bevel for text, using the Gaussian Distance Transform.  Can output normals to be fed into an Action normal map for more sophisticated lighting.  Sadly it is not possible to create a displacement map this way, so it's not a true 3D surface :(
 
 Demo: https://www.youtube.com/watch?v=Y7dUx1An_30
 
-lewis@lewissaunders.com" Name="Bevel">
+Height map is the shape of the area to bevel, typically a black/white matte but images are possible too
+Back input gives colour to the beveled area
+Matte is used to limit the area which is comped over the back
+
+lewis@lewissaunders.com
+and
+graphistesmoke@gmail.com (Sebastien Delecour / Sebquismoke)
+" Name="Bevel">
    <Shader OutputBitDepth="Output" Index="1">
-      <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="Front" InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="front">
-      </Uniform>
+       <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="Front" InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="front">
+       </Uniform>
+   	   <Uniform Index="0" NoInput="Error" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Tooltip="" DisplayName="Height map" Name="front" InputType="Front">
+          </Uniform>
    </Shader>
+
    <Shader OutputBitDepth="Output" Index="2">
       <Uniform ResDependent="None" Max="1000.0" Min="0.0" Default="3.0" Inc="0.01" Tooltip="How big the edges get" Row="1" Col="0" Page="0" Type="float" DisplayName="Size" Name="sigma">
       </Uniform>
       <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass1">
       </Uniform>
    </Shader>
+
    <Shader OutputBitDepth="Output" Index="3">
       <Uniform Type="float" DisplayName="sigma" Name="sigma">
          <Duplicate>
@@ -21,6 +32,7 @@ lewis@lewissaunders.com" Name="Bevel">
       <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass2">
       </Uniform>
    </Shader>
+
    <Shader OutputBitDepth="Output" Index="4">
       <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.5" Inc="0.01" Tooltip="How much the non-lit edges are filled in - this actually just mixes back to the front input" Row="2" Col="1" Page="0" Type="float" DisplayName="Ambient" Name="ambient">
       </Uniform>
@@ -32,8 +44,7 @@ lewis@lewissaunders.com" Name="Bevel">
         <Duplicate>
         </Duplicate>
       </Uniform>
-      <Uniform Row="1" Col="2" Page="0" Default="False" Tooltip="The normal output is ripe for use on an Action Normal Map node.  The original input is output on the matte for convenience" Type="bool" DisplayName="Output normals" Name="normals">
-      </Uniform>
+
       <Uniform Inc="0.01" Tooltip="Position of the virtual light" Row="0" Col="1" Page="0" IconType="Light" ValueType="Position" Type="vec3" DisplayName="Light" Name="lite">
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.75">
          </SubUniform>
@@ -45,12 +56,37 @@ lewis@lewissaunders.com" Name="Bevel">
       <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass1">
       </Uniform>
    </Shader>
+
+   <Shader OutputBitDepth="Output" Index="5">
+      <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass3">
+      </Uniform>
+      <Uniform Type="float" DisplayName="smoothy" Name="smoothy">
+        <Duplicate>
+        </Duplicate>
+      </Uniform>
+      <Uniform Type="float" DisplayName="sigma" Name="sigma">
+        <Duplicate>
+        </Duplicate>
+      </Uniform>
+      <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass1">
+      </Uniform>
+   </Shader>
+
+
+    <Shader OutputBitDepth="Output" Index="6">
+        <Uniform Mipmaps="True" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass5">
+        </Uniform>
+    	   <Uniform Index="1" NoInput="White" Mipmaps="True" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Tooltip="" DisplayName="Back" Name="back" InputType="Back">
+           </Uniform>
+    	   <Uniform Index="2" NoInput="White" Mipmaps="True" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Tooltip="" DisplayName="Matte" Name="matte" InputType="Matte">
+           </Uniform>
+	       <Uniform Row="1" Col="2" Page="0" Default="False" Tooltip="The normal output is ripe for use on an Action Normal Map node.  The original input is output on the matte for convenience" Type="bool" DisplayName="Output normals" Name="normals">
+	       </Uniform>
+ 	</Shader>
+
    <Page Name="" Page="0">
-      <Col Name="Bevel" Col="0" Page="0">
-      </Col>
-       <Col Name="Lighting" Col="1" Page="0">
-       </Col>
-        <Col Name="Output" Col="2" Page="0">
-        </Col>
+      <Col Name="Bevel" Col="0" Page="0"></Col>
+      <Col Name="Lighting" Col="1" Page="0"></Col>
+      <Col Name="Output" Col="2" Page="0"></Col>
    </Page>
 </ShaderNodePreset>
