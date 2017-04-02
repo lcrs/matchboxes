@@ -2,6 +2,8 @@
 // lewis@lewissaunders.com
 // TODO:
 //  o Rotation
+//  o Skew
+//  o Cube-shaped matte - with rounded corners?
 
 uniform float adsk_result_w, adsk_result_h;
 uniform vec3 pick, overlaycol;
