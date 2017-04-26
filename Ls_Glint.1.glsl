@@ -1,6 +1,8 @@
 // Glint pass 1: convolve with a dynamically generated star function
 // lewis@lewissaunders.com
 
+// TODO: option to downres / process / upres, as request by GP-M
+
 uniform sampler2D front, matte;
 uniform float adsk_result_w, adsk_result_h;
 uniform float threshold, thresholdclamp, gain, size, rays, spin, falloff, twirl, barrel, barrelbend, saturation, extrasize, extrarays;
@@ -45,24 +47,24 @@ void main(void) {
     for(float ray = 0.0; ray < floor(rays*extrarays); ray++) {
         // Figure out what angle this ray is at
         angle = ray * tau/floor(rays*extrarays);
-        
+
         // Spin rotates entire glint
         angle -= spin/360.0 * tau;
-        
+
         // Iterate along arm of ray
         for(float i = realsize/samples; i < realsize; i += realsize/samples) {
             // Twirl ray around further as we move out
             angle -= (twirl/samples * i/realsize)/360.0 * tau;
-            
+
             // Offset along ray direction
             offset = i/vec2(adsk_result_w, adsk_result_h) * vec2(cos(angle), sin(angle));
-            
+
             // Horizontal stretch/squash for anamorphic glints
             offset.x *= aspect;
 
             // Barrel pushes ends of rays away towards edge of frame
             offset -= pow((i/realsize), barrelbend) * 0.1 * barrel * (-uv+vec2(0.5, 0.5));
-            
+
             // Read a pixel
             sample = texture2D(front, uv + offset).rgb;
 
@@ -70,7 +72,7 @@ void main(void) {
             if(usematte) {
                 sample *= texture2D(matte, uv + offset).rgb;
             }
-            
+
             // Only keep pixels over threshold
             sample = min(sample, thresholdclamp);
             sample *= max(sample - threshold, 0.0);
@@ -81,15 +83,15 @@ void main(void) {
             } else {
                 sample *= max(0.0, mix(falloff, 1.0, i/realsize));
             }
-            
+
             // Do saturation in YUV
             vec3 sampley = yuv(sample);
             sampley.gb *= saturation;
-            
+
             // Hue varies along length of ray
             float hue = dispersioncycles * tau *-i/realsize;
             hue -= dispersionoffset/360.0 * tau;
-            
+
             // I'm adventurously using YUV to do a rainbow tint here
             // The discontinuities in the usual HSV method bug me
             // and are probably slower than this, which just requires
@@ -106,17 +108,17 @@ void main(void) {
                 noiz +=      rand(vec2(2.1, 2.4)   + 0.01 * vec2(dirtfreq/10000.0) * offset);
                 sample *= mix(1.0, clamp(10.0 * noiz, 0.0, 99.0), dirt);
             }
-            
+
             // Accumulate
             glint += sample;
         }
     }
     // Normalise all our accumulated samples
     glint /= floor(rays*extrarays) * samples;
-    
+
     // Master brightness
     glint *= gain;
-    
+
     // Tint in YUV space
     vec3 glinty = yuv(glint);
     vec3 tinty = yuv(tint);
