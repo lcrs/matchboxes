@@ -1,29 +1,32 @@
-<ShaderNodePreset Name="Lumps" SupportsAdaptiveDegradation="0" Description="Frequency separation - split image into colour, lumps and detail, A.K.A. low, mid and high frequencies.  You can adjust gain of each here which is often enough, or use three copies of this shader to split out the three bands, then rebuild the image using a fourth shader with Recombine on and the three bands in inputs 2/3/4.
+<ShaderNodePreset Name="Lumps" SupportsAdaptiveDegradation="0" LimitInputsToTexture="True" Description="Frequency separation - split image into colour, lumps and detail, A.K.A. low, mid and high frequencies.  You can adjust gain of each here which is often enough, or use three copies of this shader to split out the three bands, then rebuild the image using a fourth shader with Recombine on and the three bands in inputs 2/3/4.
 
 Beware that if you have a CTF as your viewer LUT, or you're using LUT Editor nodes near this shader, there seems to be a Flame bug which can cause the whole screen to go a flat colour - it's still possible to hit shift-insert then return to quit, but watch out!  Same applies to Smoke, but it's apple-q then return to quit...
 
 lewis@lewissaunders.com">
  <Shader OutputBitDepth="Output" Index="1">
-  <Uniform Name="frontt"             DisplayName="Front"             Type="sampler2D"  Index="0" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" Tooltip="" NoInput="Black" GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
+  <Uniform Name="frontt"             DisplayName="Front"             Type="sampler2D"  InputType="Front" Index="0" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" Tooltip="" NoInput="Error" GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
  </Shader>
  <Shader OutputBitDepth="Output" Index="2">
-  <Uniform Name="colourt"            DisplayName="Colour"            Type="sampler2D"  Index="1" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" Tooltip="" NoInput="Black" GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
+  <Uniform Name="colourt"            DisplayName="Colour"            Type="sampler2D"  InputColor="40, 60, 20" Index="1" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" Tooltip="" NoInput="Black" GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
  </Shader>
  <Shader OutputBitDepth="Output" Index="3">
-  <Uniform Name="lumpst"             DisplayName="Lumps"             Type="sampler2D"  Index="2" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" Tooltip="" NoInput="Black" GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
+  <Uniform Name="lumpst"             DisplayName="Lumps"             Type="sampler2D"  InputColor="40, 70, 20" Index="2" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" Tooltip="" NoInput="Black" GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
  </Shader>
  <Shader OutputBitDepth="Output" Index="4">
-  <Uniform Name="detailt"            DisplayName="Detail"            Type="sampler2D"  Index="3" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" Tooltip="" NoInput="Black" GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
+  <Uniform Name="detailt"            DisplayName="Detail"            Type="sampler2D"  InputColor="40, 80, 20" Index="3" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" Tooltip="" NoInput="Black" GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
  </Shader>
  <Shader OutputBitDepth="Output" Index="5">
   <Uniform Name="adsk_results_pass1" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
   <Uniform Name="coloursize"         DisplayName="Colour size"       Page="0" Col="1" Row="1" Type="float"      Default="50.0"        Min="0.0" Max="1000000.0"  Inc="0.1"       ResDependent="None"       Tooltip="Size of colour band, i.e. upper limit of low pass filter.  Usually set so that you see colour and vague shapes in the colour output"></Uniform>
-  <Uniform Name="recombine"          DisplayName="Recombine inputs"  Page="0" Col="0" Row="0" Type="bool"       Default="False"                                                                                  Tooltip="Combine inputs 2/3/4 into a whole image.  This shader should have the same size and gain settings as the three shaders used to split the bands"></Uniform>
+  <Uniform Name="recombine"          DisplayName="Recombine inputs"  Page="0" Col="0" Row="1" Type="bool"       Default="False"                                                                            Tooltip="Combine inputs 2/3/4 into a whole image.  This shader should have the same size and gain settings as the three shaders used to split the bands"></Uniform>
+  <Uniform Name="mipmapcolour"       DisplayName="Use average for colour"  Page="0" Col="0" Row="3" Type="bool" Default="False"                                                                            Tooltip="Use an average of the entire frame for the Colour band, instead of blurring the input.  This is great for making tileable textures and is also faster"></Uniform>
  </Shader>
  <Shader OutputBitDepth="Output" Index="6">
+  <Uniform Name="adsk_results_pass1" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR_MIPMAP_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR_MIPMAP_LINEAR" Mipmaps="True" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
   <Uniform Name="adsk_results_pass5" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
   <Uniform Name="coloursize"         Type="float"><Duplicate></Duplicate></Uniform>
   <Uniform Name="recombine"          Type="bool"><Duplicate></Duplicate></Uniform>
+  <Uniform Name="mipmapcolour"       Type="bool"><Duplicate></Duplicate></Uniform>
  </Shader>
  <Shader OutputBitDepth="Output" Index="7">
   <Uniform Name="adsk_results_pass1" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
@@ -37,7 +40,7 @@ lewis@lewissaunders.com">
   <Uniform Name="adsk_results_pass7" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
   <Uniform Name="adsk_results_pass1" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
   <Uniform Name="adsk_results_pass3" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
-  <Uniform Name="islin"              DisplayName="Use 0.18 for mid-gray"              Page="0" Col="0" Row="1" Type="bool"       Default="True"                                                                                   Tooltip="Use 0.18 instead of 0.5 for centre of lumps and detail bands, good if working in linear or the output is too bright"></Uniform>
+  <Uniform Name="islin"              DisplayName="Use 0.18 for mid-gray"              Page="0" Col="0" Row="2" Type="bool"       Default="True"                                                                                   Tooltip="Use 0.18 instead of 0.5 for centre of lumps and detail bands, good if working in linear or the output is too bright"></Uniform>
   <Uniform Name="lumpsize"           Type="float"><Duplicate></Duplicate></Uniform>
   <Uniform Name="scolour"            DisplayName="Colour"             Page="0" Col="2" Row="1" Type="float"      Default="1.0"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"      Tooltip=""></Uniform>
   <Uniform Name="outputlumps"        DisplayName="Lumps"              Page="0" Col="3" Row="2" Type="bool"       Default="True"                                                                                   Tooltip=""></Uniform>

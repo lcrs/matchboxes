@@ -1,10 +1,12 @@
 // Colour blur vertical pass
 // lewis@lewissaunders.com
 
-uniform sampler2D adsk_results_pass5;
+#extension GL_ARB_shader_texture_lod : enable
+
+uniform sampler2D adsk_results_pass5, adsk_results_pass1;
 uniform float adsk_result_w, adsk_result_h;
 uniform float coloursize;
-uniform bool recombine;
+uniform bool recombine, mipmapcolour;
 const float pi = 3.141592653589793238462643383279502884197969;
 
 void main() {
@@ -13,6 +15,11 @@ void main() {
 	vec2 xy = gl_FragCoord.xy;
 	vec2 px = vec2(1.0) / vec2(adsk_result_w, adsk_result_h);
 
+	if(mipmapcolour) {
+		gl_FragColor = texture2DLod(adsk_results_pass1, xy * px, 99.0);
+		return;
+	}
+	
 	float sigma = coloursize;
 	int support = int(sigma * 3.0);
 

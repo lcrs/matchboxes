@@ -4,11 +4,12 @@
 uniform sampler2D adsk_results_pass1;
 uniform float adsk_result_w, adsk_result_h;
 uniform float coloursize;
-uniform bool recombine;
+uniform bool recombine, mipmapcolour;
 const float pi = 3.141592653589793238462643383279502884197969;
 
 void main() {
 	if(recombine) discard;
+	if(mipmapcolour) discard;
 
 	vec2 xy = gl_FragCoord.xy;
 	vec2 px = vec2(1.0) / vec2(adsk_result_w, adsk_result_h);
