@@ -17,7 +17,7 @@ lewis@lewissaunders.com">
  </Shader>
  <Shader OutputBitDepth="Output" Index="5">
   <Uniform Name="adsk_results_pass1" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
-  <Uniform Name="coloursize"         DisplayName="Colour size"       Page="0" Col="1" Row="1" Type="float"      Default="50.0"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip="Size of colour band, i.e. upper limit of low pass filter.  Usually set so that you see colour and vague shapes in the colour output"></Uniform>
+  <Uniform Name="coloursize"         DisplayName="Colour size"       Page="0" Col="1" Row="1" Type="float"      Default="50.0"        Min="0.0" Max="1000000.0"  Inc="0.1"       ResDependent="None"       Tooltip="Size of colour band, i.e. upper limit of low pass filter.  Usually set so that you see colour and vague shapes in the colour output"></Uniform>
   <Uniform Name="recombine"          DisplayName="Recombine inputs"  Page="0" Col="0" Row="0" Type="bool"       Default="False"                                                                                  Tooltip="Combine inputs 2/3/4 into a whole image.  This shader should have the same size and gain settings as the three shaders used to split the bands"></Uniform>
  </Shader>
  <Shader OutputBitDepth="Output" Index="6">
@@ -27,7 +27,7 @@ lewis@lewissaunders.com">
  </Shader>
  <Shader OutputBitDepth="Output" Index="7">
   <Uniform Name="adsk_results_pass1" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
-  <Uniform Name="lumpsize"           DisplayName="Lump size"          Page="0" Col="1" Row="2" Type="float"      Default="20.0"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip="Size of lumps.  Anything smaller than this goes in the detail band.  Usually set so when looking at the detail band you see grain, rough surface detail, skin pores but not much shape or shading"></Uniform>
+  <Uniform Name="lumpsize"           DisplayName="Lump size"          Page="0" Col="1" Row="2" Type="float"      Default="20.0"        Min="0.0" Max="1000000.0"  Inc="0.1"       ResDependent="None"       Tooltip="Size of lumps.  Anything smaller than this goes in the detail band.  Usually set so when looking at the detail band you see grain, rough surface detail, skin pores but not much shape or shading"></Uniform>
   <Uniform Name="recombine"          Type="bool"><Duplicate></Duplicate></Uniform>
  </Shader>
  <Shader OutputBitDepth="Output" Index="8">
