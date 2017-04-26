@@ -17,6 +17,7 @@
 
 uniform float adsk_result_w, adsk_result_h;
 uniform sampler2D front, matte, pos, norm;
+uniform float adsk_front_pixelratio;
 uniform vec3 projector_position, projector_rotation;
 uniform vec3 worldcam_position, worldcam_rotation;
 uniform float projector_fov, znear, zfar;
@@ -72,11 +73,11 @@ void main() {
 	}
 	if(outputp) {
 		gl_FragColor = p;
-		return;		
+		return;
 	}
 	if(outputn) {
 		gl_FragColor = vec4(n, 1.0);
-		return;		
+		return;
 	}
 	vec3 worldp = p.xyz;
 
@@ -140,6 +141,7 @@ void main() {
 
 	// NDC to window
 	p.xy /= -2.0;
+	p.x /= adsk_front_pixelratio;
 	p.xy += 0.5;
 	if(outputuv) {
 		p.z *= 0.0;
