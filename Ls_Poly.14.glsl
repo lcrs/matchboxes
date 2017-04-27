@@ -9,7 +9,7 @@
 // triangle around it
 
 uniform float adsk_result_w, adsk_result_h, adsk_result_frameratio;
-uniform sampler2D adsk_results_pass13;
+uniform sampler2D adsk_results_pass13, adsk_results_pass1;
 vec2 res = vec2(adsk_result_w, adsk_result_h);
 
 float alength(vec2 v) {
@@ -70,5 +70,5 @@ void main() {
     o = vec4(uniquecount - 1);
   }
 
-  gl_FragColor = texture2D(adsk_results_pass13, xy);
+  gl_FragColor = vec4(length(texture2D(adsk_results_pass13, xy).xy - xy)) + texture2D(adsk_results_pass1, xy);
 }
