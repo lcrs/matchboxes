@@ -28,7 +28,7 @@ float sdTriangle(vec2 p0, vec2 p1, vec2 p2, vec2 p) {
   vec2 pq0 = v0 - e0*clamp(dot(v0,e0)/dot(e0,e0), 0.0, 1.0);
   vec2 pq1 = v1 - e1*clamp(dot(v1,e1)/dot(e1,e1), 0.0, 1.0);
   vec2 pq2 = v2 - e2*clamp(dot(v2,e2)/dot(e2,e2), 0.0, 1.0);
-    
+      
   vec2 d = min(min(vec2(dot(pq0, pq0), v0.x*e0.y-v0.y*e0.x), vec2(dot(pq1, pq1), v1.x*e1.y-v1.y*e1.x)), vec2(dot(pq2, pq2), v2.x*e2.y-v2.y*e2.x));
 
   return -sqrt(d.x)*sign(d.y);
@@ -54,9 +54,10 @@ void main() {
       }
       if(seeds.a >= 0.0) {
         // This point knows about 4 seeds, so there's another tri to check
-        dist = sdTriangle(address2coords(seeds.r), address2coords(seeds.b), address2coords(seeds.a), xy);
+        dist = sdTriangle(address2coords(seeds.g), address2coords(seeds.b), address2coords(seeds.a), xy);
         if(dist < bestdist) {
-          bestseeds = seeds;
+          bestseeds.rgb = seeds.gba;
+          bestseeds.a = -999.0;
           bestdist = dist;
         }
       }
