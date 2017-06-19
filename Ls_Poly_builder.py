@@ -1,5 +1,4 @@
-import re
-
+# This writes out the second set of flooding passes from a template
 template = open('Ls_Poly.15.glsl').readlines()
 
 for p in range(16, 27):
