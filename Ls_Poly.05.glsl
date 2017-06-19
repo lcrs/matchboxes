@@ -13,7 +13,8 @@ float alength(vec2 v) {
 void main() {
   vec2 xy = gl_FragCoord.xy / res;
 
-  vec4 o = texture2D(adsk_results_pass4, xy);
+  vec4 bestseed = vec4(-999.0);
+  float bestdist = 99999.0;
   for(float j = -1.0; j <= 1.0; j += 1.0) {
     for(float k = -1.0; k <= 1.0; k += 1.0) {
       vec4 s = texture2D(adsk_results_pass4, xy + vec2(j, k) * (vec2(256.0)/res));
@@ -21,12 +22,14 @@ void main() {
         // This sample has not been flooded yet
         continue;
       }
-      if(alength(s.xy - xy) < alength(o.xy - xy)) {
-        // This sample is the closest yet
-        o = s;
+      float dist = alength(s.xy - xy);
+      if(dist < bestdist) {
+        // This seed is the closest yet
+        bestdist = dist;
+        bestseed = s;
       }
     }
   }
 
-  gl_FragColor = o;
+  gl_FragColor = bestseed;
 }

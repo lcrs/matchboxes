@@ -1,12 +1,12 @@
 // Poly
-// Pass 25: jump flood out addresses of closest seeds, round 11, distance 2
-// We check if the surrounding pixels tell us about triangles that are closer than our own
+// Pass 27: debug tings
 
 uniform float adsk_result_w, adsk_result_h, adsk_result_frameratio;
-uniform sampler2D adsk_results_pass24;
+uniform sampler2D front, adsk_results_pass1, adsk_results_pass14, adsk_results_pass15, adsk_results_pass16, adsk_results_pass17, adsk_results_pass26;
 vec2 res = vec2(adsk_result_w, adsk_result_h);
 
 vec2 address2coords(float a) {
+  if(a == -999.0) return vec2(0.0);
   vec2 c;
   c.y = floor(a / adsk_result_w);
   c.x = a - (c.y * adsk_result_w);
@@ -36,32 +36,16 @@ float sdTriangle(vec2 p0, vec2 p1, vec2 p2, vec2 p) {
 
 void main() {
   vec2 xy = gl_FragCoord.xy / res;
-
-  vec4 bestseeds = vec4(-999.0);
-  float bestdist = 99999.0;
-
-  for(float j = -1.0; j <= 1.0; j += 1.0) {
-    for(float k = -1.0; k <= 1.0; k += 1.0) {
-      vec4 seeds = texture2D(adsk_results_pass24, xy + vec2(j, k) * (vec2(2.0)/res));
-      if(seeds.r < 0.0) {
-        // This point doesn't know about any seeds yet
-        continue;
-      }
-      float dist = sdTriangle(address2coords(seeds.r), address2coords(seeds.g), address2coords(seeds.b), xy);
-      if(dist < bestdist) {
-        bestseeds = seeds;
-        bestdist = dist;
-      }
-      if(seeds.a >= 0.0) {
-        // This point knows about 4 seeds, so there's another tri to check
-        dist = sdTriangle(address2coords(seeds.r), address2coords(seeds.b), address2coords(seeds.a), xy);
-        if(dist < bestdist) {
-          bestseeds = seeds;
-          bestdist = dist;
-        }
-      }
-    }
-  }
-
-  gl_FragColor = bestseeds;
+  vec4 f = texture2D(front, xy);
+  vec4 p14 = texture2D(adsk_results_pass14, xy);
+  vec4 p15 = texture2D(adsk_results_pass15, xy);
+  vec4 p16 = texture2D(adsk_results_pass16, xy);
+  vec4 p17 = texture2D(adsk_results_pass17, xy);
+  vec4 p26 = texture2D(adsk_results_pass26, xy);
+  vec2 coords = address2coords(p26.r);
+  
+  //gl_FragColor = vec4(p13.rgb + f.rrr, p14.r);
+  //gl_FragColor = vec4(address2coords(p26.r), 0.0, 0.0);
+  gl_FragColor = vec4(abs(sdTriangle(address2coords(p26.r), address2coords(p26.g), address2coords(p26.b), xy)));
+  //gl_FragColor = vec4(coords, 0.0, 0.0);
 }

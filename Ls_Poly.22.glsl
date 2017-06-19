@@ -10,7 +10,7 @@ vec2 address2coords(float a) {
   vec2 c;
   c.y = floor(a / adsk_result_w);
   c.x = a - (c.y * adsk_result_w);
-  return c;
+  return (c + vec2(0.5)) / res;
 }
 
 float sdTriangle(vec2 p0, vec2 p1, vec2 p2, vec2 p) {
@@ -37,31 +37,31 @@ float sdTriangle(vec2 p0, vec2 p1, vec2 p2, vec2 p) {
 void main() {
   vec2 xy = gl_FragCoord.xy / res;
 
-  vec3 best_tri = vec3(0.0);
-  float best_dist = 99999.0;
+  vec4 bestseeds = vec4(-999.0);
+  float bestdist = 99999.0;
 
   for(float j = -1.0; j <= 1.0; j += 1.0) {
     for(float k = -1.0; k <= 1.0; k += 1.0) {
       vec4 seeds = texture2D(adsk_results_pass21, xy + vec2(j, k) * (vec2(16.0)/res));
       if(seeds.r < 0.0) {
-        // This point doesn't know about any seeds
+        // This point doesn't know about any seeds yet
         continue;
       }
       float dist = sdTriangle(address2coords(seeds.r), address2coords(seeds.g), address2coords(seeds.b), xy);
-      if(dist < best_dist) {
-        best_tri = vec3(seeds.r, seeds.g, seeds.b);
-        best_dist = dist;
+      if(dist < bestdist) {
+        bestseeds = seeds;
+        bestdist = dist;
       }
       if(seeds.a >= 0.0) {
         // This point knows about 4 seeds, so there's another tri to check
         dist = sdTriangle(address2coords(seeds.r), address2coords(seeds.b), address2coords(seeds.a), xy);
-        if(dist < best_dist) {
-          best_tri = vec3(seeds.r, seeds.b, seeds.a);
-          best_dist = dist;
+        if(dist < bestdist) {
+          bestseeds = seeds;
+          bestdist = dist;
         }
       }
     }
   }
 
-  gl_FragColor = vec4(best_tri, -999.0);
+  gl_FragColor = bestseeds;
 }
