@@ -14,7 +14,7 @@
   o use 1+JFA instead of standard JFA?
   o use vector to seed to render sprite from another input centered on each seed?
   o fake anchor points at image corners/edges?
-  o do we need to add 0.5 to sample pixel centres?
+  o Does sdTriangle take into account anamorphicity of 0-1 texel coord space?
 */
 
 #extension GL_ARB_shader_texture_lod : enable
