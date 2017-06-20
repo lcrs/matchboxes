@@ -46,6 +46,7 @@ void main() {
   //gl_FragColor = vec4(p13.rgb + f.rrr, p14.r);
   //gl_FragColor = vec4(address2coords(p26.r), 0.0, 0.0);
   float t1 = abs(sdTriangle(address2coords(p26.r), address2coords(p26.g), address2coords(p26.b), xy));
-  gl_FragColor = vec4(t1, t1, 0.0, 0.0);
+  t1 *= 300.0;
+  gl_FragColor = vec4(t1, t1, t1, 0.0);
   //gl_FragColor = vec4(coords, 0.0, 0.0);
 }
