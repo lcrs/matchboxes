@@ -13,6 +13,8 @@
   o use 1+JFA instead of standard JFA?
   o Seed generation clusters a lot leading to many small polys
   o Does sdTriangle take into account anamorphicity of 0-1 texel coord space?
+  o There is some controversy over triangle winding order at the junctions between
+    4 Voronoi cells
 
   o fake anchor points at image corners/edges?
   

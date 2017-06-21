@@ -54,9 +54,9 @@ void main() {
       }
       if(seeds.a >= 0.0) {
         // This point knows about 4 seeds, so there's another tri to check
-        dist = sdTriangle(address2coords(seeds.g), address2coords(seeds.b), address2coords(seeds.a), xy);
+        dist = sdTriangle(address2coords(seeds.b), address2coords(seeds.a), address2coords(seeds.r), xy);
         if(dist < bestdist) {
-          bestseeds.rgb = seeds.gba;
+          bestseeds.rgb = seeds.bar;
           bestseeds.a = -999.0;
           bestdist = dist;
         }

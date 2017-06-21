@@ -31,8 +31,8 @@ void main() {
   vec2 pixels[4];
   pixels[0] = texture2D(adsk_results_pass13, (gl_FragCoord.xy + vec2(0.0,  0.0)) / res).xy;
   pixels[1] = texture2D(adsk_results_pass13, (gl_FragCoord.xy + vec2(1.0,  0.0)) / res).xy;
-  pixels[2] = texture2D(adsk_results_pass13, (gl_FragCoord.xy + vec2(0.0, -1.0)) / res).xy;
-  pixels[3] = texture2D(adsk_results_pass13, (gl_FragCoord.xy + vec2(1.0, -1.0)) / res).xy;
+  pixels[2] = texture2D(adsk_results_pass13, (gl_FragCoord.xy + vec2(1.0, -1.0)) / res).xy;
+  pixels[3] = texture2D(adsk_results_pass13, (gl_FragCoord.xy + vec2(0.0, -1.0)) / res).xy;
 
   // Create an array of unique addresses from this quad of pixels
   float uniques[4];
