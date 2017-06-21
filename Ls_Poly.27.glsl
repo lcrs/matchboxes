@@ -1,15 +1,9 @@
 // Poly
-// Pass 27: debug tings
+// Pass 27: render from various preceeding passes
 
 uniform float adsk_result_w, adsk_result_h, adsk_result_frameratio;
-uniform sampler2D front, adsk_results_pass1, adsk_results_pass13, adsk_results_pass14, adsk_results_pass26;
+uniform sampler2D front, adsk_results_pass1, adsk_results_pass13, adsk_results_pass26;
 vec2 res = vec2(adsk_result_w, adsk_result_h);
-
-float coords2address(vec2 c) {
-  c *= res;
-  c -= vec2(0.5);
-  return c.y * adsk_result_w + c.x;
-}
 
 vec2 address2coords(float a) {
   if(a == -999.0) return vec2(0.0);
@@ -17,6 +11,20 @@ vec2 address2coords(float a) {
   c.y = floor(a / adsk_result_w);
   c.x = a - (c.y * adsk_result_w);
   return (c + vec2(0.5)) / res;
+}
+
+float coords2address(vec2 c) {
+  c *= res;
+  c = floor(c); // Remove 0.5 offset from texel-centre sampling... just doing -=0.5 caused precision problems!
+  return c.y * adsk_result_w + c.x;
+}
+
+// Returns true if the value t is present anywhere in list
+bool contains(float list[4], float t) {
+  for(int i = 0; i < 4; i++) {
+    if(list[i] == t) return true;
+  }
+  return false;
 }
 
 float sdTriangle(vec2 p0, vec2 p1, vec2 p2, vec2 p) {
@@ -42,17 +50,36 @@ float sdTriangle(vec2 p0, vec2 p1, vec2 p2, vec2 p) {
 
 void main() {
   vec2 xy = gl_FragCoord.xy / res;
-  vec4 f = texture2D(front, xy);
-  vec4 p1 = texture2D(adsk_results_pass1, xy);
-  vec4 p13 = texture2D(adsk_results_pass13, xy);
-  vec4 p14 = texture2D(adsk_results_pass14, xy);
-  vec4 p26 = texture2D(adsk_results_pass26, xy);
+  vec4 tri = texture2D(adsk_results_pass26, xy);
   
-  //gl_FragColor = p14;
-  //gl_FragColor = vec4(address2coords(408320.0), 0.0, 0.0);
-  //gl_FragColor = vec4(address2coords(p14.r), 0.0, 0.0);
+  // Repeat work from pass 14 to find the borders between Voronoi cells by counting unique neighbours
+  vec2 pixels[4];
+  pixels[0] = texture2D(adsk_results_pass13, (gl_FragCoord.xy + vec2(0.0,  0.0)) / res).xy;
+  pixels[1] = texture2D(adsk_results_pass13, (gl_FragCoord.xy + vec2(1.0,  0.0)) / res).xy;
+  pixels[2] = texture2D(adsk_results_pass13, (gl_FragCoord.xy + vec2(1.0, -1.0)) / res).xy;
+  pixels[3] = texture2D(adsk_results_pass13, (gl_FragCoord.xy + vec2(0.0, -1.0)) / res).xy;
+
+  // Create an array of unique addresses from this quad of pixels
+  float uniques[4];
+  uniques[0] = uniques[1] = uniques[2] = uniques[3] = -999.0;
+  int uniquecount = 0;
+  for(int i = 0; i < 4; i++) {
+    float addr = coords2address(pixels[i]);
+    if(!contains(uniques, addr)) {
+      uniques[uniquecount] = addr;
+      uniquecount++;
+    }
+  }
+
+  vec4 fron = texture2D(front, xy);
+  vec4 seeds = texture2D(adsk_results_pass1, xy);
+  vec4 voronoi_nearest = texture2D(adsk_results_pass13, xy);
+  float voronoi_edges = uniquecount > 1 ? 1.0 : 0.0;
+  float delaunay_sdf = (sdTriangle(address2coords(tri.r), address2coords(tri.g), address2coords(tri.b), xy));
+  float delaunay_bw = sign(delaunay_sdf);
+  float delaunay_edges = 1.0 - smoothstep(0.0, 0.001, abs(delaunay_sdf));
+  vec2 delaunay_centre = address2coords(tri.r) + address2coords(tri.g) + address2coords(tri.b) / vec2(3.0);
   
-  float t1 = abs(sdTriangle(address2coords(p26.r), address2coords(p26.g), address2coords(p26.b), xy));
-  t1 *= 400.0;
-  gl_FragColor = vec4(t1, t1, t1, 0.0);
+  gl_FragColor = vec4(delaunay_centre, delaunay_edges, delaunay_sdf);
 }
+
