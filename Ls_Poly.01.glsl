@@ -1,20 +1,25 @@
 // Poly
+//
 // Create Voronoi diagrams and Deluanay triangulations from seed points in image
+// We can also output the distance transform if seed points form contiguous shapes
+//
 // Uses jump flooding as per "Jump Flooding in GPU" paper
 // http://www.comp.nus.edu.sg/~tants/jfa.html
-// We can also output the distance transform if seed points form contiguous shapes
 
 // Pass 1: create seed points from input video
 
 /*
   TODO:
+  o use 1+JFA instead of standard JFA?
   o Seed generation clusters a lot leading to many small polys
+  o Does sdTriangle take into account anamorphicity of 0-1 texel coord space?
+
+  o fake anchor points at image corners/edges?
+  
   o How can we outline voronoi cells other than by edge detection?
   o Shade cells radially, random angled gradients?
-  o use 1+JFA instead of standard JFA?
   o use vector to seed to render sprite from another input centered on each seed?
-  o fake anchor points at image corners/edges?
-  o Does sdTriangle take into account anamorphicity of 0-1 texel coord space?
+  o Output dual of seeds, i.e. points at junctions of Voronoi diagram
 */
 
 #extension GL_ARB_shader_texture_lod : enable
