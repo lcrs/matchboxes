@@ -1,13 +1,11 @@
 // Poly
 // Pass 14: at junctions between voronoi cells, output the addresses of the 3 or (rarely) 4 nearest seeds
 // Each junction lies inside one Delaunay triangle, and we want to flood out the coords of its corners
-// Instead of using seed texel coords, we now switch to addresses, because we need to pack
-// four seed coords into each fragment color
-// The address is simply the texel index, i.e. row*width + col
-// (although we remove the 0.5 pixel offset which is usually present because we're addressing pixel centres)
+// Instead of using seed texel coords, we now switch to addresses, because we need to pack four seed coords
+// into each fragment color
+// The address is simply the texel index, i.e. (row * width) + col
 // These addresses are then flooded out from the junction points in the next passes
-// This means each pixel in the image can determine which 3 seed points form the best
-// triangle around it
+// This means each pixel in the image can determine which 3 seed points form the best triangle around it
 
 uniform float adsk_result_w, adsk_result_h, adsk_result_frameratio;
 uniform sampler2D adsk_results_pass13;
@@ -15,10 +13,11 @@ vec2 res = vec2(adsk_result_w, adsk_result_h);
 
 float coords2address(vec2 c) {
   c *= res;
-  c -= vec2(0.5);
+  c = floor(c); // Remove 0.5 offset from texel-centre sampling... just doing -=0.5 caused precision problems!
   return c.y * adsk_result_w + c.x;
 }
 
+// Returns true if the value t is present anywhere in list
 bool contains(float list[4], float t) {
   for(int i = 0; i < 4; i++) {
     if(list[i] == t) return true;
