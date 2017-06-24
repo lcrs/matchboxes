@@ -1,9 +1,9 @@
 // Poly
-// Pass 25: jump flood out addresses of closest seeds, round 10, distance 8
+// Pass 28: jump flood out addresses of closest seeds, round 13, distance 1
 // We check if the surrounding pixels tell us about triangles that are closer than our own
 
 uniform float adsk_result_w, adsk_result_h, adsk_result_frameratio;
-uniform sampler2D adsk_results_pass24;
+uniform sampler2D adsk_results_pass27;
 vec2 res = vec2(adsk_result_w, adsk_result_h);
 
 vec2 address2coords(float a) {
@@ -43,7 +43,7 @@ void main() {
 
   for(float j = -1.0; j <= 1.0; j += 1.0) {
     for(float k = -1.0; k <= 1.0; k += 1.0) {
-      vec4 seeds = texture2D(adsk_results_pass24, xy + vec2(j, k) * (vec2(8.0)/res));
+      vec4 seeds = texture2D(adsk_results_pass27, xy + vec2(j, k) * (vec2(1.0)/res));
       if(seeds.r < 0.0) {
         // This point doesn't know about any seeds yet
         continue;

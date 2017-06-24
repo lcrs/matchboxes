@@ -10,18 +10,20 @@
 
 /*
   TODO:
-  o use 1+JFA instead of standard JFA?
-  o Seed generation clusters a lot leading to many small polys
+  o Use 1+JFA instead of standard JFA?
+  o Seed generation clusters a lot, could be more sophisticated
   o Does sdTriangle take into account anamorphicity of 0-1 texel coord space?
-  o There is some controversy over triangle winding order at the junctions between
-    4 Voronoi cells
+  o Trimming long thin triangles might help more than trimming small ones
+  o Nasty artifacts when you get up to 3840x2160 ish... related to seeds near image edges
+  o Hangs GPU at 8k UHD :o
 
-  o fake anchor points at image corners/edges?
+  o Fake anchor points at image corners/edges?
   
-  o How can we outline voronoi cells other than by edge detection?
   o Shade cells radially, random angled gradients?
-  o use vector to seed to render sprite from another input centered on each seed?
+  o Use barycentrics to shade triangle from the corner colours
+  o Use vector to seed or tri corners to render sprite from another input centered on each?
   o Output dual of seeds, i.e. points at junctions of Voronoi diagram
+  o Output distance transform, offer to warp using it?
 */
 
 #extension GL_ARB_shader_texture_lod : enable
@@ -33,14 +35,17 @@ vec2 res = vec2(adsk_result_w, adsk_result_h);
 
 void main() {
   vec2 xy = gl_FragCoord.xy / res;
+
   vec3 frontrgb = texture2D(front, xy).rgb;
   float frontluma = dot(frontrgb, vec3(0.2126, 0.7152, 0.0722));
-  vec3 miprgb = texture2DLod(front, xy, 2.0).rgb;
+  
+  vec3 miprgb = texture2DLod(front, xy, 3.0).rgb;
   float mipluma = dot(miprgb, vec3(0.2126, 0.7152, 0.0722));
-  float seedness = frontluma - mipluma;
+  
+  float seedness = abs(frontluma - mipluma);
 
   vec4 o;
-  if(seedness > seedthres) {
+  if(seedness > pow(seedthres, 3.0)) {
     // This is a seed pixel, output current coords
     o = vec4(xy, 0.0, 0.0);
   } else {
