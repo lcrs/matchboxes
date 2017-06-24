@@ -27,6 +27,12 @@ bool contains(float list[4], float t) {
   return false;
 }
 
+// Signed area of a triangle
+float saTriangle(vec2 p1, vec2 p2, vec2 p3) {
+  return 0.5 * (p1.x*p2.y + p2.x*p3.y + p3.x*p1.y - p2.x*p1.y - p3.x*p2.y - p1.x*p3.y);
+}
+
+// Signed distance to a triangle
 float sdTriangle(vec2 p0, vec2 p1, vec2 p2, vec2 p) {
   // The MIT License
   // Copyright © 2014 Inigo Quilez
@@ -42,7 +48,7 @@ float sdTriangle(vec2 p0, vec2 p1, vec2 p2, vec2 p) {
   vec2 pq0 = v0 - e0*clamp(dot(v0,e0)/dot(e0,e0), 0.0, 1.0);
   vec2 pq1 = v1 - e1*clamp(dot(v1,e1)/dot(e1,e1), 0.0, 1.0);
   vec2 pq2 = v2 - e2*clamp(dot(v2,e2)/dot(e2,e2), 0.0, 1.0);
-         
+  
   vec2 d = min(min(vec2(dot(pq0, pq0), v0.x*e0.y-v0.y*e0.x), vec2(dot(pq1, pq1), v1.x*e1.y-v1.y*e1.x)), vec2(dot(pq2, pq2), v2.x*e2.y-v2.y*e2.x));
 
   return -sqrt(d.x)*sign(d.y);
@@ -75,11 +81,17 @@ void main() {
   vec4 seeds = texture2D(adsk_results_pass1, xy);
   vec4 voronoi_nearest = texture2D(adsk_results_pass13, xy);
   float voronoi_edges = uniquecount > 1 ? 1.0 : 0.0;
-  float delaunay_sdf = (sdTriangle(address2coords(tri.r), address2coords(tri.g), address2coords(tri.b), xy));
-  float delaunay_bw = sign(delaunay_sdf);
-  float delaunay_edges = 1.0 - smoothstep(0.0, 0.001, abs(delaunay_sdf));
-  vec2 delaunay_centre = address2coords(tri.r) + address2coords(tri.g) + address2coords(tri.b) / vec2(3.0);
+  float delaunay_sdf = -sdTriangle(address2coords(tri.r), address2coords(tri.g), address2coords(tri.b), xy);
+  float delaunay_edges = 1.0 - smoothstep(0.0, 0.002, delaunay_sdf);
+  float delaunay_known = smoothstep(-0.004, -0.002, delaunay_sdf);
+  vec2 delaunay_centre = (address2coords(tri.r) + address2coords(tri.g) + address2coords(tri.b)) / vec2(3.0);
+  float delaunay_area = -saTriangle(address2coords(tri.r), address2coords(tri.g), address2coords(tri.b));
   
-  gl_FragColor = vec4(delaunay_centre, delaunay_edges, delaunay_sdf);
+  vec4 o;
+  o.rgb = texture2D(front, delaunay_centre).rgb;
+  o.rgb = mix(o.rgb, vec3(0.0), delaunay_edges / 2.0);
+  o.rgb *= delaunay_known;
+
+  gl_FragColor = o;
 }
 

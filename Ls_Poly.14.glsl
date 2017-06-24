@@ -9,6 +9,7 @@
 
 uniform float adsk_result_w, adsk_result_h, adsk_result_frameratio;
 uniform sampler2D adsk_results_pass13;
+uniform float trimsmall;
 vec2 res = vec2(adsk_result_w, adsk_result_h);
 
 float coords2address(vec2 c) {
@@ -17,12 +18,25 @@ float coords2address(vec2 c) {
   return c.y * adsk_result_w + c.x;
 }
 
+vec2 address2coords(float a) {
+  if(a == -999.0) return vec2(0.0);
+  vec2 c;
+  c.y = floor(a / adsk_result_w);
+  c.x = a - (c.y * adsk_result_w);
+  return (c + vec2(0.5)) / res;
+}
+
 // Returns true if the value t is present anywhere in list
 bool contains(float list[4], float t) {
   for(int i = 0; i < 4; i++) {
     if(list[i] == t) return true;
   }
   return false;
+}
+
+// Signed area of a triangle
+float saTriangle(vec2 p1, vec2 p2, vec2 p3) {
+  return 0.5 * (p1.x*p2.y + p2.x*p3.y + p3.x*p1.y - p2.x*p1.y - p3.x*p2.y - p1.x*p3.y);
 }
 
 void main() {
@@ -55,6 +69,25 @@ void main() {
   if(uniquecount > 2) {
     // We are at a junction, output the addresses of the surrounding seeds
     o = vec4(uniques[0], uniques[1], uniques[2], uniques[3]);
+
+    // Only output triangles which are bigger than our trimsmall area
+    bool keepfirst = true;
+    bool keepsecond = false;
+    if(abs(saTriangle(address2coords(o.r), address2coords(o.g), address2coords(o.b))) * 1000.0 < trimsmall) {
+      keepfirst = false;
+    }
+    if(uniquecount > 3) {
+      keepsecond = true;
+      if(abs(saTriangle(address2coords(o.r), address2coords(o.b), address2coords(o.a))) * 1000.0 < trimsmall) {
+        keepsecond = false;
+      }
+    }
+    if(keepfirst && !keepsecond) o.a = -999.0;
+    if(!keepfirst && !keepsecond) o = vec4(-999.0);
+    if(!keepfirst && keepsecond) {
+      o.rgb = o.rba;
+      o.a = -999.0;
+    }
   } else {
     // We're not somewhere interesting, signal that this pixel isn't flooded yet
     o = vec4(-999.0);
