@@ -1,9 +1,9 @@
 # This writes out the second set of flooding passes from a template
-template = open('Ls_Poly.15.glsl').readlines()
+template = open('Ls_Poly.16.glsl').readlines()
 
-for p in range(16, 27):
-	r = p - 14
-	d = pow(2, 12-r)
+for p in range(17, 29):
+	r = p - 15
+	d = pow(2, 13-r)
 	f = 'Ls_Poly.%d.glsl' % p
 	print f
 	t = list(template)

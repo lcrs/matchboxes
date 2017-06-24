@@ -1,35 +1,16 @@
 // Poly
-// Pass 27: render from various preceeding passes
+// Pass 27: jump flood out addresses of closest seeds, round 12, distance 2
+// We check if the surrounding pixels tell us about triangles that are closer than our own
 
 uniform float adsk_result_w, adsk_result_h, adsk_result_frameratio;
-uniform sampler2D front, adsk_results_pass1, adsk_results_pass13, adsk_results_pass26;
+uniform sampler2D adsk_results_pass26;
 vec2 res = vec2(adsk_result_w, adsk_result_h);
 
 vec2 address2coords(float a) {
-  if(a == -999.0) return vec2(0.0);
   vec2 c;
   c.y = floor(a / adsk_result_w);
   c.x = a - (c.y * adsk_result_w);
   return (c + vec2(0.5)) / res;
-}
-
-float coords2address(vec2 c) {
-  c *= res;
-  c = floor(c); // Remove 0.5 offset from texel-centre sampling... just doing -=0.5 caused precision problems!
-  return c.y * adsk_result_w + c.x;
-}
-
-// Returns true if the value t is present anywhere in list
-bool contains(float list[4], float t) {
-  for(int i = 0; i < 4; i++) {
-    if(list[i] == t) return true;
-  }
-  return false;
-}
-
-// Signed area of a triangle
-float saTriangle(vec2 p1, vec2 p2, vec2 p3) {
-  return 0.5 * (p1.x*p2.y + p2.x*p3.y + p3.x*p1.y - p2.x*p1.y - p3.x*p2.y - p1.x*p3.y);
 }
 
 // Signed distance to a triangle
@@ -56,42 +37,32 @@ float sdTriangle(vec2 p0, vec2 p1, vec2 p2, vec2 p) {
 
 void main() {
   vec2 xy = gl_FragCoord.xy / res;
-  vec4 tri = texture2D(adsk_results_pass26, xy);
-  
-  // Repeat work from pass 14 to find the borders between Voronoi cells by counting unique neighbours
-  vec2 pixels[4];
-  pixels[0] = texture2D(adsk_results_pass13, (gl_FragCoord.xy + vec2(0.0,  0.0)) / res).xy;
-  pixels[1] = texture2D(adsk_results_pass13, (gl_FragCoord.xy + vec2(1.0,  0.0)) / res).xy;
-  pixels[2] = texture2D(adsk_results_pass13, (gl_FragCoord.xy + vec2(1.0, -1.0)) / res).xy;
-  pixels[3] = texture2D(adsk_results_pass13, (gl_FragCoord.xy + vec2(0.0, -1.0)) / res).xy;
 
-  // Create an array of unique addresses from this quad of pixels
-  float uniques[4];
-  uniques[0] = uniques[1] = uniques[2] = uniques[3] = -999.0;
-  int uniquecount = 0;
-  for(int i = 0; i < 4; i++) {
-    float addr = coords2address(pixels[i]);
-    if(!contains(uniques, addr)) {
-      uniques[uniquecount] = addr;
-      uniquecount++;
+  vec4 bestseeds = vec4(-999.0);
+  float bestdist = 99999.0;
+
+  for(float j = -1.0; j <= 1.0; j += 1.0) {
+    for(float k = -1.0; k <= 1.0; k += 1.0) {
+      vec4 seeds = texture2D(adsk_results_pass26, xy + vec2(j, k) * (vec2(2.0)/res));
+      if(seeds.r < 0.0) {
+        // This point doesn't know about any seeds yet
+        continue;
+      }
+      float dist = sdTriangle(address2coords(seeds.r), address2coords(seeds.g), address2coords(seeds.b), xy);
+      if(dist < bestdist) {
+        bestseeds.rgba = seeds.rgba;
+        bestdist = dist;
+      }
+      if(seeds.a >= 0.0) {
+        // This point knows about 4 seeds, so there's another tri to check
+        dist = sdTriangle(address2coords(seeds.r), address2coords(seeds.b), address2coords(seeds.a), xy);
+        if(dist < bestdist) {
+          bestseeds.rgba = seeds.barg; // This tri is flooded out in RGB, the other in RBA
+          bestdist = dist;
+        }
+      }
     }
   }
 
-  vec4 fron = texture2D(front, xy);
-  vec4 seeds = texture2D(adsk_results_pass1, xy);
-  vec4 voronoi_nearest = texture2D(adsk_results_pass13, xy);
-  float voronoi_edges = uniquecount > 1 ? 1.0 : 0.0;
-  float delaunay_sdf = -sdTriangle(address2coords(tri.r), address2coords(tri.g), address2coords(tri.b), xy);
-  float delaunay_edges = 1.0 - smoothstep(0.0, 0.002, delaunay_sdf);
-  float delaunay_known = smoothstep(-0.004, -0.002, delaunay_sdf);
-  vec2 delaunay_centre = (address2coords(tri.r) + address2coords(tri.g) + address2coords(tri.b)) / vec2(3.0);
-  float delaunay_area = -saTriangle(address2coords(tri.r), address2coords(tri.g), address2coords(tri.b));
-  
-  vec4 o;
-  o.rgb = texture2D(front, delaunay_centre).rgb;
-  o.rgb = mix(o.rgb, vec3(0.0), delaunay_edges / 2.0);
-  o.rgb *= delaunay_known;
-
-  gl_FragColor = o;
+  gl_FragColor = bestseeds;
 }
-
