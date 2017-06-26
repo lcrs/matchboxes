@@ -8,8 +8,8 @@ vec2 res = vec2(adsk_result_w, adsk_result_h);
 
 vec2 address2coords(float a) {
   vec2 c;
-  c.y = floor(a / adsk_result_w);
-  c.x = a - (c.y * adsk_result_w);
+  c.y = floor(a / (adsk_result_w+50.0));
+  c.x = a - (c.y * (adsk_result_w+50.0));
   return (c + vec2(0.5)) / res;
 }
 

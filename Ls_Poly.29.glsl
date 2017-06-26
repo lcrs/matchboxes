@@ -4,21 +4,21 @@
 #extension GL_ARB_shader_texture_lod : enable
 
 uniform float adsk_result_w, adsk_result_h, adsk_result_frameratio;
-uniform sampler2D front, adsk_results_pass1, adsk_results_pass14, adsk_results_pass28;
+uniform sampler2D front, adsk_results_pass1, adsk_results_pass14, adsk_results_pass15, adsk_results_pass28;
 vec2 res = vec2(adsk_result_w, adsk_result_h);
+
+float coords2address(vec2 c) {
+  c *= res;
+  c = floor(c); // Remove 0.5 offset from texel-centre sampling...
+  return c.y * (adsk_result_w+50.0) + c.x;
+}
 
 vec2 address2coords(float a) {
   if(a == -999.0) return vec2(0.0);
   vec2 c;
-  c.y = floor(a / adsk_result_w);
-  c.x = a - (c.y * adsk_result_w);
+  c.y = floor(a / (adsk_result_w+50.0));
+  c.x = a - (c.y * (adsk_result_w+50.0));
   return (c + vec2(0.5)) / res;
-}
-
-float coords2address(vec2 c) {
-  c *= res;
-  c = floor(c); // Remove 0.5 offset from texel-centre sampling... just doing -=0.5 caused precision problems!
-  return c.y * adsk_result_w + c.x;
 }
 
 // Returns true if the value t is present anywhere in list
@@ -58,6 +58,16 @@ float sdTriangle(vec2 p0, vec2 p1, vec2 p2, vec2 p) {
 
 void main() {
   vec2 xy = gl_FragCoord.xy / res;
+
+  /*vec4 p14 = texture2D(adsk_results_pass14, xy);
+  gl_FragColor = vec4(address2coords(coords2address(xy)), 0.0, 0.0);
+  //vec4 p15 = texture2D(adsk_results_pass15, xy);
+  //gl_FragColor = vec4(address2coords(p15.r), p15.g*1000.0, 0.0);
+  return;*/
+
+  /*gl_FragColor = vec4(gl_FragCoord.x, xy.y, address2coords(coords2address(xy)));
+  return;*/
+
   vec4 tri = texture2D(adsk_results_pass28, xy);
   
   // Repeat work from pass 15 to find the borders between Voronoi cells by counting unique neighbours
@@ -93,6 +103,7 @@ void main() {
   o.rgb = texture2DLod(front, delaunay_centre, 3.0).rgb;
   o.rgb = mix(o.rgb, vec3(0.0), delaunay_edges / 2.0);
   o.rgb *= delaunay_known;
+  o.a = delaunay_edges;
 
   gl_FragColor = o;
 }

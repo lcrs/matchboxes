@@ -14,8 +14,8 @@
   o Seed generation clusters a lot, could be more sophisticated
   o Does sdTriangle take into account anamorphicity of 0-1 texel coord space?
   o Trimming long thin triangles might help more than trimming small ones
-  o Nasty artifacts when you get up to 3840x2160 ish... related to seeds near image edges
-  o Hangs GPU at 8k UHD :o
+  o Artifacts when you get up to 3840x2160 ish... related to seeds near image edges
+  o Uses 6Gb of GPU memory at 4k, be careful...
 
   o Fake anchor points at image corners/edges?
   
