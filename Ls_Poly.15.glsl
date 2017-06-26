@@ -14,15 +14,15 @@ vec2 res = vec2(adsk_result_w, adsk_result_h);
 
 float coords2address(vec2 c) {
   c *= res;
-  c = floor(c); // Remove 0.5 offset from texel-centre sampling... just doing -=0.5 caused precision problems!
-  return c.y * adsk_result_w + c.x;
+  c = floor(c); // Remove 0.5 offset from texel-centre sampling...
+  return c.y * (adsk_result_w+50.0) + c.x;
 }
 
 vec2 address2coords(float a) {
   if(a == -999.0) return vec2(0.0);
   vec2 c;
-  c.y = floor(a / adsk_result_w);
-  c.x = a - (c.y * adsk_result_w);
+  c.y = floor(a / (adsk_result_w+50.0));
+  c.x = a - (c.y * (adsk_result_w+50.0));
   return (c + vec2(0.5)) / res;
 }
 
