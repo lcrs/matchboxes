@@ -1,8 +1,10 @@
-<ShaderNodePreset SupportsAdaptiveDegradation="False" SupportsAction="False" SupportsTransition="False" SupportsTimeline="False" TimelineUseBack="False" MatteProvider="False" CommercialUsePermitted="True" ShaderType="Matchbox" SoftwareVersion="2017.0.0" LimitInputsToTexture="True" Version="1" Description="" Name="Preset Name">
+<ShaderNodePreset SupportsAdaptiveDegradation="False" SupportsAction="False" SupportsTransition="False" SupportsTimeline="False" TimelineUseBack="False" MatteProvider="False" CommercialUsePermitted="True" ShaderType="Matchbox" SoftwareVersion="2017.0.0" LimitInputsToTexture="True" Version="1" Description="" Name="Poly">
    <Shader ClearColor="0, 0, 0, 0" GridSubdivision="1" OutputBitDepth="Float32" Index="1">
-      <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="front" InputColor="67, 77, 83" Mipmaps="True" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR_MIPMAP_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR_MIPMAP_LINEAR" Type="sampler2D" Name="front">
+      <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="Front" InputType="Front" Mipmaps="True" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR_MIPMAP_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR_MIPMAP_LINEAR" Type="sampler2D" Name="front">
       </Uniform>
       <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="0.6" Inc="0.01" Tooltip="" Row="0" Col="0" Page="0" Type="float" ChannelName="SeedThreshold" DisplayName="Seed threshold" Name="seedthres">
+      </Uniform>
+      <Uniform Row="1" Col="0" Page="0" Default="False" Tooltip="" Type="bool" ChannelName="InputIsSeeds" DisplayName="Input is white seed pixels" Name="inputisseeds">
       </Uniform>
    </Shader>
    <Shader ClearColor="0, 0, 0, 0" GridSubdivision="1" OutputBitDepth="Float32" Index="2">
@@ -60,7 +62,7 @@
    <Shader ClearColor="0, 0, 0, 0" GridSubdivision="1" OutputBitDepth="Float32" Index="15">
       <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass14">
       </Uniform>
-      <Uniform ResDependent="None" Max="100000.0" Min="0.0" Default="0.0" Inc="0.1" Tooltip="" Row="1" Col="0" Page="0" Type="float" ChannelName="TrimSmall" DisplayName="Trim small triangles" Name="trimsmall">
+      <Uniform ResDependent="None" Max="100000.0" Min="0.0" Default="0.0" Inc="0.1" Tooltip="" Row="4" Col="2" Page="0" Type="float" ChannelName="TrimSmall" DisplayName="Trim small polys" Name="trimsmall">
       </Uniform>
    </Shader>
    <Shader ClearColor="0, 0, 0, 0" GridSubdivision="1" OutputBitDepth="Float32" Index="16">
@@ -116,21 +118,79 @@
       </Uniform>
    </Shader>
    <Shader ClearColor="0, 0, 0, 0" GridSubdivision="1" OutputBitDepth="Float32" Index="29">
-      <Uniform Index="1" Tooltip="" DisplayName="front" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="front">
+      <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="Front" InputType="Front" Mipmaps="True" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR_MIPMAP_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR_MIPMAP_LINEAR" Type="sampler2D" Name="front">
          <Duplicate>
          </Duplicate>
       </Uniform>
-      <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass1">
+      <Uniform Index="1" NoInput="Black" Tooltip="" DisplayName="Texture" InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="textur">
       </Uniform>
       <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass14">
       </Uniform>
-      <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass15">
-      </Uniform>
       <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass28">
       </Uniform>
+      <Uniform Row="3" Col="0" Page="0" Default="False" Tooltip="" Type="bool" ChannelName="DrawSeeds" DisplayName="Seed dots" Name="seeddots">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1000.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="" Row="4" Col="0" Page="0" Type="float" ChannelName="DotSize" DisplayName="Dot size" Name="dotsize">
+      </Uniform>
+      <Uniform Row="0" Col="1" Page="0" Default="False" Tooltip="" Type="bool" ChannelName="VoronoiCells" DisplayName="Voronoi cells" Name="voronoi">
+      </Uniform>
+      <Uniform Name="voronoistyle" Type="int" ValueType="Popup" DisplayName="Cell style" Page="0" Col="1" Row="1" Tooltip="" Default="8"> 
+         <PopupEntry Title="Seed colours" Value="7"></PopupEntry>
+         <PopupEntry Title="Seed UVs" Value="6"></PopupEntry>
+         <PopupEntry Title="Seed offset" Value="5"></PopupEntry>
+         <PopupEntry Title="Distance" Value="4"></PopupEntry>
+         <PopupEntry Title="Magnify" Value="3"></PopupEntry>
+         <PopupEntry Title="Random solid" Value="2"></PopupEntry>
+         <PopupEntry Title="Random grad" Value="1"></PopupEntry>
+         <PopupEntry Title="Texture input" Value="0"></PopupEntry>
+      </Uniform>
+      <Uniform ResDependent="None" Max="1000.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="" Row="2" Col="1" Page="0" Type="float" ChannelName="VoronoiAdjust" DisplayName="Cell adjust" Name="voronoiadj">
+      </Uniform>
+      <Uniform Row="3" Col="1" Page="0" Default="False" Tooltip="" Type="bool" ChannelName="VoronoiEdges" DisplayName="Voronoi edges" Name="voronoiedges">
+      </Uniform>
+      <Uniform Inc="0.01" Tooltip="" Row="4" Col="1" Page="0" Action3DWidget="False" IconType="None" ValueType="Colour" Type="vec3" ChannelName="VoronoiEdgeColour" DisplayName="Colour" Name="voronoiedgecol">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform></Uniform>
+      <Uniform Row="0" Col="2" Page="0" Default="True" Tooltip="" Type="bool" ChannelName="DelaunayTriangles" DisplayName="Delaunay triangles" Name="delaunay">
+      </Uniform>
+      <Uniform Name="delaunaystyle" Type="int" ValueType="Popup" DisplayName="Triangle style" Page="0" Col="2" Row="1" Tooltip="" Default="11"> 
+         <PopupEntry Title="Mid colours" Value="11"></PopupEntry>
+         <PopupEntry Title="Mid UVs" Value="10"></PopupEntry>
+         <PopupEntry Title="Mid offset" Value="9"></PopupEntry>
+         <PopupEntry Title="Barycentrics" Value="8"></PopupEntry>
+         <PopupEntry Title="Signed distance field" Value="7"></PopupEntry>
+         <PopupEntry Title="Vertex colours" Value="6"></PopupEntry>
+         <PopupEntry Title="Radial" Value="5"></PopupEntry>
+         <PopupEntry Title="Magnify" Value="4"></PopupEntry>
+         <PopupEntry Title="Area" Value="3"></PopupEntry>
+         <PopupEntry Title="Random solid" Value="2"></PopupEntry>
+         <PopupEntry Title="Random grad" Value="1"></PopupEntry>
+         <PopupEntry Title="Texture input" Value="0"></PopupEntry>
+      </Uniform>
+      <Uniform ResDependent="None" Max="1000.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="" Row="2" Col="2" Page="0" Type="float" ChannelName="DelaunayAdjust" DisplayName="Triangle adjust" Name="delaunayadj">
+      </Uniform>
+      <Uniform Row="0" Col="3" Page="0" Default="True" Tooltip="" Type="bool" ChannelName="DelaunayEdges" DisplayName="Delaunay edges" Name="delaunayedges">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1000.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="" Row="1" Col="3" Page="0" Type="float" ChannelName="DelaunayEdgeWidth" DisplayName="Width" Name="delaunayedgewidth">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1000.0" Min="0.0" Default="0.0" Inc="0.01" Tooltip="" Row="2" Col="3" Page="0" Type="float" ChannelName="DelaunayEdgeOffset" DisplayName="Offset" Name="delaunayedgeoffset">
+      </Uniform>
+      <Uniform Inc="0.01" Tooltip="" Row="3" Col="3" Page="0" Action3DWidget="False" IconType="None" ValueType="Colour" Type="vec3" ChannelName="DelaunayEdgeColour" DisplayName="Colour" Name="delaunayedgecol">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform></Uniform>
+      <Uniform ResDependent="None" Max="100.0" Min="0.0" Default="20.0" Inc="1.0" Tooltip="" Row="4" Col="3" Page="0" Type="float" ChannelName="DelaunayEdgeTrans" DisplayName="Transparency" Name="edgetrans">
+      </Uniform>
    </Shader>
-   <Page Name="Page 1" Page="0">
-      <Col Name="Column 1" Col="0" Page="0">
+   <Page Name="Poly" Page="0">
+      <Col Name="Seed points" Col="0" Page="0">
+      </Col>
+      <Col Name="Voronoi" Col="1" Page="0">
+      </Col>
+      <Col Name="Delaunay triangles" Col="2" Page="0">
+      </Col>
+      <Col Name="Delaunay edges" Col="3" Page="0">
       </Col>
    </Page>
 </ShaderNodePreset>

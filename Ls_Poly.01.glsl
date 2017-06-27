@@ -14,13 +14,10 @@
   o Seed generation clusters a lot, could be more sophisticated
   o Does sdTriangle take into account anamorphicity of 0-1 texel coord space?
   o Trimming long thin triangles might help more than trimming small ones
-  o Artifacts when you get up to 3840x2160 ish... related to seeds near image edges
   o Uses 6Gb of GPU memory at 4k, be careful...
 
   o Fake anchor points at image corners/edges?
   
-  o Shade cells radially, random angled gradients?
-  o Use barycentrics to shade triangle from the corner colours
   o Use vector to seed or tri corners to render sprite from another input centered on each?
   o Output dual of seeds, i.e. points at junctions of Voronoi diagram
   o Output distance transform, offer to warp using it?
@@ -31,6 +28,7 @@
 uniform float adsk_result_w, adsk_result_h, adsk_result_frameratio;
 uniform sampler2D front;
 uniform float seedthres;
+uniform bool inputisseeds;
 vec2 res = vec2(adsk_result_w, adsk_result_h);
 
 void main() {
@@ -43,6 +41,10 @@ void main() {
   float mipluma = dot(miprgb, vec3(0.2126, 0.7152, 0.0722));
   
   float seedness = abs(frontluma - mipluma);
+
+  if(inputisseeds) {
+    seedness = frontluma;
+  }
 
   vec4 o;
   if(seedness > pow(seedthres, 3.0)) {
