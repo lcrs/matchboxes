@@ -4,7 +4,11 @@
 #extension GL_ARB_shader_texture_lod : enable
 
 uniform float adsk_result_w, adsk_result_h, adsk_result_frameratio;
-uniform sampler2D front, adsk_results_pass1, adsk_results_pass14, adsk_results_pass15, adsk_results_pass28;
+uniform sampler2D front, textur, adsk_results_pass14, adsk_results_pass28;
+uniform float dotsize, voronoiadj, delaunayadj, delaunayedgewidth, delaunayedgeoffset, edgetrans;
+uniform vec3 voronoiedgecol, delaunayedgecol;
+uniform int voronoistyle, delaunaystyle;
+uniform bool seeddots, voronoi, voronoiedges, delaunay, delaunayedges;
 vec2 res = vec2(adsk_result_w, adsk_result_h);
 
 float coords2address(vec2 c) {
@@ -58,25 +62,13 @@ float sdTriangle(vec2 p0, vec2 p1, vec2 p2, vec2 p) {
 
 void main() {
   vec2 xy = gl_FragCoord.xy / res;
-
-  /*vec4 p14 = texture2D(adsk_results_pass14, xy);
-  gl_FragColor = vec4(address2coords(coords2address(xy)), 0.0, 0.0);
-  //vec4 p15 = texture2D(adsk_results_pass15, xy);
-  //gl_FragColor = vec4(address2coords(p15.r), p15.g*1000.0, 0.0);
-  return;*/
-
-  /*gl_FragColor = vec4(gl_FragCoord.x, xy.y, address2coords(coords2address(xy)));
-  return;*/
-
-  vec4 tri = texture2D(adsk_results_pass28, xy);
   
-  // Repeat work from pass 15 to find the borders between Voronoi cells by counting unique neighbours
+  // Repeat what we did in pass 15 to find the borders between Voronoi cells, by counting unique neighbours
   vec2 pixels[4];
   pixels[0] = texture2D(adsk_results_pass14, (gl_FragCoord.xy + vec2(0.0,  0.0)) / res).xy;
   pixels[1] = texture2D(adsk_results_pass14, (gl_FragCoord.xy + vec2(1.0,  0.0)) / res).xy;
   pixels[2] = texture2D(adsk_results_pass14, (gl_FragCoord.xy + vec2(1.0, -1.0)) / res).xy;
   pixels[3] = texture2D(adsk_results_pass14, (gl_FragCoord.xy + vec2(0.0, -1.0)) / res).xy;
-
   // Create an array of unique addresses from this quad of pixels
   float uniques[4];
   uniques[0] = uniques[1] = uniques[2] = uniques[3] = -999.0;
@@ -90,17 +82,17 @@ void main() {
   }
 
   vec4 fron = texture2D(front, xy);
-  vec4 seeds = texture2D(adsk_results_pass1, xy);
+  vec4 tri = texture2D(adsk_results_pass28, xy);
   vec4 voronoi_nearest = texture2D(adsk_results_pass14, xy);
   float voronoi_edges = uniquecount > 1 ? 1.0 : 0.0;
   float delaunay_sdf = -sdTriangle(address2coords(tri.r), address2coords(tri.g), address2coords(tri.b), xy);
   float delaunay_edges = 1.0 - smoothstep(0.0, 2.0/res.x, delaunay_sdf);
   float delaunay_known = smoothstep(-2.0/res.x, -0.0/res.x, delaunay_sdf);
-  vec2 delaunay_centre = (address2coords(tri.r) + address2coords(tri.g) + address2coords(tri.b)) / vec2(3.0);
+  vec2 delaunay_mid = (address2coords(tri.r) + address2coords(tri.g) + address2coords(tri.b)) / vec2(3.0);
   float delaunay_area = -saTriangle(address2coords(tri.r), address2coords(tri.g), address2coords(tri.b));
   
   vec4 o;
-  o.rgb = texture2DLod(front, delaunay_centre, 3.0).rgb;
+  o.rgb = texture2DLod(front, delaunay_mid, delaunayadj).rgb;
   o.rgb = mix(o.rgb, vec3(0.0), delaunay_edges / 2.0);
   o.rgb *= delaunay_known;
   o.a = delaunay_edges;
