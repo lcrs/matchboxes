@@ -10,6 +10,7 @@
 
 /*
   TODO:
+  o Strength input to modulate seed threshold
   o Use 1+JFA instead of standard JFA?
   o Seed generation clusters a lot, could be more sophisticated
   o Does sdTriangle take into account anamorphicity of 0-1 texel coord space?
@@ -18,7 +19,6 @@
 
   o Fake anchor points at image corners/edges?
   
-  o Use vector to seed or tri corners to render sprite from another input centered on each?
   o Output dual of seeds, i.e. points at junctions of Voronoi diagram
   o Output distance transform, offer to warp using it?
 */

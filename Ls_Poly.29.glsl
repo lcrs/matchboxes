@@ -81,22 +81,47 @@ void main() {
     }
   }
 
-  vec4 fron = texture2D(front, xy);
-  vec4 tri = texture2D(adsk_results_pass28, xy);
-  vec4 voronoi_nearest = texture2D(adsk_results_pass14, xy);
+  vec3 fron = texture2D(front, xy).rgb;
+
+  vec2 voronoi_nearest = texture2D(adsk_results_pass14, xy).xy;
   float voronoi_edges = uniquecount > 1 ? 1.0 : 0.0;
+  vec3 voronoicells = vec3(0.0);
+  if(voronoistyle == 0) { // Texture input
+
+  } else if(voronoistyle == 1) { // Random grad
+
+  } else if(voronoistyle == 2) { // Random solid
+
+  } else if(voronoistyle == 3) { // Magnify
+
+  } else if(voronoistyle == 4) { // Distance
+    voronoicells = vec3(length(voronoi_nearest - xy) * voronoiadj);
+  } else if(voronoistyle == 5) { // Seed offset
+    voronoicells.xy = voronoi_nearest - xy;
+  } else if(voronoistyle == 6) { // Seed UVs
+    voronoicells.xy = voronoi_nearest;
+  } else if(voronoistyle == 7) { // Seed colours
+    voronoicells = texture2DLod(front, voronoi_nearest, voronoiadj).rgb;
+  }
+
+
+
+
+  vec4 tri = texture2D(adsk_results_pass28, xy);
   float delaunay_sdf = -sdTriangle(address2coords(tri.r), address2coords(tri.g), address2coords(tri.b), xy);
   float delaunay_edges = 1.0 - smoothstep(0.0, 2.0/res.x, delaunay_sdf);
   float delaunay_known = smoothstep(-2.0/res.x, -0.0/res.x, delaunay_sdf);
   vec2 delaunay_mid = (address2coords(tri.r) + address2coords(tri.g) + address2coords(tri.b)) / vec2(3.0);
   float delaunay_area = -saTriangle(address2coords(tri.r), address2coords(tri.g), address2coords(tri.b));
   
-  vec4 o;
-  o.rgb = texture2DLod(front, delaunay_mid, delaunayadj).rgb;
-  o.rgb = mix(o.rgb, vec3(0.0), delaunay_edges / 2.0);
-  o.rgb *= delaunay_known;
-  o.a = delaunay_edges;
 
+
+
+  vec4 o = vec4(0.0);
+  if(voronoi) {
+    o.rgb = voronoicells;
+  }
+  
   gl_FragColor = o;
 }
 
