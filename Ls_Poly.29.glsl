@@ -11,6 +11,10 @@ uniform int voronoistyle, delaunaystyle;
 uniform bool seeddots, voronoi, voronoiedges, delaunay, delaunayedges;
 vec2 res = vec2(adsk_result_w, adsk_result_h);
 
+float rand(vec2 co){
+    return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+}
+
 float coords2address(vec2 c) {
   c *= res;
   c = floor(c); // Remove 0.5 offset from texel-centre sampling...
@@ -69,7 +73,6 @@ void main() {
   pixels[1] = texture2D(adsk_results_pass14, (gl_FragCoord.xy + vec2(1.0,  0.0)) / res).xy;
   pixels[2] = texture2D(adsk_results_pass14, (gl_FragCoord.xy + vec2(1.0, -1.0)) / res).xy;
   pixels[3] = texture2D(adsk_results_pass14, (gl_FragCoord.xy + vec2(0.0, -1.0)) / res).xy;
-  // Create an array of unique addresses from this quad of pixels
   float uniques[4];
   uniques[0] = uniques[1] = uniques[2] = uniques[3] = -999.0;
   int uniquecount = 0;
@@ -81,31 +84,38 @@ void main() {
     }
   }
 
-  vec3 fron = texture2D(front, xy).rgb;
-
   vec2 voronoi_nearest = texture2D(adsk_results_pass14, xy).xy;
   float voronoi_edges = uniquecount > 1 ? 1.0 : 0.0;
   vec3 voronoicells = vec3(0.0);
   if(voronoistyle == 0) { // Texture input
 
   } else if(voronoistyle == 1) { // Random grad
-
+    vec3 c1 = vec3(rand(voronoi_nearest), rand(voronoi_nearest + vec2(0.1)), rand(voronoi_nearest + vec2(0.2)));
+    vec3 c2 = vec3(rand(voronoi_nearest + vec2(0.4)), rand(voronoi_nearest + vec2(0.5)), rand(voronoi_nearest + vec2(0.6)));
+    vec2 dir = vec2(rand(voronoi_nearest + vec2(0.7)), rand(voronoi_nearest + vec2(0.8)));
+    dir -= vec2(0.5);
+    dir = normalize(dir);
+    dir *= 0.1 * voronoiadj;
+    vec2 p1 = voronoi_nearest - dir;
+    vec2 p2 = voronoi_nearest + dir;
+    float f = length(xy - p1) / length(xy - p2);
+    voronoicells = mix(c1, c2, f);
   } else if(voronoistyle == 2) { // Random solid
-
+    voronoicells = vec3(rand(voronoi_nearest), rand(voronoi_nearest + vec2(0.1)), rand(voronoi_nearest + vec2(0.2)));
+    voronoicells = mix(vec3(0.18), voronoicells, voronoiadj);
   } else if(voronoistyle == 3) { // Magnify
-
+    voronoicells = texture2DLod(front, xy + (voronoiadj - 0.5) * (voronoi_nearest - xy), 0.0).rgb;
   } else if(voronoistyle == 4) { // Distance
-    voronoicells = vec3(length(voronoi_nearest - xy) * voronoiadj);
+    voronoicells = vec3(length(voronoi_nearest - xy)) * voronoiadj;
   } else if(voronoistyle == 5) { // Seed offset
     voronoicells.xy = voronoi_nearest - xy;
+    voronoicells = mix(vec3(0.0), voronoicells, voronoiadj);
   } else if(voronoistyle == 6) { // Seed UVs
     voronoicells.xy = voronoi_nearest;
+    voronoicells = mix(vec3(xy, 0.0), voronoicells, voronoiadj);
   } else if(voronoistyle == 7) { // Seed colours
     voronoicells = texture2DLod(front, voronoi_nearest, voronoiadj).rgb;
   }
-
-
-
 
   vec4 tri = texture2D(adsk_results_pass28, xy);
   float delaunay_sdf = -sdTriangle(address2coords(tri.r), address2coords(tri.g), address2coords(tri.b), xy);
@@ -114,9 +124,6 @@ void main() {
   vec2 delaunay_mid = (address2coords(tri.r) + address2coords(tri.g) + address2coords(tri.b)) / vec2(3.0);
   float delaunay_area = -saTriangle(address2coords(tri.r), address2coords(tri.g), address2coords(tri.b));
   
-
-
-
   vec4 o = vec4(0.0);
   if(voronoi) {
     o.rgb = voronoicells;
