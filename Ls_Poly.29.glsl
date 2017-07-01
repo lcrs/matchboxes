@@ -88,7 +88,10 @@ void main() {
   float voronoi_edges = uniquecount > 1 ? 1.0 : 0.0;
   vec3 voronoicells = vec3(0.0);
   if(voronoistyle == 0) { // Texture input
-
+    vec2 uv = xy - voronoi_nearest;
+    uv /= voronoiadj;
+    uv += vec2(0.5);
+    voronoicells = texture2D(textur, uv).rgb;
   } else if(voronoistyle == 1) { // Random grad
     vec3 c1 = vec3(rand(voronoi_nearest), rand(voronoi_nearest + vec2(0.1)), rand(voronoi_nearest + vec2(0.2)));
     vec3 c2 = vec3(rand(voronoi_nearest + vec2(0.4)), rand(voronoi_nearest + vec2(0.5)), rand(voronoi_nearest + vec2(0.6)));
@@ -98,7 +101,7 @@ void main() {
     dir *= 0.1 * voronoiadj;
     vec2 p1 = voronoi_nearest - dir;
     vec2 p2 = voronoi_nearest + dir;
-    float f = length(xy - p1) / length(xy - p2);
+    float f = dot(xy - p1, p2 - p1);
     voronoicells = mix(c1, c2, f);
   } else if(voronoistyle == 2) { // Random solid
     voronoicells = vec3(rand(voronoi_nearest), rand(voronoi_nearest + vec2(0.1)), rand(voronoi_nearest + vec2(0.2)));
