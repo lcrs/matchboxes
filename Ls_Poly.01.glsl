@@ -1,9 +1,12 @@
 // Poly
-//
-// Create Voronoi diagrams and Deluanay triangulations from seed points in image
-//
-// Uses jump flooding as per "Jump Flooding in GPU" paper
+// lewis@lewissaunders.com
+// 
+// Create Voronoi diagrams and Deluanay triangulations from seed points in image by
+// jump flooding as per "Jump Flooding in GPU" paper
 // http://www.comp.nus.edu.sg/~tants/jfa.html
+//
+// This was inspired by Tom Dobrowolski's shader, reading which was very instructive: 
+// https://www.shadertoy.com/view/ldV3Wc
 //
 // Pass 1: create seed points from input video
 
