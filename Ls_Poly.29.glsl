@@ -11,6 +11,21 @@ uniform int voronoistyle, delaunaystyle;
 uniform bool seeddots, voronoi, voronoiedges, delaunay, delaunayedges;
 vec2 res = vec2(adsk_result_w, adsk_result_h);
 
+// Aspect-correct distance
+float alength(vec2 v) {
+  v.y /= adsk_result_frameratio;
+  return length(v);
+}
+
+// Return barycentric coordinates for p in triangle v1,v2,v3
+vec3 barycentrics(vec2 p, vec2 v1, vec2 v2, vec2 v3) {
+  float det = (v2.y-v3.y)*(v1.x-v3.x)+(v3.x-v2.x)*(v1.y-v3.y);
+  float b1 = ((v2.y-v3.y)*(p.x-v3.x)+(v3.x-v2.x)*(p.y-v3.y))/det;
+  float b2 = ((v3.y-v1.y)*(p.x-v3.x)+(v1.x-v3.x)*(p.y-v3.y))/det;
+  float b3 = 1.0 - b1 - b2;
+  return vec3(b1, b2, b3);
+}
+
 float rand(vec2 co){
     return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
 }
@@ -95,13 +110,11 @@ void main() {
   } else if(voronoistyle == 1) { // Random grad
     vec3 c1 = vec3(rand(voronoi_nearest), rand(voronoi_nearest + vec2(0.1)), rand(voronoi_nearest + vec2(0.2)));
     vec3 c2 = vec3(rand(voronoi_nearest + vec2(0.4)), rand(voronoi_nearest + vec2(0.5)), rand(voronoi_nearest + vec2(0.6)));
-    vec2 dir = vec2(rand(voronoi_nearest + vec2(0.7)), rand(voronoi_nearest + vec2(0.8)));
-    dir -= vec2(0.5);
-    dir = normalize(dir);
-    dir *= 0.1 * voronoiadj;
-    vec2 p1 = voronoi_nearest - dir;
-    vec2 p2 = voronoi_nearest + dir;
-    float f = dot(xy - p1, p2 - p1);
+    vec2 uv = xy - voronoi_nearest;
+    float theta = rand(voronoi_nearest + vec2(0.7)) * 3.1415926535;
+    uv = vec2(uv.x * cos(theta) - uv.y * sin(theta), uv.x * sin(theta) + uv.y * cos(theta));
+    uv.x *= voronoiadj * 10.0;
+    float f = smoothstep(0.0, 1.0, uv.x + 0.5);
     voronoicells = mix(c1, c2, f);
   } else if(voronoistyle == 2) { // Random solid
     voronoicells = vec3(rand(voronoi_nearest), rand(voronoi_nearest + vec2(0.1)), rand(voronoi_nearest + vec2(0.2)));
@@ -109,7 +122,7 @@ void main() {
   } else if(voronoistyle == 3) { // Magnify
     voronoicells = texture2DLod(front, xy + (voronoiadj - 0.5) * (voronoi_nearest - xy), 0.0).rgb;
   } else if(voronoistyle == 4) { // Distance
-    voronoicells = vec3(length(voronoi_nearest - xy)) * voronoiadj;
+    voronoicells = vec3(alength(voronoi_nearest - xy)) * voronoiadj;
   } else if(voronoistyle == 5) { // Seed offset
     voronoicells.xy = voronoi_nearest - xy;
     voronoicells = mix(vec3(0.0), voronoicells, voronoiadj);
@@ -120,16 +133,74 @@ void main() {
     voronoicells = texture2DLod(front, voronoi_nearest, voronoiadj).rgb;
   }
 
+  float seeddotty = 1.0 - smoothstep(dotsize/res.x, dotsize/res.x + 1.0/res.x, alength(voronoi_nearest - xy));
+
   vec4 tri = texture2D(adsk_results_pass28, xy);
   float delaunay_sdf = -sdTriangle(address2coords(tri.r), address2coords(tri.g), address2coords(tri.b), xy);
-  float delaunay_edges = 1.0 - smoothstep(0.0, 2.0/res.x, delaunay_sdf);
+  float delaunay_edges = 1.0 - smoothstep((delaunayedgeoffset/100.0) - (delaunayedgewidth/res.x), (delaunayedgeoffset/100.0) + (delaunayedgewidth/res.x), delaunay_sdf);
   float delaunay_known = smoothstep(-2.0/res.x, -0.0/res.x, delaunay_sdf);
   vec2 delaunay_mid = (address2coords(tri.r) + address2coords(tri.g) + address2coords(tri.b)) / vec2(3.0);
   float delaunay_area = -saTriangle(address2coords(tri.r), address2coords(tri.g), address2coords(tri.b));
-  
+  vec3 delaunaytris = vec3(0.0);
+  if(delaunaystyle == 0) { // Texture input
+    vec2 uv = xy - delaunay_mid;
+    uv /= delaunayadj;
+    uv += vec2(0.5);
+    delaunaytris = texture2D(textur, uv).rgb;
+  } else if(delaunaystyle == 1) { // Random grad
+    vec3 c1 = vec3(rand(delaunay_mid), rand(delaunay_mid + vec2(0.1)), rand(delaunay_mid + vec2(0.2)));
+    vec3 c2 = vec3(rand(delaunay_mid + vec2(0.4)), rand(delaunay_mid + vec2(0.5)), rand(delaunay_mid + vec2(0.6)));
+    vec2 uv = xy - delaunay_mid;
+    float theta = rand(delaunay_mid + vec2(0.7)) * 3.1415926535;
+    uv = vec2(uv.x * cos(theta) - uv.y * sin(theta), uv.x * sin(theta) + uv.y * cos(theta));
+    uv.x *= delaunayadj * 10.0;
+    float f = smoothstep(0.0, 1.0, uv.x + 0.5);
+    delaunaytris = mix(c1, c2, f);
+  } else if(delaunaystyle == 2) { // Random solid
+    delaunaytris = vec3(rand(delaunay_mid), rand(delaunay_mid + vec2(0.1)), rand(delaunay_mid + vec2(0.2)));
+    delaunaytris = mix(vec3(0.18), delaunaytris, delaunayadj);
+  } else if(delaunaystyle == 3) { // Area
+    delaunaytris = vec3(delaunay_area * delaunayadj * 10.0);
+  } else if(delaunaystyle == 4) { // Magnify
+    delaunaytris = texture2DLod(front, xy + (delaunayadj - 0.5) * (delaunay_mid - xy), 0.0).rgb;
+  } else if(delaunaystyle == 5) { // Radial
+    delaunaytris = vec3(alength(delaunay_mid - xy)) * delaunayadj;
+  } else if(delaunaystyle == 6) { // Vertex Colours
+    vec3 bary = barycentrics(xy, address2coords(tri.r), address2coords(tri.g), address2coords(tri.b));
+    vec3 p0col = texture2DLod(front, address2coords(tri.r), delaunayadj).rgb;
+    vec3 p1col = texture2DLod(front, address2coords(tri.g), delaunayadj).rgb;
+    vec3 p2col = texture2DLod(front, address2coords(tri.b), delaunayadj).rgb;
+    delaunaytris = bary.x * p0col + bary.y * p1col + bary.z * p2col;
+  } else if(delaunaystyle == 7) { // Signed distance field
+    delaunaytris = vec3(delaunay_sdf);
+  } else if(delaunaystyle == 8) { // Barycentrics
+    delaunaytris = delaunayadj * barycentrics(xy, address2coords(tri.r), address2coords(tri.g), address2coords(tri.b));
+  } else if(delaunaystyle == 9) { // Mid offset
+    delaunaytris.xy = delaunay_mid - xy;
+    delaunaytris = mix(vec3(0.0), delaunaytris, delaunayadj);
+  } else if(delaunaystyle == 10) { // Mid UVs
+    delaunaytris.xy = delaunay_mid;
+    delaunaytris = mix(vec3(xy, 0.0), delaunaytris, delaunayadj);
+  } else if(delaunaystyle == 11) { // Mid colour
+    delaunaytris = texture2DLod(front, delaunay_mid, delaunayadj).rgb;
+  }
+  delaunaytris *= delaunay_known;
+
   vec4 o = vec4(0.0);
   if(voronoi) {
     o.rgb = voronoicells;
+  }
+  if(delaunay) {
+    o.rgb += delaunaytris;
+  }
+  if(voronoiedges) {
+    o.rgb = mix(o.rgb, voronoiedgecol, voronoi_edges * (1.0 - edgetrans/100.0));
+  }
+  if(delaunayedges) {
+    o.rgb = mix(o.rgb, delaunayedgecol, delaunay_known * delaunay_edges * (1.0 - edgetrans/100.0));
+  }
+  if(seeddots) {
+    o.rgb = mix(o.rgb, voronoiedgecol, seeddotty * (1.0 - edgetrans/100.0));
   }
   
   gl_FragColor = o;

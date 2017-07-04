@@ -174,13 +174,13 @@
       </Uniform>
       <Uniform ResDependent="None" Max="1000.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="" Row="1" Col="3" Page="0" Type="float" ChannelName="DelaunayEdgeWidth" DisplayName="Width" Name="delaunayedgewidth">
       </Uniform>
-      <Uniform ResDependent="None" Max="1000.0" Min="0.0" Default="0.0" Inc="0.01" Tooltip="" Row="2" Col="3" Page="0" Type="float" ChannelName="DelaunayEdgeOffset" DisplayName="Offset" Name="delaunayedgeoffset">
+      <Uniform ResDependent="None" Max="1000.0" Min="0.0" Default="0.07" Inc="0.01" Tooltip="" Row="2" Col="3" Page="0" Type="float" ChannelName="DelaunayEdgeOffset" DisplayName="Offset" Name="delaunayedgeoffset">
       </Uniform>
       <Uniform Inc="0.01" Tooltip="" Row="3" Col="3" Page="0" Action3DWidget="False" IconType="None" ValueType="Colour" Type="vec3" ChannelName="DelaunayEdgeColour" DisplayName="Colour" Name="delaunayedgecol">
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform>
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform>
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform></Uniform>
-      <Uniform ResDependent="None" Max="100.0" Min="0.0" Default="20.0" Inc="1.0" Tooltip="" Row="4" Col="3" Page="0" Type="float" ChannelName="DelaunayEdgeTrans" DisplayName="Transparency" Name="edgetrans">
+      <Uniform ResDependent="None" Max="100.0" Min="0.0" Default="50.0" Inc="1.0" Tooltip="" Row="4" Col="3" Page="0" Type="float" ChannelName="DelaunayEdgeTrans" DisplayName="Transparency" Name="edgetrans">
       </Uniform>
    </Shader>
    <Page Name="Poly" Page="0">
