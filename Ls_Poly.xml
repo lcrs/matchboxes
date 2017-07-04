@@ -1,6 +1,6 @@
 <ShaderNodePreset SupportsAdaptiveDegradation="False" SupportsAction="False" SupportsTransition="False" SupportsTimeline="False" TimelineUseBack="False" MatteProvider="False" CommercialUsePermitted="True" ShaderType="Matchbox" SoftwareVersion="2017.0.0" LimitInputsToTexture="True" Version="1" Description="Create Voronoi diagrams and Deluanay triangulations from seed points in the image.  This uses a lot of GPU memory - 3072x2048 uses 6Gb, and 4K may even hang the GPU, so keep an eye on the VRAM Used column in Flame's Resource Manager!
 
-Demo: 
+Demo: https://www.youtube.com/watch?v=epUfvRpKDZw
 
 lewis@lewissaunders.com" Name="Poly">
    <Shader ClearColor="0, 0, 0, 0" GridSubdivision="1" OutputBitDepth="Float32" Index="1">
