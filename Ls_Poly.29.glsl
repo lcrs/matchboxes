@@ -30,12 +30,14 @@ float rand(vec2 co){
     return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
 }
 
+// Convert xy coords to the address used by the Delaunay flooding
 float coords2address(vec2 c) {
   c *= res;
   c = floor(c); // Remove 0.5 offset from texel-centre sampling...
   return c.y * (adsk_result_w+50.0) + c.x;
 }
 
+// Convert address from the Delaunay passes back to xy coords
 vec2 address2coords(float a) {
   if(a == -999.0) return vec2(0.0);
   vec2 c;
@@ -99,9 +101,11 @@ void main() {
     }
   }
 
+  // Build Voronoi rendering options
   vec2 voronoi_nearest = texture2D(adsk_results_pass14, xy).xy;
   float voronoi_edges = uniquecount > 1 ? 1.0 : 0.0;
   vec3 voronoicells = vec3(0.0);
+
   if(voronoistyle == 0) { // Texture input
     vec2 uv = xy - voronoi_nearest;
     uv /= voronoiadj;
@@ -133,8 +137,10 @@ void main() {
     voronoicells = texture2DLod(front, voronoi_nearest, voronoiadj).rgb;
   }
 
+  // Build seed dots
   float seeddotty = 1.0 - smoothstep(dotsize/res.x, dotsize/res.x + 1.0/res.x, alength(voronoi_nearest - xy));
 
+  // Build Delaunay rendering options
   vec4 tri = texture2D(adsk_results_pass28, xy);
   float delaunay_sdf = -sdTriangle(address2coords(tri.r), address2coords(tri.g), address2coords(tri.b), xy);
   float delaunay_edges = 1.0 - smoothstep((delaunayedgeoffset/100.0) - (delaunayedgewidth/res.x), (delaunayedgeoffset/100.0) + (delaunayedgewidth/res.x), delaunay_sdf);
@@ -142,6 +148,7 @@ void main() {
   vec2 delaunay_mid = (address2coords(tri.r) + address2coords(tri.g) + address2coords(tri.b)) / vec2(3.0);
   float delaunay_area = -saTriangle(address2coords(tri.r), address2coords(tri.g), address2coords(tri.b));
   vec3 delaunaytris = vec3(0.0);
+
   if(delaunaystyle == 0) { // Texture input
     vec2 uv = xy - delaunay_mid;
     uv /= delaunayadj;
@@ -186,9 +193,10 @@ void main() {
   }
   delaunaytris *= delaunay_known;
 
+  // Comp everything together
   vec4 o = vec4(0.0);
   if(voronoi) {
-    o.rgb = voronoicells;
+    o.rgb += voronoicells;
   }
   if(delaunay) {
     o.rgb += delaunaytris;
@@ -204,6 +212,11 @@ void main() {
   }
   if(seeddots) {
     o.rgb = mix(o.rgb, voronoiedgecol, seeddotty * (1.0 - edgetrans/100.0));
+  }
+  if(delaunay || delaunayedges) {
+    o.a = delaunay_known;
+  } else {
+    o.a = seeddotty;
   }
   
   gl_FragColor = o;

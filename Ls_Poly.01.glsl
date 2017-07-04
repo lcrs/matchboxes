@@ -18,11 +18,10 @@
   o Uses 6Gb of GPU memory at 4k, be careful...
   o Fake anchor points at image corners/edges?
   o Output dual of seeds, i.e. points at junctions of Voronoi diagram
-  o Figure out if our distance transform output is inferior to OpenCV
-  o Remove 4096.0 flood steps, since running at 8k uses impossible amount of VRAM
+  o Figure out if/why our distance transform output is inferior to OpenCV
+  o Remove 4096.0 flood steps, since running at 8k uses impossible amount of VRAM?
   o Try norms other than the Euclidean in the Voronoi passes
   o Try farthest-point instead of nearest-point Voronoi
-  o Matte output
 */
 
 #extension GL_ARB_shader_texture_lod : enable

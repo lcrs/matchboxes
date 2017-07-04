@@ -1,5 +1,5 @@
 // Poly
-// Pass 3: jump flood round 2, distance 2048
+// Pass 3: jump flood out coords of closest seeds, round 2, distance 2048
 
 uniform float adsk_result_w, adsk_result_h, adsk_result_frameratio;
 uniform sampler2D adsk_results_pass2;
