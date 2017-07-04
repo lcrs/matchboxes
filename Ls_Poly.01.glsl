@@ -1,11 +1,10 @@
 // Poly
 //
 // Create Voronoi diagrams and Deluanay triangulations from seed points in image
-// We can also output the distance transform if seed points form contiguous shapes
 //
 // Uses jump flooding as per "Jump Flooding in GPU" paper
 // http://www.comp.nus.edu.sg/~tants/jfa.html
-
+//
 // Pass 1: create seed points from input video
 
 /*
@@ -15,13 +14,11 @@
   o Seed generation clusters a lot, could be more sophisticated
   o Does sdTriangle take into account anamorphicity of 0-1 texel coord space?
   o Trimming long thin triangles might help more than trimming small ones
-  o Uses 6Gb of GPU memory at 4k, be careful...
   o Fake anchor points at image corners/edges?
   o Output dual of seeds, i.e. points at junctions of Voronoi diagram
   o Figure out if/why our distance transform output is inferior to OpenCV
+  o Uses 6Gb of GPU memory at 4k, be careful...
   o Remove 4096.0 flood steps, since running at 8k uses impossible amount of VRAM?
-  o Try norms other than the Euclidean in the Voronoi passes
-  o Try farthest-point instead of nearest-point Voronoi
 */
 
 #extension GL_ARB_shader_texture_lod : enable

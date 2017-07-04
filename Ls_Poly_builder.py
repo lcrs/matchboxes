@@ -1,3 +1,5 @@
+# Python script which builds the repeated passes for Ls_Poly
+
 # This writes out the first set of flooding passes from a template
 template = open('Ls_Poly.02.glsl').readlines()
 

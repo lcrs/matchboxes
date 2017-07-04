@@ -1,13 +1,13 @@
 // Poly
 // Pass 4: jump flood out coords of closest seeds, round 3, distance 1024
 
-uniform float adsk_result_w, adsk_result_h, adsk_result_frameratio;
+uniform float adsk_result_w, adsk_result_h, adsk_result_frameratio, normp;
 uniform sampler2D adsk_results_pass3;
 vec2 res = vec2(adsk_result_w, adsk_result_h);
 
 float alength(vec2 v) {
   v.y /= adsk_result_frameratio;
-  return length(v);
+  return pow(pow(v.x, normp) + pow(v.y, normp), 1.0/normp);
 }
 
 void main() {
