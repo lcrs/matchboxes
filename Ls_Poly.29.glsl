@@ -193,6 +193,9 @@ void main() {
   if(delaunay) {
     o.rgb += delaunaytris;
   }
+  if(voronoi && delaunay) {
+    o.rgb /= 2.0;
+  }
   if(voronoiedges) {
     o.rgb = mix(o.rgb, voronoiedgecol, voronoi_edges * (1.0 - edgetrans/100.0));
   }
