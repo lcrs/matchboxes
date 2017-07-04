@@ -16,17 +16,19 @@
   o Does sdTriangle take into account anamorphicity of 0-1 texel coord space?
   o Trimming long thin triangles might help more than trimming small ones
   o Uses 6Gb of GPU memory at 4k, be careful...
-
   o Fake anchor points at image corners/edges?
-  
   o Output dual of seeds, i.e. points at junctions of Voronoi diagram
-  o Output distance transform, offer to warp using it?
+  o Figure out if our distance transform output is inferior to OpenCV
+  o Remove 4096.0 flood steps, since running at 8k uses impossible amount of VRAM
+  o Try norms other than the Euclidean in the Voronoi passes
+  o Try farthest-point instead of nearest-point Voronoi
+  o Matte output
 */
 
 #extension GL_ARB_shader_texture_lod : enable
 
 uniform float adsk_result_w, adsk_result_h, adsk_result_frameratio;
-uniform sampler2D front;
+uniform sampler2D front, thresholdi;
 uniform float seedthres;
 uniform bool inputisseeds;
 vec2 res = vec2(adsk_result_w, adsk_result_h);
@@ -47,7 +49,9 @@ void main() {
   }
 
   vec4 o;
-  if(seedness > pow(seedthres, 3.0)) {
+  float modulated_threshold = pow(seedthres, 3.0);
+  modulated_threshold *= texture2D(thresholdi, xy).g;
+  if(seedness > modulated_threshold) {
     // This is a seed pixel, output current coords
     o = vec4(xy, 0.0, 0.0);
   } else {

@@ -1,6 +1,8 @@
 <ShaderNodePreset SupportsAdaptiveDegradation="False" SupportsAction="False" SupportsTransition="False" SupportsTimeline="False" TimelineUseBack="False" MatteProvider="False" CommercialUsePermitted="True" ShaderType="Matchbox" SoftwareVersion="2017.0.0" LimitInputsToTexture="True" Version="1" Description="" Name="Poly">
    <Shader ClearColor="0, 0, 0, 0" GridSubdivision="1" OutputBitDepth="Float32" Index="1">
-      <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="Front" InputType="Front" Mipmaps="True" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR_MIPMAP_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR_MIPMAP_LINEAR" Type="sampler2D" Name="front">
+      <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="Front" InputColor="00, 100, 160" Mipmaps="True" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR_MIPMAP_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR_MIPMAP_LINEAR" Type="sampler2D" Name="front">
+      </Uniform>
+      <Uniform Index="2" NoInput="White" Tooltip="" DisplayName="Threshold" InputColor="0, 120, 120" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="thresholdi">
       </Uniform>
       <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="0.6" Inc="0.01" Tooltip="" Row="0" Col="0" Page="0" Type="float" ChannelName="SeedThreshold" DisplayName="Seed threshold" Name="seedthres">
       </Uniform>
@@ -118,11 +120,11 @@
       </Uniform>
    </Shader>
    <Shader ClearColor="0, 0, 0, 0" GridSubdivision="1" OutputBitDepth="Float32" Index="29">
-      <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="Front" InputType="Front" Mipmaps="True" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR_MIPMAP_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR_MIPMAP_LINEAR" Type="sampler2D" Name="front">
+      <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="Front" Mipmaps="True" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR_MIPMAP_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR_MIPMAP_LINEAR" Type="sampler2D" Name="front">
          <Duplicate>
          </Duplicate>
       </Uniform>
-      <Uniform Index="1" NoInput="Black" Tooltip="" DisplayName="Texture" InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="textur">
+      <Uniform Index="1" NoInput="Black" Tooltip="" DisplayName="Texture" InputColor="30, 100, 120" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="textur">
       </Uniform>
       <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass14">
       </Uniform>
@@ -149,9 +151,9 @@
       <Uniform Row="3" Col="1" Page="0" Default="False" Tooltip="" Type="bool" ChannelName="VoronoiEdges" DisplayName="Voronoi edges" Name="voronoiedges">
       </Uniform>
       <Uniform Inc="0.01" Tooltip="" Row="4" Col="1" Page="0" Action3DWidget="False" IconType="None" ValueType="Colour" Type="vec3" ChannelName="VoronoiEdgeColour" DisplayName="Colour" Name="voronoiedgecol">
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform>
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform>
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform></Uniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.2"></SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.2"></SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.2"></SubUniform></Uniform>
       <Uniform Row="0" Col="2" Page="0" Default="True" Tooltip="" Type="bool" ChannelName="DelaunayTriangles" DisplayName="Delaunay triangles" Name="delaunay">
       </Uniform>
       <Uniform Name="delaunaystyle" Type="int" ValueType="Popup" DisplayName="Triangle style" Page="0" Col="2" Row="1" Tooltip="" Default="11"> 
@@ -177,9 +179,9 @@
       <Uniform ResDependent="None" Max="1000.0" Min="0.0" Default="0.07" Inc="0.01" Tooltip="" Row="2" Col="3" Page="0" Type="float" ChannelName="DelaunayEdgeOffset" DisplayName="Offset" Name="delaunayedgeoffset">
       </Uniform>
       <Uniform Inc="0.01" Tooltip="" Row="3" Col="3" Page="0" Action3DWidget="False" IconType="None" ValueType="Colour" Type="vec3" ChannelName="DelaunayEdgeColour" DisplayName="Colour" Name="delaunayedgecol">
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform>
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform>
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0"></SubUniform></Uniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.2"></SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.2"></SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.2"></SubUniform></Uniform>
       <Uniform ResDependent="None" Max="100.0" Min="0.0" Default="50.0" Inc="1.0" Tooltip="" Row="4" Col="3" Page="0" Type="float" ChannelName="DelaunayEdgeTrans" DisplayName="Transparency" Name="edgetrans">
       </Uniform>
    </Shader>
