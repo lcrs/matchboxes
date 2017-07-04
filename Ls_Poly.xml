@@ -16,7 +16,7 @@ lewis@lewissaunders.com" Name="Poly">
    <Shader ClearColor="0, 0, 0, 0" GridSubdivision="1" OutputBitDepth="Float32" Index="2">
       <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass1">
       </Uniform>
-      <Uniform ResDependent="None" Max="20.0" Min="-5.0" Default="2.0" Inc="0.01" Tooltip="" Row="2" Col="0" Page="0" Type="float" ChannelName="NormP" DisplayName="Norm p" Name="normp">
+      <Uniform ResDependent="None" Max="20.0" Min="-5.0" Default="2.0" Inc="0.01" Tooltip="Control which norm is used to measure distances while computing the Voronoi diagram.  1.0 is Manhattan distance, 2.0 is crow-flies distance, upwards from there gets closer to the max-value norm" Row="2" Col="0" Page="0" Type="float" ChannelName="NormP" DisplayName="Norm p" Name="normp">
       </Uniform>
    </Shader>
    <Shader ClearColor="0, 0, 0, 0" GridSubdivision="1" OutputBitDepth="Float32" Index="3">
