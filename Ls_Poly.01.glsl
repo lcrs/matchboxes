@@ -1,28 +1,26 @@
-// Poly
-// lewis@lewissaunders.com
-// 
-// Create Voronoi diagrams and Deluanay triangulations from seed points in image by
-// jump flooding as per "Jump Flooding in GPU" paper
-// http://www.comp.nus.edu.sg/~tants/jfa.html
-//
-// This was inspired by Tom Dobrowolski's shader, reading which was very instructive: 
-// https://www.shadertoy.com/view/ldV3Wc
-//
-// Pass 1: create seed points from input video
+/*  Poly
+    lewis@lewissaunders.com
 
-/*
-  TODO:
-  o Strength input to modulate seed threshold
-  o Use 1+JFA instead of standard JFA?
-  o Seed generation clusters a lot, could be more sophisticated
-  o Does sdTriangle take into account anamorphicity of 0-1 texel coord space?
-  o Trimming long thin triangles might help more than trimming small ones
-  o Fake anchor points at image corners/edges?
-  o Output dual of seeds, i.e. points at junctions of Voronoi diagram
-  o Figure out if/why our distance transform output is inferior to OpenCV
-  o Uses 6Gb of GPU memory at 4k, be careful...
-  o Remove 4096.0 flood steps, since running at 8k uses impossible amount of VRAM?
-  o Strength inputs which module scale/rotation of sprites/dots/edges/magnify modes
+    Create Voronoi diagrams and Deluanay triangulations from seed points in image by
+    jump flooding, as per "Jump Flooding in GPU" paper
+    http://www.comp.nus.edu.sg/~tants/jfa.html
+
+    This was inspired by Tom Dobrowolski's shader, reading which was very instructive: 
+    https://www.shadertoy.com/view/ldV3Wc
+
+    TODO:
+    o There are still occasional glitches and black triangles
+    o Use 1+JFA instead of standard JFA?
+    o Seed generation clusters a lot, could be more sophisticated
+    o Does sdTriangle take into account anamorphicity of 0-1 texel coord space?
+    o Trimming long thin triangles might help more than trimming small ones
+    o Fake anchor points at image corners/edges?
+    o Output dual of seeds, i.e. points at junctions of Voronoi diagram
+    o Figure out if/why our distance transform output is inferior to OpenCV
+    o Remove 4096.0 flood steps, since running at 8k uses impossible amount of VRAM?
+    o Strength inputs which module scale/rotation of sprites/dots/edges/magnify modes
+
+    Pass 1: create seed points from input video
 */
 
 #extension GL_ARB_shader_texture_lod : enable
