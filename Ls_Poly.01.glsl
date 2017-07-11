@@ -22,6 +22,7 @@
   o Figure out if/why our distance transform output is inferior to OpenCV
   o Uses 6Gb of GPU memory at 4k, be careful...
   o Remove 4096.0 flood steps, since running at 8k uses impossible amount of VRAM?
+  o Strength inputs which module scale/rotation of sprites/dots/edges/magnify modes
 */
 
 #extension GL_ARB_shader_texture_lod : enable
