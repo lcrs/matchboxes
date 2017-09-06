@@ -1,0 +1,50 @@
+<ShaderNodePreset SupportsAdaptiveDegradation="False" SupportsAction="False" SupportsTransition="False" SupportsTimeline="False" TimelineUseBack="False" MatteProvider="False" CommercialUsePermitted="True" ShaderType="Matchbox" SoftwareVersion="2017.0.0" LimitInputsToTexture="True" Version="1" Description="" Name="Vignette">
+   <Shader ClearColor="0, 0, 0, 0" GridSubdivision="1" OutputBitDepth="Output" Index="1">
+      <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="front" InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="front">
+      </Uniform>
+
+      <Uniform Inc="0.01" Tooltip="" Row="1" Col="0" Page="0" Action3DWidget="False" IconType="Light" Type="vec2" ChannelName="centre" DisplayName="Centre" Name="centre">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.5">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.5">
+         </SubUniform>
+      </Uniform>
+
+      <Uniform ResDependent="None" Max="1000000.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="" Row="1" Col="1" Page="0" Type="float" ChannelName="radius" DisplayName="Radius" Name="radius">
+      </Uniform>
+
+      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="4.0" Inc="0.01" Tooltip="" Row="2" Col="1" Page="0" Type="float" ChannelName="pow" DisplayName="Abruptness" Name="pow">
+      </Uniform>
+
+      <Uniform Inc="0.01" Tooltip="" Row="1" Col="2" Page="0" Action3DWidget="False" IconType="None" ValueType="Colour" Type="vec3" ChannelName="midtint" DisplayName="Mid tint" Name="midtint">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.5">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.5">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.5">
+         </SubUniform>
+      </Uniform>
+
+      <Uniform Inc="0.01" Tooltip="" Row="2" Col="2" Page="0" Action3DWidget="False" IconType="None" ValueType="Colour" Type="vec3" ChannelName="edgetint" DisplayName="Edge tint" Name="edgetint">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.5">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.5">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.5">
+         </SubUniform>
+      </Uniform>
+
+      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.5" Inc="0.01" Tooltip="" Row="1" Col="3" Page="0" Type="float" ChannelName="mix" DisplayName="Mix" Name="mix">
+      </Uniform>
+   </Shader>
+   <Page Name="" Page="0">
+      <Col Name="Position" Col="0" Page="0">
+      </Col>
+      <Col Name="Shape" Col="1" Page="0">
+      </Col>
+      <Col Name="Tint" Col="2" Page="0">
+      </Col>
+      <Col Name="Output" Col="3" Page="0">
+      </Col>
+   </Page>
+</ShaderNodePreset>
