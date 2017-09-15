@@ -3,6 +3,10 @@
 // most of them, because they're just a lot of Gaussian blurring
 // See Ls_Airglow_builder.py
 //
+// TODO:
+//  o Clamp when in video de-tonemapping mode
+//  o Negate image before/after for "black promist" effect
+//
 // Pass 1: multiply front RGB and glow source A together
 // lewis@lewissaunders.com
 
