@@ -1,31 +1,24 @@
-<ShaderNodePreset SupportsAdaptiveDegradation="False" SupportsAction="False" SupportsTransition="False" SupportsTimeline="False" TimelineUseBack="False" MatteProvider="False" CommercialUsePermitted="True" ShaderType="Matchbox" SoftwareVersion="2017.0.0" LimitInputsToTexture="True" Version="1" Description="" Name="Vignette">
+<ShaderNodePreset SupportsAdaptiveDegradation="False" SupportsAction="False" SupportsTransition="False" SupportsTimeline="False" TimelineUseBack="False" MatteProvider="False" CommercialUsePermitted="True" ShaderType="Matchbox" SoftwareVersion="2017.0.0" LimitInputsToTexture="True" Version="1" Description="Vignette - models the illumination falloff of wide-angle primes close to the film back.  It's perfectly smooth unlike what you get from Colour Source, Gradient, Gmask, the stock Vignetting shader etc
+lewis@lewissaunders.com" Name="Vignette">
    <Shader ClearColor="0, 0, 0, 0" GridSubdivision="1" OutputBitDepth="Output" Index="1">
-      <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="front" InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="front">
+      <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="Front" InputType="Front" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="front">
       </Uniform>
 
-      <Uniform Inc="0.01" Tooltip="" Row="1" Col="0" Page="0" Action3DWidget="False" IconType="Light" Type="vec2" ChannelName="centre" DisplayName="Centre" Name="centre">
+      <Uniform Inc="0.01" Tooltip="" Row="1" Col="0" Page="0" Action3DWidget="False" IconType="Light" Type="vec2" ChannelName="Centre" DisplayName="Centre" Name="centre">
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.5">
          </SubUniform>
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.5">
          </SubUniform>
       </Uniform>
 
-      <Uniform ResDependent="None" Max="1000000.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="" Row="1" Col="1" Page="0" Type="float" ChannelName="radius" DisplayName="Radius" Name="radius">
+      <Uniform ResDependent="None" Max="1000000.0" Min="0.0" Default="2.0" Inc="0.01" Tooltip="" Row="1" Col="1" Page="0" Type="float" ChannelName="Radius" DisplayName="Radius" Name="radius">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0" Inc="0.01" Tooltip="" Row="2" Col="1" Page="0" Type="float" ChannelName="Abruptness" DisplayName="Abruptness" Name="abruptness">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1000000.0" Min="0.0" Default="1.0" Inc="0.005" Tooltip="" Row="3" Col="1" Page="0" Type="float" ChannelName="pow" DisplayName="Aspect" Name="aspect">
       </Uniform>
 
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="4.0" Inc="0.01" Tooltip="" Row="2" Col="1" Page="0" Type="float" ChannelName="pow" DisplayName="Abruptness" Name="pow">
-      </Uniform>
-
-      <Uniform Inc="0.01" Tooltip="" Row="1" Col="2" Page="0" Action3DWidget="False" IconType="None" ValueType="Colour" Type="vec3" ChannelName="midtint" DisplayName="Mid tint" Name="midtint">
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.5">
-         </SubUniform>
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.5">
-         </SubUniform>
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.5">
-         </SubUniform>
-      </Uniform>
-
-      <Uniform Inc="0.01" Tooltip="" Row="2" Col="2" Page="0" Action3DWidget="False" IconType="None" ValueType="Colour" Type="vec3" ChannelName="edgetint" DisplayName="Edge tint" Name="edgetint">
+      <Uniform Inc="0.01" Tooltip="" Row="1" Col="2" Page="0" Action3DWidget="False" IconType="None" ValueType="Colour" Type="vec3" ChannelName="Mid_tint" DisplayName="Mid tint" Name="midtint">
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.5">
          </SubUniform>
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.5">
@@ -34,7 +27,21 @@
          </SubUniform>
       </Uniform>
 
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.5" Inc="0.01" Tooltip="" Row="1" Col="3" Page="0" Type="float" ChannelName="mix" DisplayName="Mix" Name="mix">
+      <Uniform Inc="0.01" Tooltip="" Row="2" Col="2" Page="0" Action3DWidget="False" IconType="None" ValueType="Colour" Type="vec3" ChannelName="Edge_tint" DisplayName="Edge tint" Name="edgetint">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.5">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.5">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.5">
+         </SubUniform>
+      </Uniform>
+
+      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.5" Inc="0.01" Tooltip="" Row="1" Col="3" Page="0" Type="float" ChannelName="Mix" DisplayName="Mix" Name="mix">
+      </Uniform>
+
+      <Uniform Row="2" Col="3" Page="0" Default="True" Tooltip="Apply using addition instead of multiplication - more correct when grading in log and preserves highlights" Type="bool" ChannelName="Add_instead_of_mult" DisplayName="Apply as offset" Name="applyoffset">
+      </Uniform>
+      <Uniform Row="3" Col="3" Page="0" Default="True" Tooltip="" Type="bool" ChannelName="Clamp_blacks" DisplayName="Clamp blacks" Name="clampblack">
       </Uniform>
    </Shader>
    <Page Name="" Page="0">
