@@ -1,4 +1,4 @@
-<ShaderNodePreset SupportsAdaptiveDegradation="False" SupportsAction="False" SupportsTransition="False" SupportsTimeline="False" TimelineUseBack="False" MatteProvider="False" CommercialUsePermitted="True" ShaderType="Matchbox" SoftwareVersion="2017.0.0" LimitInputsToTexture="True" Version="1" Description="Vignette - models the illumination falloff of wide-angle primes close to the film back.  It's perfectly smooth unlike what you get from Colour Source, Gradient, Gmask, the stock Vignetting shader etc
+<ShaderNodePreset SupportsAdaptiveDegradation="False" SupportsAction="False" SupportsTransition="False" SupportsTimeline="False" TimelineUseBack="False" MatteProvider="False" CommercialUsePermitted="True" ShaderType="Matchbox" SoftwareVersion="2017.0.0" LimitInputsToTexture="True" Version="1" Description="Vignette - models the illumination falloff of simple primes lenses mounted near to the film back.  It's perfectly smooth unlike what you get from Colour Source, Gradient, Gmask, the stock Vignetting shader etc
 lewis@lewissaunders.com" Name="Vignette">
    <Shader ClearColor="0, 0, 0, 0" GridSubdivision="1" OutputBitDepth="Output" Index="1">
       <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="Front" InputType="Front" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="front">
@@ -13,7 +13,7 @@ lewis@lewissaunders.com" Name="Vignette">
 
       <Uniform ResDependent="None" Max="1000000.0" Min="0.0" Default="2.0" Inc="0.01" Tooltip="" Row="1" Col="1" Page="0" Type="float" ChannelName="Radius" DisplayName="Radius" Name="radius">
       </Uniform>
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0" Inc="0.01" Tooltip="" Row="2" Col="1" Page="0" Type="float" ChannelName="Abruptness" DisplayName="Abruptness" Name="abruptness">
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.01" Tooltip="" Row="2" Col="1" Page="0" Type="float" ChannelName="Abruptness" DisplayName="Abruptness" Name="abruptness">
       </Uniform>
       <Uniform ResDependent="None" Max="1000000.0" Min="0.0" Default="1.0" Inc="0.005" Tooltip="" Row="3" Col="1" Page="0" Type="float" ChannelName="pow" DisplayName="Aspect" Name="aspect">
       </Uniform>
