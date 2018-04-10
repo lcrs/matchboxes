@@ -1,10 +1,10 @@
 <ShaderNodePreset SupportsAdaptiveDegradation="0" Description="Adaptive sharpening - sharpen without ringing edges, or sharpen edges without increasing texture
 
-lewis@lewissaunders.com" Name="Ash" LimitInputsToTexture="1">
+lewis@lewissaunders.com" Name="Ash" LimitInputsToTexture="1" TimelineUseBack="False">
    <Shader OutputBitDepth="Output" Index="1">
       <Uniform ResDependent="None" Max="1.0" Min="0.001" Default="0.13" Inc="0.01" Tooltip="Increase to sharpen more edges" Row="1" Col="2" Page="0" DisplayName="Edge threshold" Type="float" Name="threshold">
       </Uniform>
-      <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="Front" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="front">
+      <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="Front" InputType="Front" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="front">
       </Uniform>
    </Shader>
    <Shader OutputBitDepth="Output" Index="2">
@@ -18,7 +18,7 @@ lewis@lewissaunders.com" Name="Ash" LimitInputsToTexture="1">
          <Duplicate>
          </Duplicate>
       </Uniform>
-      <Uniform Index="1" NoInput="White" Tooltip="" DisplayName="Strength" InputColor="80, 80, 20" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="strengthmap">
+      <Uniform Index="1" NoInput="White" Tooltip="" DisplayName="Strength" InputColor="80, 80, 20" InputType="Selective" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="strengthmap">
       </Uniform>
       <Uniform Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass2">
       </Uniform>

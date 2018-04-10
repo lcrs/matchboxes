@@ -1,10 +1,10 @@
 <ShaderNodePreset Description="RndmGrade - generates random grades.  Works best on log footage or low-contrast ungraded video.
 Demo: http://www.youtube.com/watch?v=joeSPsaVwOE
 
-lewis@lewissaunders.com" Name="RndmGrade" SupportsAdaptiveDegradation="0" LimitInputsToTexture="True">
+lewis@lewissaunders.com" Name="RndmGrade" SupportsAdaptiveDegradation="0" LimitInputsToTexture="True" TimelineUseBack="False">
    <Shader OutputBitDepth="Output" Index="1">
       <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="Front" InputType="Front" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_NEAREST" GL_TEXTURE_MIN_FILTER="GL_NEAREST" Type="sampler2D" Name="front">      </Uniform>
-      <Uniform Index="1" NoInput="White" Tooltip="" DisplayName="Matte" InputType="Matte" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_NEAREST" GL_TEXTURE_MIN_FILTER="GL_NEAREST" Type="sampler2D" Name="matte">      </Uniform>
+      <Uniform Index="1" NoInput="White" Tooltip="" DisplayName="Matte" InputType="Selective" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_NEAREST" GL_TEXTURE_MIN_FILTER="GL_NEAREST" Type="sampler2D" Name="matte">      </Uniform>
 
       <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="10.0" Inc="1.0" Tooltip="" Row="1" Col="0" Page="0" Type="float" DisplayName="Seed" Name="rgbseed">      </Uniform>
       <Uniform ResDependent="None" Max="10.0" Min="-10.0" Default="1.0" Inc="0.01" Tooltip="" Row="2" Col="0" Page="0" Type="float" DisplayName="Amount" Name="rgbamount">      </Uniform>
