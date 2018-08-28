@@ -13,6 +13,9 @@ lewis@lewissaunders.com" ShaderType="Matchbox" SupportsAdaptiveDegradation="Fals
   <Uniform Name="spatscale"          DisplayName="Spatter size"       ChannelName="Spattersize"        Page="0" Col="1" Row="0" Type="float"      Default="11.0"       Min="0.0" Max="200.0"      Inc="0.1"       ResDependent="None"       Tooltip=""></Uniform>
   <Uniform Name="spatthresh"         DisplayName="Spatter threshold"  ChannelName="Spatterthreshold"   Page="0" Col="1" Row="1" Type="float"      Default="1.485"      Min="0.0" Max="2.0"        Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
   <Uniform Name="spat"               DisplayName="Spatter dissolve"   ChannelName="Spatterdissolve"    Page="0" Col="1" Row="2" Type="float"      Default="1.0"        Min="0.0" Max="2.0"        Inc="0.1"       ResDependent="None"       Tooltip=""></Uniform>
+  <Uniform Inc="0.01" Tooltip="" Row="3" Col="1" Page="0" DisplayName="All-drop starting position offset" Type="vec2" Name="offsettx">
+     <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">     </SubUniform>
+     <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">     </SubUniform>  </Uniform>
  </Shader>
  <Shader GridSubdivision="1" OutputBitDepth="Float32" ClearColor="0, 0, 0, 0" Index="2">
   <Uniform Name="adsk_results_pass1" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>

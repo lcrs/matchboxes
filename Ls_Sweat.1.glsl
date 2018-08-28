@@ -25,6 +25,7 @@ uniform float adsk_result_w, adsk_result_h, adsk_result_frameratio;
 uniform float adsk_time;
 uniform float speed, dribbletime, dribblethreshold, spatscale, spatthresh, spat, dropsz;
 uniform int drops;
+uniform vec2 offsettx;
 
 float snoise(vec4 v);
 
@@ -43,6 +44,7 @@ void main() {
       vec2 pos;
       pos.x = noiz(xy.x, 1.0, 2.0, 3.0);
       pos.y = noiz(xy.x, 4.0, 5.0, 6.0);
+      pos += offsettx;
       float size = noiz(xy.x, 7.0, 8.0, 9.0) * (dropsz/1000.0);
       size = max(size, 0.001);
       gl_FragColor = vec4(pos.x, pos.y, size, 0.0);
@@ -87,14 +89,14 @@ void main() {
     // Rest of image, non drop-related
     if(adsk_accum_no_prev_frame) {
       // Output initial state
-      vec2 n = xy / spatscale;
+      vec2 n = (xy - offsettx * res) / spatscale;
       float spatter = spat * 5.0 * clamp(noiz(n.x, n.y, 11.123, -16.432) - 1.0, 0.0, 0.1);
       gl_FragColor = vec4(0.0, 0.0, 0.0, spatter);
     } else {
       // Step simulation
       float spatter = texture2D(adsk_accum_texture, xy/res).a;
       // Add some more
-      vec2 n = xy / spatscale;
+      vec2 n = (xy - offsettx * res) / spatscale;
       spatter += spat * 20.0 * clamp(noiz(n.x+.01245, n.y+0.25614, adsk_time*1.234 + 17.123, 14.432) - spatthresh, 0.0, 0.1);
       // Are we under a drop?  If so, remove ourselves
       for(float i = 0.5; i < float(drops); i+=1.0) {
