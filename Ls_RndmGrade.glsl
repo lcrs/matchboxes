@@ -3,6 +3,7 @@
 // TODO:
 //  o Prevent solarization somehow?
 //  o HSV, Lab, YUV curve options?
+//  o Make sure random numbers match between systems!
 
 uniform float adsk_result_w, adsk_result_h, adsk_time;
 uniform sampler2D front, matte;
