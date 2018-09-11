@@ -1,8 +1,6 @@
 // Glint pass 1: convolve with a dynamically generated star function
 // lewis@lewissaunders.com
 
-// TODO: option to downres / process / upres, as request by GP-M
-
 uniform sampler2D front, matte;
 uniform float adsk_result_w, adsk_result_h;
 uniform float threshold, thresholdclamp, gain, size, rays, spin, falloff, twirl, barrel, barrelbend, saturation, extrasize, extrarays;
@@ -10,6 +8,7 @@ uniform vec3 tint;
 uniform bool dirton, useblendmatte, usematte;
 uniform float dispersion, dispersionoffset, dispersioncycles, dirt, dirtfreq;
 uniform float aspect, aa;
+uniform int downsample;
 #define realsize (size*extrasize)
 #define samples (size*extrasize*aa)
 #define tau (2.0*3.1415926535)
@@ -30,7 +29,7 @@ float rand(vec2 co){
 }
 
 void main(void) {
-    vec2 uv = gl_FragCoord.xy / vec2(adsk_result_w, adsk_result_h);
+    vec2 uv = float(downsample+1) * gl_FragCoord.xy / vec2(adsk_result_w, adsk_result_h);
     vec3 frontpix = texture2D(front, uv).rgb;
     vec3 mattepix = texture2D(matte, uv).rgb;
     vec3 sample, glint = vec3(0.0);
@@ -40,6 +39,11 @@ void main(void) {
     // If matte is being used to blend with, we can take a massive shortcut where it's black
     if(useblendmatte && (length(mattepix) < 0.0001)) {
         gl_FragColor = vec4(frontpix, 0.0);
+        return;
+    }
+
+    // If we're downsampling and outside the image, skip this
+    if(uv.x > 1.0 || uv.y > 1.0) {
         return;
     }
 

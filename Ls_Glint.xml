@@ -4,7 +4,7 @@ Demo: http://youtube.com/watch?v=0Xa8L4fkPwU
 
 lewis@lewissaunders.com" Name="Glint" LimitInputsToTexture="1">
    <Shader OutputBitDepth="Output" Index="1">
-      <Uniform Index="0" Tooltip="" NoInput="Error" DisplayName="Front" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="front" InputType="Front"></Uniform>
+      <Uniform Index="0" Tooltip="" NoInput="Error" DisplayName="Front" Mipmaps="True" GL_TEXTURE_WRAP_T="GL_CLAMP" GL_TEXTURE_WRAP_S="GL_CLAMP" GL_TEXTURE_MAG_FILTER="GL_LINEAR_MIPMAP_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR_MIPMAP_LINEAR" Type="sampler2D" Name="front" InputType="Front"></Uniform>
       <Uniform Index="1" Tooltip="" NoInput="White" DisplayName="Matte" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="matte" InputType="Matte"></Uniform>
       <Uniform Name="barrel" ResDependent="None" Max="10.0" Min="-10.0" Default="0.0" Inc="0.01" Tooltip="Bend stars around center of frame" Row="0" Col="0" Page="1" DisplayName="Barrel distort" Type="float"></Uniform>
       <Uniform Name="aspect" ResDependent="None" Max="100.0" Min="0.01" Default="1.0" Inc="0.01" Tooltip="Stretch stars for anamorphic glints" Row="3" Col="0" Page="1" DisplayName="Aspect" Type="float"></Uniform>
@@ -34,6 +34,12 @@ lewis@lewissaunders.com" Name="Glint" LimitInputsToTexture="1">
       <Uniform Name="extrarays" ResDependent="None" Max="20.0" Min="0.01" Default="1.0" Inc="1.0" Tooltip="Extra multiplier on ray count if you want many more ray arms - it will get slow, be careful!" Row="2" Col="3" Page="1" DisplayName="Extra rays" Type="float"></Uniform>
       <Uniform Name="usematte" Row="2" Col="3" Page="0" Default="False" Tooltip="Generate glints only from highlights inside the matte; the matte can also be RGB to selectively tint the stars" DisplayName="Use matte on glint source" Type="bool"></Uniform>
       <Uniform Name="useblendmatte" Row="3" Col="3" Page="0" Default="False" Tooltip="Only processes pixels inside the matte - this is really fast for small mattes, but glints will be cut off at the matte edge" DisplayName="Use matte to blend (faster)" Type="bool"></Uniform>
+      <Uniform Name="downsample" Type="int" ValueType="Popup" DisplayName="Resolution" Page="0" Col="2" Row="4" Tooltip="" Default="1"> 
+         <PopupEntry Title="Eighth" Value="3"></PopupEntry>
+         <PopupEntry Title="Quarter" Value="2"></PopupEntry>
+         <PopupEntry Title="Half" Value="1"></PopupEntry>
+         <PopupEntry Title="Full" Value="0"></PopupEntry>
+      </Uniform>
    </Shader>
    <Shader OutputBitDepth="Output" Index="2">
       <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass1"></Uniform>
@@ -42,6 +48,7 @@ lewis@lewissaunders.com" Name="Glint" LimitInputsToTexture="1">
       <Uniform ResDependent="None" Max="10000.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="" Row="1" Col="2" Page="1" Type="float" ChannelName="BlurR" DisplayName="Blur weight R" Name="blursizer"></Uniform>
       <Uniform ResDependent="None" Max="10000.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="" Row="2" Col="2" Page="1" Type="float" ChannelName="BlurG" DisplayName="Blur weight G" Name="blursizeg"></Uniform>
       <Uniform ResDependent="None" Max="10000.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="" Row="3" Col="2" Page="1" Type="float" ChannelName="BlurB" DisplayName="Blur weight B" Name="blursizeb"></Uniform>
+      <Uniform Name="downsample" Type="int"><Duplicate></Duplicate></Uniform> 
    </Shader>
    <Shader OutputBitDepth="Output" Index="3">
       <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass2"></Uniform>

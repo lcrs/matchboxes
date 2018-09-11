@@ -4,6 +4,7 @@
 uniform sampler2D adsk_results_pass1;
 uniform float blursize, blursizer, blursizeg, blursizeb;
 uniform float adsk_result_w, adsk_result_h;
+uniform int downsample;
 
 // Return a 1D Gaussian blur from texture tex
 // xy: centre of blur in pixels
@@ -60,6 +61,6 @@ vec4 gaussianblur(sampler2D tex, vec2 xy, vec2 res, float sizered, float sizegre
 
 void main() {
     vec2 res = vec2(adsk_result_w, adsk_result_h);
-    vec2 xy = gl_FragCoord.xy;
+    vec2 xy = gl_FragCoord.xy / float(downsample+1);
     gl_FragColor = gaussianblur(adsk_results_pass1, xy, res, blursize*blursizer, blursize*blursizeg, blursize*blursizeb, 0.0, vec2(1.0, 0.0));
 }
