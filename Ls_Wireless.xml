@@ -12,7 +12,7 @@ lewis@lewissaunders.com" Name="Wireless">
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
          </SubUniform>
       </Uniform>
-      <Uniform Inc="0.001" Tooltip="" Row="2" Col="0" Page="0" DisplayName="Start pick" Type="vec2" Name="startoffset">
+      <Uniform Inc="0.001" Tooltip="" Row="2" Col="0" Page="0" DisplayName="Start pick" Type="vec2" Name="startoffset" IconType="Axis" IconDefaultState="True">
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.25">
          </SubUniform>
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.25">
@@ -24,7 +24,7 @@ lewis@lewissaunders.com" Name="Wireless">
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
          </SubUniform>
       </Uniform>
-      <Uniform Inc="0.001" Tooltip="" Row="2" Col="1" Page="0" DisplayName="End pick" Type="vec2" Name="endoffset">
+      <Uniform Inc="0.001" Tooltip="" Row="2" Col="1" Page="0" DisplayName="End pick" Type="vec2" Name="endoffset" IconType="Axis" IconDefaultState="True">
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.75">
          </SubUniform>
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.75">
