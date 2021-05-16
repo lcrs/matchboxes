@@ -5,7 +5,7 @@ uniform float adsk_result_w, adsk_result_h;
 uniform float adsk_result_frameratio;
 uniform vec3 edgetint, midtint;
 uniform vec2 centre;
-uniform float radius, mix, abruptness, aspect;
+uniform float radius, mixamt, abruptness, aspect;
 uniform sampler2D front;
 uniform bool clampblack, applyoffset;
 
@@ -30,7 +30,7 @@ void main() {
   tocent.x *= aspect;
   float rad = length(tocent);
   rad /= radius;
-  float v = pow(cos(clamp(0.0, 3.1415926535/2.0, rad)), 4.0);
+  float v = pow(cos(clamp(rad, 0.0, 3.1415926535/2.0)), 4.0);
   v = smoothishstep(v, abruptness);
 
   vec3 o;
@@ -44,14 +44,14 @@ void main() {
     o = mix(o, o * (midtint + vec3(0.5)), v);
   }
 
-  o = mix(f, o, mix);
+  o = mix(f, o, mixamt);
 
   if(clampblack) {
     o = clamp(o, 0.0, 999999.0);
   }
   
   float m = v;
-  m = mix(1.0, m, mix);
+  m = mix(1.0, m, mixamt);
 
   gl_FragColor = vec4(o, m);
 }

@@ -36,7 +36,7 @@ lewis@lewissaunders.com" Name="Vignette">
          </SubUniform>
       </Uniform>
 
-      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.5" Inc="0.01" Tooltip="" Row="1" Col="3" Page="0" Type="float" ChannelName="Mix" DisplayName="Mix" Name="mix">
+      <Uniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.5" Inc="0.01" Tooltip="" Row="1" Col="3" Page="0" Type="float" ChannelName="Mix" DisplayName="Mix" Name="mixamt">
       </Uniform>
 
       <Uniform Row="2" Col="3" Page="0" Default="True" Tooltip="Apply using addition instead of multiplication - more correct when grading in log and preserves highlights" Type="bool" ChannelName="Add_instead_of_mult" DisplayName="Apply as offset" Name="applyoffset">
