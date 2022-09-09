@@ -1,9 +1,0 @@
-{
-	// See http://go.microsoft.com/fwlink/?LinkId=733558
-	// for the documentation about the tasks.json format
-	"version": "0.1.0",
-	"command": "/usr/discreet/flame_2017/bin/shader_builder",
-	"isShellCommand": true,
-	"args": ["-m", "Ls_Sweat.1.glsl", "Ls_Sweat.2.glsl", "Ls_Sweat.3.glsl", "Ls_Sweat.4.glsl"],
-	"showOutput": "always"
-}
