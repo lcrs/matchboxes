@@ -1,8 +1,5 @@
 <ShaderNodePreset SupportsAdaptiveDegradation="False" SupportsAction="False" SupportsTransition="False" SupportsTimeline="False" TimelineUseBack="False" MatteProvider="False" CommercialUsePermitted="True" ShaderType="Matchbox" SoftwareVersion="2017.0.0" LimitInputsToTexture="True" Version="1" Description="Chips - sample colours and show their names.  For sensible results the input should be sRGB or video - not scene linear or log!
 
-If you get this shader from logik-matchbook.org, it will not include the texture grid EXR so won't work!
-Download this instead: https://github.com/lcrs/matchboxes/releases/download/chips-v1.0/Ls_Chips.zip
-
 Demo: https://www.youtube.com/watch?v=VVhRQ0sqTUM
 
 lewis@lewissaunders.com" Name="Chips">
@@ -42,7 +39,7 @@ lewis@lewissaunders.com" Name="Chips">
     <Uniform Row="2" Col="3" Page="0" Default="False" Tooltip="" Type="bool" ChannelName="PickFromPalette" DisplayName="Pick from palette" Name="palette"></Uniform>
     <Uniform Row="3" Col="3" Page="0" Default="False" Tooltip="" Type="bool" ChannelName="OutputColoursOnly" DisplayName="Output diagram" Name="voronoi"></Uniform>
   </Shader>
-  <Page Name="" Page="0">
+  <Page Name="Chips" Page="0">
     <Col Name="" Col="0" Page="0"></Col>
     <Col Name="" Col="1" Page="0"></Col>
     <Col Name="" Col="2" Page="0"></Col>

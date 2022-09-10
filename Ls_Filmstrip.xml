@@ -1,7 +1,5 @@
 <ShaderNodePreset SupportsAdaptiveDegradation="False" SupportsAction="False" SupportsTransition="False" SupportsTimeline="False" TimelineUseBack="False" MatteProvider="False" CommercialUsePermitted="True" ShaderType="Matchbox" SoftwareVersion="2017.0.0" LimitInputsToTexture="True" Version="1" Description="Arranges input frames in a grid.  Go to frame 1, turn off All Frames Same and hit play
 
-Works in version 2017 only!
-
 Demo: https://www.youtube.com/watch?v=NkS_wXSheME
 
 lewis@lewissaunders.com" Name="Filmstrip">
@@ -12,13 +10,13 @@ lewis@lewissaunders.com" Name="Filmstrip">
       </Uniform>
       <Uniform Row="2" Col="2" Page="0" Default="True" Tooltip="" Type="bool" ChannelName="AllFramesSame" DisplayName="All frames same" Name="allframes">
       </Uniform>
-      <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="Front" InputColor="67, 77, 83" Mipmaps="True" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR_MIPMAP_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR_MIPMAP_LINEAR" Type="sampler2D" Name="front">
+      <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="Front" Mipmaps="True" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR_MIPMAP_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR_MIPMAP_LINEAR" Type="sampler2D" Name="front" InputType="Front">
       </Uniform>
       <Uniform Row="1" Col="2" Page="0" Default="False" Tooltip="" Type="bool" ChannelName="Centre" DisplayName="Centre" Name="centre">
       </Uniform>
       <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_accum_texture">
       </Uniform>
    </Shader>
-   <Page Name="" Page="0">
+   <Page Name="Filmstrip" Page="0">
    </Page>
 </ShaderNodePreset>

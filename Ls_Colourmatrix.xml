@@ -72,11 +72,11 @@ lewis@lewissaunders.com" Name="Colourmatrix" LimitInputsToTexture="1" TimelineUs
            <SubUniform Max="5.0" Min="-5.0" Default="1.0">
            </SubUniform>
        </Uniform>
-      <Uniform ResDependent="None" Max="10.0" Min="-10.0" Default="1.0" Inc="0.01" Tooltip="" Row="4" Col="0" Page="0" DisplayName="Multiply effect" Type="float" Name="effect">
+      <Uniform ResDependent="None" Max="10.0" Min="-10.0" Default="1.0" Inc="0.01" Tooltip="" Row="0" Col="5" Page="0" DisplayName="Multiply effect" Type="float" Name="effect">
       </Uniform>
-      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="" Row="4" Col="1" Page="0" DisplayName="RGB Gain" Type="float" Name="gain">
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="" Row="1" Col="5" Page="0" DisplayName="RGB Gain" Type="float" Name="gain">
       </Uniform>
-      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="" Row="4" Col="2" Page="0" DisplayName="Mix" Type="float" Name="mixx">
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="" Row="2" Col="5" Page="0" DisplayName="Mix" Type="float" Name="mixx">
       </Uniform>
    </Shader>
    <Page Name="Colourmatrix" Page="0">

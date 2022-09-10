@@ -11,10 +11,8 @@ and
 graphistesmoke@gmail.com (Sebastien Delecour / Sebquismoke)
 " Name="Bevel">
    <Shader OutputBitDepth="Output" Index="1">
-       <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="Front" InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="front">
+       <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="Height map" InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="front">
        </Uniform>
-   	   <Uniform Index="0" NoInput="Error" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Tooltip="" DisplayName="Height map" Name="front" InputType="Front">
-          </Uniform>
    </Shader>
 
    <Shader OutputBitDepth="Output" Index="2">
@@ -34,18 +32,18 @@ graphistesmoke@gmail.com (Sebastien Delecour / Sebquismoke)
    </Shader>
 
    <Shader OutputBitDepth="Output" Index="4">
-      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.5" Inc="0.01" Tooltip="How much the non-lit edges are filled in - this actually just mixes back to the front input" Row="2" Col="1" Page="0" Type="float" DisplayName="Ambient" Name="ambient">
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.5" Inc="0.01" Tooltip="How much the non-lit edges are filled in - this actually just mixes back to the height map input" Row="2" Col="1" Page="0" Type="float" DisplayName="Ambient" Name="ambient">
       </Uniform>
       <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass3">
       </Uniform>
-      <Uniform ResDependent="None" Max="1000.0" Min="0.0" Default="13.0" Inc="0.1" Tooltip="Smooth the top edge of the bevel, or remove noisy artifacts... it's not always possible to get a nice crisp edge without horrible noise, sadly" Row="2" Col="0" Page="0" Type="float" DisplayName="Smooth" Name="smoothy">
+      <Uniform ResDependent="None" Max="1000.0" Min="0.0" Default="13.0" Inc="0.1" Tooltip="Smooth the top edge of the bevel, or remove noisy artifacts... it's not always possible to get a nice crisp edge without horrible noise, sadly" Row="2" Col="0" Page="0" Type="float" DisplayName="Smoothness" Name="smoothy">
       </Uniform>
       <Uniform Type="float" DisplayName="sigma" Name="sigma">
         <Duplicate>
         </Duplicate>
       </Uniform>
 
-      <Uniform Inc="0.01" Tooltip="Position of the virtual light" Row="0" Col="1" Page="0" IconType="Light" ValueType="Position" Type="vec3" DisplayName="Light" Name="lite">
+      <Uniform Inc="0.01" Tooltip="Position of the virtual light" Row="0" Col="1" Page="0" IconType="Light" ValueType="Position" Type="vec3" DisplayName="Light position" Name="lite">
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.75">
          </SubUniform>
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.75">
@@ -84,7 +82,7 @@ graphistesmoke@gmail.com (Sebastien Delecour / Sebquismoke)
 	       </Uniform>
  	</Shader>
 
-   <Page Name="" Page="0">
+   <Page Name="Bevel" Page="0">
       <Col Name="Bevel" Col="0" Page="0"></Col>
       <Col Name="Lighting" Col="1" Page="0"></Col>
       <Col Name="Output" Col="2" Page="0"></Col>

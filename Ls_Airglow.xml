@@ -1,6 +1,6 @@
 <ShaderNodePreset TimelineUseBack="False" Description="Airglow - exponential falloff glow modelled on how light scatters in air. A bunch of blurs added up, using mipmaps to keep it fast.
 
-Recommended listening: http://www.youtube.com/watch?v=Wc-k0cm5X3Q
+Recommended listening: https://soundcloud.com/lone-1/lone-airglow-fires
 
 lewis@lewissaunders.com" ShaderType="Matchbox" SupportsAdaptiveDegradation="False" SoftwareVersion="2016.0.0" Version="1" SupportsAction="False" SupportsTimeline="False" Name="Airglow" MatteProvider="False" LimitInputsToTexture="True" CommercialUsePermitted="True" SupportsTransition="False">
   <Shader OutputBitDepth="Output" Index="1">
@@ -105,7 +105,7 @@ lewis@lewissaunders.com" ShaderType="Matchbox" SupportsAdaptiveDegradation="Fals
   </Shader>
   <Shader OutputBitDepth="Output" Index="17">
     <Uniform Index="2" Tooltip="" DisplayName="Strength" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="strength"><Duplicate></Duplicate></Uniform>
-    <Uniform Name="front"              DisplayName="Front"              Type="sampler2D"  Index="0" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" Tooltip="" InputColor="67, 77, 83" InputType="Front" NoInput="Error" GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
+    <Uniform Name="front"              DisplayName="Front"              Type="sampler2D"  Index="0" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" Tooltip="" InputColor="67, 77, 83" InputType="Front" NoInput="Error" GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"><Duplicate></Duplicate></Uniform>
     <Uniform Name="adsk_results_pass16" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR_MIPMAP_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR_MIPMAP_LINEAR" Mipmaps="True" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
     <Uniform Name="adsk_results_pass1"  Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
     <Uniform Name="adsk_results_pass3"  Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
