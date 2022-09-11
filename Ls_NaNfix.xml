@@ -1,10 +1,10 @@
-<ShaderNodePreset SupportsAdaptiveDegradation="False" SupportsAction="False" SupportsTransition="False" SupportsTimeline="False" TimelineUseBack="False" MatteProvider="False" CommercialUsePermitted="True" ShaderType="Matchbox" SoftwareVersion="2016.0.0" LimitInputsToTexture="True" Version="1" Description="Fixes pixels which are stuck at NaN, like those from broken CG renders.  The detected pixels are output in the matte for further treatment with PixelSpread
+<ShaderNodePreset SupportsAdaptiveDegradation="False" SupportsAction="False" SupportsTransition="False" SupportsTimeline="False" TimelineUseBack="False" MatteProvider="False" CommercialUsePermitted="True" ShaderType="Matchbox" SoftwareVersion="2016.0.0" LimitInputsToTexture="True" Version="1" Description="Fixes pixels which are stuck at NaN, like those from broken CG renders.  The detected pixels are also output in the matte for further treatment with PixelSpread
 
 lewis@lewissaunders.com" Name="NaNfix">
    <Shader OutputBitDepth="Output" Index="1">
-      <Uniform Max="10" Min="1" Default="1" Inc="1" Tooltip="How far away to look for good pixels to replace each bad one" Row="2" Col="1" Page="0" Type="int" DisplayName="Radius" Name="radius">
+      <Uniform Max="10" Min="1" Default="1" Inc="1" Tooltip="How far away to look for good pixels to replace each bad one" Row="0" Col="1" Page="0" Type="int" DisplayName="Radius" Name="radius">
       </Uniform>
-      <Uniform Inc="0.01" Tooltip="Utility colour pot for inspecting image, has no effect on output" Row="0" Col="1" Page="0" DisplayName="Inspect" ValueType="Colour" Type="vec3" Name="tempcolour">
+      <Uniform Inc="0.01" Tooltip="Utility colour pot for inspecting image, has no effect on output" Row="2" Col="1" Page="0" DisplayName="Inspect" ValueType="Colour" Type="vec3" Name="tempcolour">
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.5">
          </SubUniform>
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.5">
@@ -12,9 +12,9 @@ lewis@lewissaunders.com" Name="NaNfix">
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.5">
          </SubUniform>
       </Uniform>
-      <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="Front" InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="front">
+      <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="Front" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="front" InputType="Front">
       </Uniform>
    </Shader>
-   <Page Name="" Page="0">
+   <Page Name="NaNfix" Page="0">
    </Page>
 </ShaderNodePreset>

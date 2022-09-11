@@ -10,7 +10,7 @@ uniform sampler2D front, matte, nailmatte;
 uniform float adsk_result_w, adsk_result_h;
 uniform vec2 trackfrom, trackto, offset;
 uniform float extra, amount, edgeswoop;
-uniform bool tracksarepixels, matteistarget, overlay;
+uniform bool manualtracks, matteistarget, overlay;
 uniform vec3 areatint;
 
 float distanceToSegment(vec2 p0, vec2 p1, vec2 p) {
@@ -37,7 +37,7 @@ void main() {
 	diff *= extra;
 	diff *= amount;
 
-	if(tracksarepixels) {
+	if(!manualtracks) {
 		diff /= res;
 	}
 
@@ -61,7 +61,7 @@ void main() {
 		vec2 offsetp = offset;
 		vec2 coordsp = coords * res;
 
-		if(!tracksarepixels) {
+		if(manualtracks) {
 			trackfromp *= res;
 			tracktop *= res;
 			offsetp *= res;

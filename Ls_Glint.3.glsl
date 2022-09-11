@@ -72,7 +72,7 @@ void main() {
 
     // Blend with front input
     vec3 result;
-    float blurredluma;
+    float blurredluma = 0.0;
     if(useblendmatte) {
         blurred *= mattepix;
         blurredluma = yuv(blurred.rgb).r; // Luma is used for matte output below

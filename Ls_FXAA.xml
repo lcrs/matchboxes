@@ -1,4 +1,5 @@
 <ShaderNodePreset SupportsAdaptiveDegradation="0" LimitInputsToTexture="True" Description="FXAA 3.11 - fast cheap antialiasing, soften those crunchy edges
+   
 lewis@lewissaunders.com" Name="FXAA">
    <Shader OutputBitDepth="Output" Index="1">
       <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.04" Inc="0.001" Tooltip="Trims the algorithm from processing darks" Row="2" Col="1" Page="0" DisplayName="Dark threshold" Type="float" Name="fxaaQualityEdgeThresholdMin"></Uniform>
