@@ -89,7 +89,7 @@ void main() {
 	if(blendmode == 99) o = a * (one - b) * (one - c) * (one - d) * (one - e) * (one - f);
 
 	// Combine just A and B if vector mode is enabled
-	if(vectormode == 1) o = dot(a, b);
+	if(vectormode == 1) o = vec3(dot(a, b));
 	if(vectormode == 2) o = cross(a, b);
 
 	// Mix with original A input
