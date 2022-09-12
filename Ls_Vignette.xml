@@ -44,7 +44,7 @@ lewis@lewissaunders.com" Name="Vignette">
       <Uniform Row="3" Col="3" Page="0" Default="True" Tooltip="" Type="bool" ChannelName="Clamp_blacks" DisplayName="Clamp blacks" Name="clampblack">
       </Uniform>
    </Shader>
-   <Page Name="" Page="0">
+   <Page Name="Vignette" Page="0">
       <Col Name="Position" Col="0" Page="0">
       </Col>
       <Col Name="Shape" Col="1" Page="0">

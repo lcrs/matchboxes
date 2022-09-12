@@ -20,7 +20,7 @@ void main() {
 	d.x +=  1.0 * texture2D(adsk_results_pass2, (xy + ksize * vec2(+1.0, -1.0)) / res).g;
 	d.x +=  2.0 * texture2D(adsk_results_pass2, (xy + ksize * vec2(+1.0,  0.0)) / res).g;
 	d.x +=  1.0 * texture2D(adsk_results_pass2, (xy + ksize * vec2(+1.0, +1.0)) / res).g;
-	d.y += -1.0 * texture2D(adsk_results_pass2, (xy + ksize * vec2(-1.0, -1.0)) / res).g;
+	d.y  = -1.0 * texture2D(adsk_results_pass2, (xy + ksize * vec2(-1.0, -1.0)) / res).g;
 	d.y += -2.0 * texture2D(adsk_results_pass2, (xy + ksize * vec2( 0.0, -1.0)) / res).g;
 	d.y += -1.0 * texture2D(adsk_results_pass2, (xy + ksize * vec2(+1.0, -1.0)) / res).g;
 	d.y +=  1.0 * texture2D(adsk_results_pass2, (xy + ksize * vec2(-1.0, +1.0)) / res).g;

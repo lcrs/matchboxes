@@ -2,15 +2,15 @@
 
 Comparison video, sadly not done justice by compression: http://youtube.com/watch?v=iEVb7tVxaP0
 
-lewis@lewissaunders.com" Name="UVewa">
+lewis@lewissaunders.com" Name="UVewa" LimitInputsToTexture="True">
    <Shader OutputBitDepth="Output" Index="1">
-      <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="Front" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="front">
+      <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="Front" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="front" InputType="Front">
       </Uniform>
       <Uniform Index="1" NoInput="Error" Tooltip="" DisplayName="UV Map" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="uv">
       </Uniform>
-      <Uniform Index="2" NoInput="Black" Tooltip="" DisplayName="Matte" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="matte">
+      <Uniform Index="2" NoInput="Black" Tooltip="" DisplayName="Matte" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="matte" InputType="Matte">
       </Uniform>
-      <Uniform Inc="0.001" Tooltip="" Row="0" Col="0" Page="0" DisplayName="Offset" Type="vec2" Name="offset">
+      <Uniform Inc="0.001" Tooltip="" Row="0" Col="0" Page="0" DisplayName="Offset" Type="vec2" Name="offset" IconType="None">
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
          </SubUniform>
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">

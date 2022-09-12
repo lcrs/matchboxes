@@ -1,4 +1,4 @@
-<ShaderNodePreset AccumulatePass="1" TimelineUseBack="False" Description="Sweat - makes drips :)  Turn adaptive degradation off to view downstream... works in 2017 only.
+<ShaderNodePreset AccumulatePass="1" TimelineUseBack="False" Description="Sweat - makes drips :)  Turn adaptive degradation off to view downstream...
 
 Demo: https://www.youtube.com/watch?v=xcPzPV_623U
 
@@ -32,12 +32,12 @@ lewis@lewissaunders.com" ShaderType="Matchbox" SupportsAdaptiveDegradation="Fals
  </Shader>
  <Shader GridSubdivision="1" OutputBitDepth="Output" ClearColor="0, 0, 0, 0" Index="4">
   <Uniform Name="adsk_results_pass3" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
-  <Uniform Name="front"              DisplayName="Front"              Type="sampler2D"  Index="0" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" Tooltip="" InputColor="67, 77, 83" NoInput="Error" GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
+  <Uniform Name="front"              DisplayName="Front"              Type="sampler2D"  Index="0" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" Tooltip="" InputColor="67, 77, 83" NoInput="Error" GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" InputType="Front"></Uniform>
   <Uniform Name="isamples"           DisplayName="Oversampling"       ChannelName="Oversampling"       Page="0" Col="3" Row="2" Type="int"        Default="5"          Min="1"   Max="64"    Inc="1"                                    Tooltip=""></Uniform>
   <Uniform Name="distomult"          DisplayName="Distortion"         ChannelName="Distortion"         Page="0" Col="3" Row="0" Type="float"      Default="0.3"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"       Tooltip=""></Uniform>
   <Uniform Name="outputuvs"          DisplayName="Output UVs"         ChannelName="OutputUVs"          Page="0" Col="3" Row="3" Type="bool"       Default="False"                                                                                   Tooltip=""></Uniform>
  </Shader>
- <Page Page="0" Name="">
+ <Page Page="0" Name="Sweat">
   <Col Page="0" Col="0" Name="Big huge drops"></Col>
   <Col Page="0" Col="1" Name="Little tiny ones"></Col>
   <Col Page="0" Col="2" Name="Tweaks"></Col>

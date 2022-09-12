@@ -8,11 +8,9 @@ The simulation is based on Jos Stam's 'Stable Fluids', 1999.  The process also o
 
 Remember to disable Adaptive Degradation on this node if viewing downstream!
 
-Works in version 2017 only!
-
 Demo: https://www.youtube.com/watch?v=N6nIwt2BcMM
 
-lewis@lewissaunders.com" ShaderType="Matchbox" SupportsAdaptiveDegradation="False" SoftwareVersion="2017.0.0" Version="1" SupportsAction="False" SupportsTimeline="False" MatteProvider="False" LimitInputsToTexture="True" CommercialUsePermitted="True" SupportsTransition="False" Name="Ls_Fluid">
+lewis@lewissaunders.com" ShaderType="Matchbox" SupportsAdaptiveDegradation="False" SoftwareVersion="2017.0.0" Version="1" SupportsAction="False" SupportsTimeline="False" MatteProvider="False" LimitInputsToTexture="True" CommercialUsePermitted="True" SupportsTransition="False" Name="Fluid">
  <Shader GridSubdivision="1" OutputBitDepth="Float32" ClearColor="0, 0, 0, 0" Index="1">
   <Uniform Name="obstacles"          DisplayName="Obstacles"          Type="sampler2D"  Index="2" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" Tooltip="" InputColor="67, 77, 83" NoInput="Black" GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE"></Uniform>
   <Uniform Name="vecs"               DisplayName="Input vectors"      Type="sampler2D"  Index="1" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" Tooltip="" InputColor="67, 77, 83" NoInput="Black" GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE"></Uniform>
@@ -103,7 +101,7 @@ lewis@lewissaunders.com" ShaderType="Matchbox" SupportsAdaptiveDegradation="Fals
   <Uniform Name="speedlimit"         DisplayName="Speed limit"        ChannelName="speedlimit"         Page="2" Col="2" Row="3" Type="float"      Default="100.0"      Min="00000000.0" Max="1000000.0"  Inc="0.10"       ResDependent="None"       Tooltip="Lowering this can prevent sudden spikes, but does reduce how interesting things get"></Uniform>
  </Shader>
  <Shader GridSubdivision="1" OutputBitDepth="Float32" ClearColor="0, 0, 0, 0" Index="10">
-  <Uniform Name="img"                DisplayName="Front"              Type="sampler2D"  Index="0" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" Tooltip="" InputColor="67, 77, 83" NoInput="Black" GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE"></Uniform>
+  <Uniform Name="img"                DisplayName="Front"              Type="sampler2D"  Index="0" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" Tooltip="" InputColor="67, 77, 83" NoInput="Black" GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" InputType="Front"></Uniform>
   <Uniform Name="adsk_results_pass9" Type="sampler2D"  GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" InputColor="67, 77, 83" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
   <Uniform Name="rgbout"             DisplayName="RGB output"         Page="2" Col="3" Row="1" Type="int"        Default="2" ValueType="Popup" Tooltip="">
     <PopupEntry Title="Vectors" Value="0">    </PopupEntry>

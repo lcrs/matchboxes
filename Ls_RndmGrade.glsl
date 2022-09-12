@@ -123,24 +123,24 @@ vec3 graph(vec3 i, vec2 xy) {
 	float bdist = abs(by - pos.y);
 
 	// http://iquilezles.org/www/articles/distance/distance.htm
-  // (sadly dFd... sometimes returns really wrong things)
-  /*rdist /= min(length(vec2(dFdx(rdist), dFdy(rdist))), 0.005);
-  gdist /= min(length(vec2(dFdx(gdist), dFdy(gdist))), 0.005);
-  bdist /= min(length(vec2(dFdx(bdist), dFdy(bdist))), 0.005);
-*/
-  rdist *= 200.0;
-  gdist *= 200.0;
-  bdist *= 200.0;
+	// (sadly dFd... sometimes returns really wrong things)
+	/* rdist /= min(length(vec2(dFdx(rdist), dFdy(rdist))), 0.005);
+	gdist /= min(length(vec2(dFdx(gdist), dFdy(gdist))), 0.005);
+	bdist /= min(length(vec2(dFdx(bdist), dFdy(bdist))), 0.005);
+	*/
+	rdist *= 200.0;
+	gdist *= 200.0;
+	bdist *= 200.0;
 
-	float rgraph = 1.0 - smoothstep(0.0, 2.0, rdist);
-	float ggraph = 1.0 - smoothstep(0.0, 2.0, gdist);
-	float bgraph = 1.0 - smoothstep(0.0, 2.0, bdist);
+	float rgraph = 1.0 - smoothstep(0.0, 1.0, rdist);
+	float ggraph = 1.0 - smoothstep(0.0, 1.0, gdist);
+	float bgraph = 1.0 - smoothstep(0.0, 1.0, bdist);
 	vec3 graph = vec3(rgraph, ggraph, bgraph);
-	vec2 lines = 1.0 - smoothstep(0.0, 0.08, fract(pos*10.04));
-	if(pos.x > 0.0 && pos.x < 1.0 && pos.y > 0.0 && pos.y < 1.0) {
+	vec2 lines = 1.0 - smoothstep(0.0, 0.08, fract(pos*20.04));
+	if(pos.x > -0.1 && pos.x < 1.1 && pos.y > -0.1 && pos.y < 1.1) {
 		graph += 0.15 * length(lines);
 	}
-	return mix(i, graph, 0.66666);
+	return mix(i, graph, 0.85);
 }
 
 // Draw vectorscope-type thing
@@ -167,7 +167,7 @@ vec3 hues(vec3 i, vec2 xy) {
 		if(i == 6) to = rgbcurves(from);
 		vec2 fromcoords = yuv(from).gb / 2.0 + 0.5;
 		vec2 tocoords = yuv(to).gb / 2.0 + 0.5;
-		float fromring = 1.0 - smoothstep(0.0, 0.0035, abs(0.03 - length(pos - fromcoords)));
+		float fromring = 1.0 - smoothstep(0.0, 0.0055, abs(0.03 - length(pos - fromcoords)));
 		float tocircle = 1.0 - smoothstep(0.02, 0.022, length(pos - tocoords));
 		graph += 0.5 * fromring * from + 0.75 * tocircle * to;
 	}
@@ -179,7 +179,7 @@ vec3 hues(vec3 i, vec2 xy) {
 	}
 	if(length(pos - vec2(0.5, 0.5)) > 0.5) lines = 0.0;
 	graph += 0.15 * max(lines, circle);
-	return mix(i, graph, 0.66666);
+	return mix(i, graph, 0.85);
 }
 
 void main() {
