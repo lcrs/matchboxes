@@ -8,21 +8,23 @@
 uniform sampler2D A, B, C, D, E, F;
 uniform float adsk_result_w, adsk_result_h;
 
-uniform bool Anorm, Bnorm, Cnorm, Dnorm, Onorm;
-uniform vec3 Amult, Bmult, Cmult, Dmult, Omult;
-uniform vec3 Amult2, Bmult2, Cmult2, Dmult2, Omult2;
-uniform float Amult3, Bmult3, Cmult3, Dmult3, Omult3;
-uniform vec3 Arot, Brot, Crot, Drot, Orot;
-uniform vec3 Aadd, Badd, Cadd, Dadd, Oadd;
-uniform vec3 Aadd2, Badd2, Cadd2, Dadd2, Oadd2;
-uniform bool Alen, Blen, Clen, Dlen, Olen;
+uniform bool Anorm, Bnorm, Cnorm, Dnorm, Enorm, Fnorm, Onorm;
+uniform vec3 Amult, Bmult, Cmult, Dmult, Emult, Fmult, Omult;
+uniform vec3 Amult2, Bmult2, Cmult2, Dmult2, Emult2, Fmult2, Omult2;
+uniform float Amult3, Bmult3, Cmult3, Dmult3, Emult3, Fmult3, Omult3;
+uniform vec3 Arot, Brot, Crot, Drot, Erot, Frot, Orot;
+uniform vec3 Aadd, Badd, Cadd, Dadd, Eadd, Fadd, Oadd;
+uniform vec3 Aadd2, Badd2, Cadd2, Dadd2, Eadd2, Fadd2, Oadd2;
+uniform bool Alen, Blen, Clen, Dlen, Elen, Flen, Olen;
 
-uniform bool add, subtract, screen, outside, adotb, acrossb;
+uniform int blendmode, vectormode;
 uniform float mixa;
 
 uniform vec3 picker;
 
 #define pi 3.1415926535897932384624433832795
+
+vec4 adsk_getBlendedValue(int blendType, vec4 srcColor, vec4 dstColor);
 
 // Degrees to radians
 float deg2rad(float angle) {
@@ -57,27 +59,43 @@ void main() {
 	if(Bnorm) b = normalize(b);
 	if(Cnorm) c = normalize(c);
 	if(Dnorm) d = normalize(d);
+	if(Enorm) e = normalize(e);
+	if(Fnorm) f = normalize(f);
 
 	a = rotate(a * Amult * Amult2 * Amult3, Arot) + Aadd + Aadd2;
 	b = rotate(b * Bmult * Bmult2 * Bmult3, Brot) + Badd + Badd2;
 	c = rotate(c * Cmult * Cmult2 * Cmult3, Crot) + Cadd + Cadd2;
 	d = rotate(d * Dmult * Dmult2 * Dmult3, Drot) + Dadd + Dadd2;
+	e = rotate(e * Emult * Emult2 * Emult3, Erot) + Eadd + Eadd2;
+	f = rotate(f * Fmult * Fmult2 * Fmult3, Frot) + Fadd + Fadd2;
 
 	if(Alen) a = vec3(length(a));
 	if(Blen) b = vec3(length(b));
 	if(Clen) c = vec3(length(c));
 	if(Dlen) d = vec3(length(d));
+	if(Elen) e = vec3(length(e));
+	if(Flen) f = vec3(length(f));
 
-	vec3 o = vec3(0.0);
-	if(add) o = a + b + c + d + e + f;
-	if(subtract) o = a - b - c - d - e - f;
+	// Blend all 6 in reverse order
+	vec4 be = adsk_getBlendedValue(blendmode, vec4(f, 1.0), vec4(e, 1.0));
+	vec4 bd = adsk_getBlendedValue(blendmode, be, vec4(d, 1.0));
+	vec4 bc = adsk_getBlendedValue(blendmode, bd, vec4(c, 1.0));
+	vec4 bb = adsk_getBlendedValue(blendmode, bc, vec4(b, 1.0));
+	vec4 ba = adsk_getBlendedValue(blendmode, bb, vec4(a, 1.0));
+	vec3 o = ba.rgb;
+
+	// Custom outside blend mode
 	vec3 one = vec3(1.0);
-	if(screen) o = one - (one - a) * (one - b) * (one - c) * (one - d) * (one - e) * (one - f);
-	if(outside) o = a * (one - b) * (one - c) * (one - d) * (one - e) * (one - f);
-	if(adotb) o = vec3(dot(a, b));
-	if(acrossb) o = cross(a, b);
+	if(blendmode == 99) o = a * (one - b) * (one - c) * (one - d) * (one - e) * (one - f);
+
+	// Combine just A and B if vector mode is enabled
+	if(vectormode == 1) o = dot(a, b);
+	if(vectormode == 2) o = cross(a, b);
+
+	// Mix with original A input
 	o = mixa * o + (1.0 - mixa) * texture2D(A, xy).rgb;
 
+	// Process output
 	if(Onorm) o = normalize(o);
 	o = rotate(o * Omult * Omult2 * Omult3, Orot) + Oadd + Oadd2;
 	if(Olen) o = vec3(length(o));
