@@ -188,7 +188,7 @@ lewis@lewissaunders.com" Name="Poly">
       </Uniform>
       <Uniform ResDependent="None" Max="1000.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="" Row="4" Col="0" Page="0" Type="float" ChannelName="DotSize" DisplayName="Dot size" Name="dotsize">
       </Uniform>
-      <Uniform Row="0" Col="1" Page="0" Default="False" Tooltip="" Type="bool" ChannelName="VoronoiCells" DisplayName="Voronoi cells" Name="voronoi">
+      <Uniform Row="0" Col="1" Page="0" Default="True" Tooltip="" Type="bool" ChannelName="VoronoiCells" DisplayName="Voronoi cells" Name="voronoi">
       </Uniform>
       <Uniform Name="voronoistyle" Type="int" ValueType="Popup" DisplayName="Cell style" Page="0" Col="1" Row="1" Tooltip="" Default="8"> 
          <PopupEntry Title="Seed colours" Value="7"></PopupEntry>
@@ -208,7 +208,7 @@ lewis@lewissaunders.com" Name="Poly">
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.2"></SubUniform>
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.2"></SubUniform>
          <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.2"></SubUniform></Uniform>
-      <Uniform Row="0" Col="2" Page="0" Default="True" Tooltip="" Type="bool" ChannelName="DelaunayTriangles" DisplayName="Delaunay triangles" Name="delaunay">
+      <Uniform Row="0" Col="2" Page="0" Default="False" Tooltip="" Type="bool" ChannelName="DelaunayTriangles" DisplayName="Delaunay triangles" Name="delaunay">
       </Uniform>
       <Uniform Name="delaunaystyle" Type="int" ValueType="Popup" DisplayName="Triangle style" Page="0" Col="2" Row="1" Tooltip="" Default="11"> 
          <PopupEntry Title="Mid colours" Value="11"></PopupEntry>
@@ -226,7 +226,7 @@ lewis@lewissaunders.com" Name="Poly">
       </Uniform>
       <Uniform ResDependent="None" Max="1000.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="" Row="2" Col="2" Page="0" Type="float" ChannelName="DelaunayAdjust" DisplayName="Triangle adjust" Name="delaunayadj">
       </Uniform>
-      <Uniform Row="0" Col="3" Page="0" Default="True" Tooltip="" Type="bool" ChannelName="DelaunayEdges" DisplayName="Delaunay edges" Name="delaunayedges">
+      <Uniform Row="0" Col="3" Page="0" Default="False" Tooltip="" Type="bool" ChannelName="DelaunayEdges" DisplayName="Delaunay edges" Name="delaunayedges">
       </Uniform>
       <Uniform ResDependent="None" Max="1000.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="" Row="1" Col="3" Page="0" Type="float" ChannelName="DelaunayEdgeSoft" DisplayName="Soft" Name="delaunayedgewidth">
       </Uniform>

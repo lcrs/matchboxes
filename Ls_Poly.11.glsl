@@ -7,7 +7,7 @@ vec2 res = vec2(adsk_result_w, adsk_result_h);
 
 float alength(vec2 v) {
   v.y /= adsk_result_frameratio;
-  return pow(pow(v.x, normp) + pow(v.y, normp), 1.0/normp);
+  return pow(pow(abs(v.x), normp) + pow(abs(v.y), normp), 1.0/normp);
 }
 
 void main() {
