@@ -41,11 +41,18 @@ vec3 xyz2lab(vec3 xyz) {
 }
 
 vec3 lchab2xyz(vec3 lchab) {
-	
+	float angle = lchab.b;
+	angle = (angle > 0.5 ? angle - 1 : angle) * (2 * 3.1415926536);
+	float a = lchab.g * cos(angle);
+	float b = lchab.g * sin(angle);
+	return lab2xyz(vec3(lchab.r, a, b));
 }
 
 vec3 xyz2lchab(vec3 xyz) {
-	
+	vec3 lab = xyz2lab(xyz);
+	float c = sqrt(lab.g*lab.g + lab.b*lab.b);
+	float h = mod(atan(lab.b, lab.g) / (2 * 3.1415926536), 1);
+	return vec3(lab.r, c, h);
 }
 
 vec3 hsv2xyz(vec3 hsv) {
