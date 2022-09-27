@@ -4,6 +4,7 @@ uniform sampler2D front;
 uniform float adsk_result_w, adsk_result_h;
 uniform int inspace, outspace;
 uniform float ingamma, outgamma;
+uniform bool invert;
 vec2 res = vec2(adsk_result_w, adsk_result_h);
 
 #define PI 3.14159265358979
@@ -286,80 +287,88 @@ vec3 xyz2ycbcr(vec3 xyz) {
 
 void main(void) {
 	vec3 inp = texture2D(front, gl_FragCoord.xy / res).rgb;
-	if(inp.r > 0.0) inp.r = pow(inp.r, ingamma);
-	if(inp.g > 0.0) inp.g = pow(inp.g, ingamma);
-	if(inp.b > 0.0) inp.b = pow(inp.b, ingamma);
+
+	// If invert enabled, swap input and output gamma and space
+	float ingamma_ = invert ? outgamma : ingamma;
+	float outgamma_ = invert ? ingamma : outgamma;
+	int inspace_ = invert ? outspace : inspace;
+	int outspace_ = invert ? inspace : outspace;
+
+	if(inp.r > 0.0) inp.r = pow(inp.r, ingamma_);
+	if(inp.g > 0.0) inp.g = pow(inp.g, ingamma_);
+	if(inp.b > 0.0) inp.b = pow(inp.b, ingamma_);
 
 	// First convert from input space to XYZ
 	vec3 xyz = vec3(0.0);
-	if(inspace == 0) {
+	if(inspace_ == 0) {
 		xyz = rgb2xyz(inp);
-	} else if(inspace == 1) {
+	} else if(inspace_ == 1) {
 		xyz = inp;
-	} else if(inspace == 2) {
+	} else if(inspace_ == 2) {
 		xyz = xyy2xyz(inp);
-	} else if(inspace == 3) {
+	} else if(inspace_ == 3) {
 		xyz = lab2xyz(inp);
-	} else if(inspace == 4) {
+	} else if(inspace_ == 4) {
 		xyz = lab05cc2xyz(inp);
-	} else if(inspace == 5) {
+	} else if(inspace_ == 5) {
 		xyz = lchab2xyz(inp);
-	} else if(inspace == 6) {
+	} else if(inspace_ == 6) {
 		xyz = luv2xyz(inp);
-	} else if(inspace == 7) {
+	} else if(inspace_ == 7) {
 		xyz = luv05cc2xyz(inp);
-	} else if(inspace == 8) {
+	} else if(inspace_ == 8) {
 		xyz = lchuv2xyz(inp);
-	} else if(inspace == 9) {
+	} else if(inspace_ == 9) {
 		xyz = oklab2xyz(inp);
-	} else if(inspace == 10) {
+	} else if(inspace_ == 10) {
 		xyz = oklab05cc2xyz(inp);
-	} else if(inspace == 11) {
+	} else if(inspace_ == 11) {
 		xyz = hsv2xyz(inp);
-	} else if(inspace == 12) {
+	} else if(inspace_ == 12) {
 		xyz = hsl2xyz(inp);
-	} else if(inspace == 13) {
+	} else if(inspace_ == 13) {
 		xyz = ycbcr2xyz(inp);
-	} else if(inspace == 14) {
+	} else if(inspace_ == 14) {
 		xyz = ypbpr2xyz(inp);
 	}
 
 	// Then convert from XYZ to output space
 	vec3 outp = vec3(0.0);
-	if(outspace == 0) {
+	if(outspace_ == 0) {
 		outp = xyz2rgb(xyz);
-	} else if(outspace == 1) {
+	} else if(outspace_ == 1) {
 		outp = xyz;
-	} else if(outspace == 2) {
+	} else if(outspace_ == 2) {
 		outp = xyz2xyy(xyz);
-	} else if(outspace == 3) {
+	} else if(outspace_ == 3) {
 		outp = xyz2lab(xyz);
-	} else if(outspace == 4) {
+	} else if(outspace_ == 4) {
 		outp = xyz2lab05cc(xyz);
-	} else if(outspace == 5) {
+	} else if(outspace_ == 5) {
 		outp = xyz2lchab(xyz);
-	} else if(outspace == 6) {
+	} else if(outspace_ == 6) {
 		outp = xyz2luv(xyz);
-	} else if(outspace == 7) {
+	} else if(outspace_ == 7) {
 		outp = xyz2luv05cc(xyz);
-	} else if(outspace == 8) {
+	} else if(outspace_ == 8) {
 		outp = xyz2lchuv(xyz);
-	} else if(outspace == 9) {
+	} else if(outspace_ == 9) {
 		outp = xyz2oklab(xyz);
-	} else if(outspace == 10) {
+	} else if(outspace_ == 10) {
 		outp = xyz2oklab05cc(xyz);
-	} else if(outspace == 11) {
+	} else if(outspace_ == 11) {
 		outp = xyz2hsv(xyz);
-	} else if(outspace == 12) {
+	} else if(outspace_ == 12) {
 		outp = xyz2hsl(xyz);
-	} else if(outspace == 13) {
+	} else if(outspace_ == 13) {
 		outp = xyz2ycbcr(xyz);
-	} else if(outspace == 14) {
+	} else if(outspace_ == 14) {
 		outp = xyz2ypbpr(xyz);
 	}
 
-	if(outp.r > 0.0) outp.r = pow(outp.r, 1.0/outgamma);
-	if(outp.g > 0.0) outp.g = pow(outp.g, 1.0/outgamma);
-	if(outp.b > 0.0) outp.b = pow(outp.b, 1.0/outgamma);
+	if(outp.r > 0.0) outp.r = pow(outp.r, 1.0/outgamma_);
+	if(outp.g > 0.0) outp.g = pow(outp.g, 1.0/outgamma_);
+	if(outp.b > 0.0) outp.b = pow(outp.b, 1.0/outgamma_);
+	
 	gl_FragColor = vec4(outp, 0.0);
 }
