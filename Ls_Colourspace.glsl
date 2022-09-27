@@ -152,11 +152,21 @@ vec3 xyz2lchuv(vec3 xyz) {
 }
 
 vec3 oklab2xyz(vec3 oklab) {
-	return vec3(0.0);
+	// See https://bottosson.github.io/posts/oklab/
+	vec3 lms = mat3(1, 1, 1, 0.3963377774, -0.1055613458, -0.0894841775, 0.2158037573, -0.0638541728, -1.2914855480) * oklab;
+	if(lms.r > 0.0) lms.r = pow(lms.r, 3);
+	if(lms.g > 0.0) lms.g = pow(lms.g, 3);
+	if(lms.b > 0.0) lms.b = pow(lms.b, 3);
+	return mat3(1.2270138511, -0.0405801784, -0.0763812845, -0.5577999807, 1.1122568696, -0.4214819784, 0.2812561490, -0.0716766787, 1.5861632204) * lms;
 }
 
 vec3 xyz2oklab(vec3 xyz) {
-	return vec3(0.0);
+	// See https://bottosson.github.io/posts/oklab/
+	vec3 lms = mat3(0.8189330101, 0.0329845436, 0.0482003018, 0.3618667424, 0.9293118715, 0.2643662691, -0.1288597137, 0.0361456387, 0.6338517070) * xyz;
+	if(lms.r > 0.0) lms.r = pow(lms.r, 1.0/3.0);
+	if(lms.g > 0.0) lms.g = pow(lms.g, 1.0/3.0);
+	if(lms.b > 0.0) lms.b = pow(lms.b, 1.0/3.0);
+	return mat3(0.2104542553, 1.9779984951, 0.0259040371, 0.7936177850, -2.4285922050, 0.7827717662, -0.0040720468, 0.4505937099, -0.8086757660) * lms;
 }
 
 vec3 oklab05cc2xyz(vec3 oklab05cc) {
@@ -237,20 +247,41 @@ vec3 xyz2hsl(vec3 xyz) {
 	return hsl;
 }
 
-vec3 ycbcr2xyz(vec3 ycbcr) {
-	return vec3(0.0);
-}
-
-vec3 xyz2ycbcr(vec3 xyz) {
-	return vec3(0.0);
-}
-
 vec3 ypbpr2xyz(vec3 ypbpr) {
-	return vec3(0.0);
+	// See https://en.wikipedia.org/wiki/YCbCr#R'G'B'_to_Y'PbPr
+	vec3 k = vec3(0.2126, 0.7152, 0.0722);
+	vec3 rgb = mat3(1, 1, 1, 0, (-k.b/k.g) * (2 - 2*k.b), 2 - 2*k.b, 2 - 2*k.r, (-k.r/k.g)*(2-2*k.r), 0) * ypbpr;
+
+	// Assuming display-referred BT.1886 output, rather than rec709 camera
+	if(rgb.r > 0.0) rgb.r = pow(rgb.r, 2.4);
+	if(rgb.g > 0.0) rgb.g = pow(rgb.g, 2.4);
+	if(rgb.b > 0.0) rgb.b = pow(rgb.b, 2.4);
+	return rgb2xyz(rgb);
 }
 
 vec3 xyz2ypbpr(vec3 xyz) {
-	return vec3(0.0);
+	// Assuming display-referred BT.1886 input, rather than rec709 camera
+	vec3 rgb = xyz2rgb(xyz);
+	if(rgb.r > 0.0) rgb.r = pow(rgb.r, 1/2.4);
+	if(rgb.g > 0.0) rgb.g = pow(rgb.g, 1/2.4);
+	if(rgb.b > 0.0) rgb.b = pow(rgb.b, 1/2.4);
+
+	// See https://en.wikipedia.org/wiki/YCbCr#R'G'B'_to_Y'PbPr
+	vec3 k = vec3(0.2126, 0.7152, 0.0722);
+	vec3 ypbpr = mat3(k.r, -0.5*k.r/(1-k.b), 0.5, k.g, -0.5*k.g/(1-k.b), -0.5*k.g/(1-k.r), k.b, 0.5, -0.5*k.b/(1-k.r)) * rgb;
+	return ypbpr;
+}
+
+vec3 ycbcr2xyz(vec3 ycbcr) {
+	// See https://en.wikipedia.org/wiki/YCbCr#ITU-R_BT.601_conversion
+	vec3 ypbpr = (ycbcr - vec3(16.0/255.0, 128.0/255.0, 128.0/255.0)) / vec3(219.0/255.0, 224.0/255.0, 224.0/255.0);
+	return ypbpr2xyz(ypbpr);
+}
+
+vec3 xyz2ycbcr(vec3 xyz) {
+	// See https://en.wikipedia.org/wiki/YCbCr#ITU-R_BT.601_conversion
+	vec3 ypbpr = xyz2ypbpr(xyz);
+	return vec3(16.0/255.0, 128.0/255.0, 128.0/255.0) + vec3(219.0/255.0, 224.0/255.0, 224.0/255.0) * ypbpr;
 }
 
 void main(void) {
