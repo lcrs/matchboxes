@@ -201,12 +201,24 @@ vec3 hsv2xyz(vec3 hsv) {
 	}
 	float m = hsv.b - c;
 	rgb += vec3(m);
+
+	// Assume we get BT1886 display-referred video after converting from HSV
+	// for consistency with other apps
+	if(rgb.r > 0.0) rgb.r = pow(rgb.r, 2.4);
+	if(rgb.g > 0.0) rgb.g = pow(rgb.g, 2.4);
+	if(rgb.b > 0.0) rgb.b = pow(rgb.b, 2.4);
 	return rgb2xyz(rgb);
 }
 
 vec3 xyz2hsv(vec3 xyz) {
-	// See https://en.wikipedia.org/wiki/HSL_and_HSV#From_RGB
+	// Assume we want BT1886 display-referred video before converting to HSV
+	// for consistency with other apps
 	vec3 rgb = xyz2rgb(xyz);
+	if(rgb.r > 0.0) rgb.r = pow(rgb.r, 1/2.4);
+	if(rgb.g > 0.0) rgb.g = pow(rgb.g, 1/2.4);
+	if(rgb.b > 0.0) rgb.b = pow(rgb.b, 1/2.4);
+
+	// See https://en.wikipedia.org/wiki/HSL_and_HSV#From_RGB
 	float v = max(max(rgb.r, rgb.g), rgb.b);
 	float xmin = min(min(rgb.r, rgb.g), rgb.b);
 	float c = v - xmin;
