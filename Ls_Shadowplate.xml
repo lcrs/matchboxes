@@ -1,0 +1,98 @@
+<ShaderNodePreset SupportsAdaptiveDegradation="False" SupportsAction="False" SupportsTransition="False" SupportsTimeline="False" TimelineUseBack="False" MatteProvider="False" CommercialUsePermitted="True" ShaderType="Matchbox" SoftwareVersion="2017.0.0" LimitInputsToTexture="True" Version="2" Description="Shadowplate - experiment in removing direct sun from an image to make a completely shady plate for comping in new shadows, based on https://www.youtube.com/watch?v=Yb3Cn3JnkUI (the part from 5:25)
+
+It converts to a perceptual colourspace to seperate brightness from colour, then pulls a key for the highlights and gains them down, repeating the process many times.  Then the colour channels are replaced from the original and optionally blurred
+
+The matte output can help to set the key protect controls, and to grade further downstream
+
+lewis@lewissaunders.com" Name="Shadowplate">
+   <Shader Clear="0" GridSubdivision="1" OutputBitDepth="Output" Index="1">
+      <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="front" InputType="Front" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="front">
+      </Uniform>
+      <Uniform Max="1000000" Min="-1000000" Default="11" Inc="1" Tooltip="" Row="1" Col="1" Page="0" Type="int" ChannelName="space" DisplayName="Working space" Name="space" ValueType="Popup">
+          <PopupEntry Title="linear sRGB" Value="0"></PopupEntry>
+          <PopupEntry Title="XYZ" Value="1"></PopupEntry>
+          <PopupEntry Title="xyY" Value="2"></PopupEntry>
+          <PopupEntry Title="L*a*b*" Value="3"></PopupEntry>
+          <PopupEntry Title="L*a*b* (0.5-centred chroma)" Value="4"></PopupEntry>
+          <PopupEntry Title="LCHab" Value="5"></PopupEntry>
+          <PopupEntry Title="LUV" Value="6"></PopupEntry>
+          <PopupEntry Title="LUV (0.5-centred chroma)" Value="7"></PopupEntry>
+          <PopupEntry Title="LCHuv" Value="8"></PopupEntry>
+          <PopupEntry Title="Oklab" Value="9"></PopupEntry>
+          <PopupEntry Title="Oklab (0.5-centred chroma)" Value="10"></PopupEntry>
+          <PopupEntry Title="HSV" Value="11"></PopupEntry>
+          <PopupEntry Title="HSL" Value="12"></PopupEntry>
+          <PopupEntry Title="YCbCr" Value="13"></PopupEntry>
+          <PopupEntry Title="YPbPr" Value="14"></PopupEntry>
+      </Uniform>
+   </Shader>
+   <Shader Clear="0" GridSubdivision="1" OutputBitDepth="Output" Index="2">
+      <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass1">
+      </Uniform>
+      <Uniform Inc="0.1" Tooltip="" Row="0" Col="4" Page="0" Action3DWidget="False" IconType="None" Type="vec2" ChannelName="blursize" DisplayName="Blur replaced" Name="blursize">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="0.0" Default="0.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="0.0" Default="0.0">
+         </SubUniform>
+      </Uniform>
+   </Shader>
+   <Shader Clear="0" GridSubdivision="1" OutputBitDepth="Output" Index="3">
+      <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass2">
+      </Uniform>
+      <Uniform Type="vec2" ChannelName="blursize" DisplayName="Blur replaced" Name="blursize">
+         <Duplicate>
+         </Duplicate>
+      </Uniform>
+   </Shader>
+   <Shader Clear="0" GridSubdivision="1" OutputBitDepth="Output" Index="4">
+      <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass1">
+      </Uniform>
+      <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass3">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.5" Inc="0.01" Tooltip="" Row="1" Col="3" Page="0" Type="float" ChannelName="gain" DisplayName="Gain" Name="gain">
+      </Uniform>
+      <Uniform Row="2" Col="3" Page="0" Default="True" Tooltip="" Type="bool" ChannelName="grade1" DisplayName="Grade channel 1" Name="grade1">
+      </Uniform>
+      <Uniform Row="3" Col="3" Page="0" Default="True" Tooltip="" Type="bool" ChannelName="grade2" DisplayName="Grade channel 2" Name="grade2">
+      </Uniform>
+      <Uniform Row="4" Col="3" Page="0" Default="True" Tooltip="" Type="bool" ChannelName="grade3" DisplayName="Grade channel 3" Name="grade3">
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="0.1" Inc="0.01" Tooltip="" Row="1" Col="2" Page="0" Type="float" ChannelName="keymin" DisplayName="Protect shadows" Name="keymin">
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="0.7" Inc="0.01" Tooltip="" Row="2" Col="2" Page="0" Type="float" ChannelName="keymax" DisplayName="Protect highlights" Name="keymax">
+      </Uniform>
+      <Uniform ResDependent="None" Max="0.5" Min="0.0" Default="0.3" Inc="0.01" Tooltip="" Row="3" Col="2" Page="0" Type="float" ChannelName="keysmooth" DisplayName="Key smoothness" Name="keysmooth">
+      </Uniform>
+      <Uniform Max="1000000" Min="-1000000" Default="4" Inc="1" Tooltip="" Row="0" Col="2" Page="0" Type="int" ChannelName="keysource" DisplayName="Key source" Name="keysource" ValueType="Popup">
+         <PopupEntry Title="Channel 1" Value="0"></PopupEntry>
+         <PopupEntry Title="Channel 2" Value="1"></PopupEntry>
+         <PopupEntry Title="Channel 3" Value="2"></PopupEntry>
+         <PopupEntry Title="Average" Value="3"></PopupEntry>
+         <PopupEntry Title="Luma" Value="4"></PopupEntry>
+         <PopupEntry Title="Max" Value="5"></PopupEntry>
+         <PopupEntry Title="Min" Value="6"></PopupEntry>
+      </Uniform>
+      <Uniform Max="1000" Min="1" Default="10" Inc="1" Tooltip="" Row="0" Col="3" Page="0" Type="int" ChannelName="repeats" DisplayName="Repeats" Name="repeats">
+      </Uniform>
+      <Uniform Row="2" Col="4" Page="0" Default="True" Tooltip="" Type="bool" ChannelName="replace1" DisplayName="Replace channel 1" Name="replace1">
+      </Uniform>
+      <Uniform Row="3" Col="4" Page="0" Default="True" Tooltip="" Type="bool" ChannelName="replace2" DisplayName="Replace channel 2" Name="replace2">
+      </Uniform>
+      <Uniform Row="4" Col="4" Page="0" Default="False" Tooltip="" Type="bool" ChannelName="replace3" DisplayName="Replace channel 3" Name="replace3">
+      </Uniform>
+      <Uniform Type="int" ChannelName="space" DisplayName="Working space" Name="space">
+         <Duplicate>
+         </Duplicate>
+      </Uniform>
+   </Shader>
+   <Page Name="Shadowplate" Page="0">
+      <Col Name="Colourspace" Col="1" Page="0">
+      </Col>
+      <Col Name="Key highlights" Col="2" Page="0">
+      </Col>
+      <Col Name="Grade" Col="3" Page="0">
+      </Col>
+      <Col Name="Replace from source" Col="4" Page="0">
+      </Col>
+   </Page>
+</ShaderNodePreset>
