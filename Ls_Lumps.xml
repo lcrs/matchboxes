@@ -43,7 +43,7 @@ lewis@lewissaunders.com">
   <Uniform Name="scolour"            DisplayName="Colour"             Page="0" Col="2" Row="1" Type="float"      Default="1.0"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"      Tooltip=""></Uniform>
   <Uniform Name="outputlumps"        DisplayName="Lumps"              Page="0" Col="3" Row="2" Type="bool"       Default="True"                                                                                   Tooltip=""></Uniform>
   <Uniform Name="recombine"          Type="bool"><Duplicate></Duplicate></Uniform>
-  <Uniform Name="slumps"             DisplayName="Lumps"              Page="0" Col="2" Row="2" Type="float"      Default="0.5"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"      Tooltip=""></Uniform>
+  <Uniform Name="slumps"             DisplayName="Lumps"              Page="0" Col="2" Row="2" Type="float"      Default="1.0"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"      Tooltip=""></Uniform>
   <Uniform Name="outputcolour"       DisplayName="Colour"             Page="0" Col="3" Row="1" Type="bool"       Default="True"                                                                                   Tooltip=""></Uniform>
   <Uniform Name="outputdetail"       DisplayName="Detail"             Page="0" Col="3" Row="3" Type="bool"       Default="True"                                                                                   Tooltip=""></Uniform>
   <Uniform Name="sdetail"            DisplayName="Detail"             Page="0" Col="2" Row="3" Type="float"      Default="1.0"        Min="-1000000.0" Max="1000000.0"  Inc="0.01"       ResDependent="None"      Tooltip=""></Uniform>

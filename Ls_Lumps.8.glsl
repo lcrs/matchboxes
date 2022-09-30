@@ -24,9 +24,9 @@ void main() {
 			lumps -= vec4(0.5);
 			detail -= vec4(0.5);
 		}
-		colour /= scolour;
-		lumps /= slumps;
-		detail /= sdetail;
+		colour *= scolour;
+		lumps *= slumps;
+		detail *= sdetail;
 		gl_FragColor = colour + lumps + detail;
 		return;
 	}
