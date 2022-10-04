@@ -1,7 +1,7 @@
-// Lumps blur vertical pass and split/scale/combine
+// Detail filter vertical pass and split/scale/combine
 // lewis@lewissaunders.com
 
-uniform sampler2D adsk_results_pass1, adsk_results_pass2, adsk_results_pass3, adsk_results_pass4, adsk_results_pass6, adsk_results_pass7;
+uniform sampler2D front, adsk_results_pass2, adsk_results_pass4;
 uniform float adsk_result_w, adsk_result_h;
 uniform float lumpsize;
 uniform bool outputcolour, outputlumps, outputdetail;
@@ -14,9 +14,9 @@ void main() {
 	vec2 px = vec2(1.0) / vec2(adsk_result_w, adsk_result_h);
 
 	if(recombine) {
-		vec4 colour = texture2D(adsk_results_pass2, xy * px);
-		vec4 lumps = texture2D(adsk_results_pass3, xy * px);
-		vec4 detail = texture2D(adsk_results_pass4, xy * px);
+		vec4 colour = texture2D(colourt, xy * px);
+		vec4 lumps = texture2D(lumpst, xy * px);
+		vec4 detail = texture2D(detailt, xy * px);
 		if(islin) {
 			lumps -= vec4(0.18);
 			detail -= vec4(0.18);
@@ -45,21 +45,21 @@ void main() {
 	}
 
 	// Centre sample
-	vec4 a = g.x * texture2D(adsk_results_pass7, xy * px);
+	vec4 a = g.x * texture2D(adsk_results_pass3, xy * px);
 	float energy = g.x;
 	g.xy *= g.yz;
 
 	// The rest
 	for(int i = 1; i <= support; i++) {
-		a += g.x * texture2D(adsk_results_pass7, (xy - vec2(0.0, float(i))) * px);
-		a += g.x * texture2D(adsk_results_pass7, (xy + vec2(0.0, float(i))) * px);
+		a += g.x * texture2D(adsk_results_pass3, (xy - vec2(0.0, float(i))) * px);
+		a += g.x * texture2D(adsk_results_pass3, (xy + vec2(0.0, float(i))) * px);
 		energy += 2.0 * g.x;
 		g.xy *= g.yz;
 	}
 	a /= energy;
 
-	vec4 front = texture2D(adsk_results_pass1, xy * px);
-	vec4 colour = texture2D(adsk_results_pass6, xy * px);
+	vec4 front = texture2D(frontt, xy * px);
+	vec4 colour = texture2D(adsk_results_pass2, xy * px);
 	vec4 lumps = a - colour;
 	vec4 detail = front - a;
 
