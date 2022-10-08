@@ -35,7 +35,7 @@ void main() {
 	}
 
 	// Centre sample
-	vec4 a = g.x * texture2D(front, xy * px);
+	vec4 a = g.x * texture2D(adsk_results_pass5, xy * px);
 	float energy = g.x;
 	g.xy *= g.yz;
 

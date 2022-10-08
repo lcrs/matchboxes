@@ -1,26 +1,20 @@
 // Lumps filter horizontal pass
 // lewis@lewissaunders.com
 
-uniform sampler2D adsk_results_pass2, adsk_results_pass4, colourt, lumpst;
+uniform sampler2D adsk_results_pass2, adsk_results_pass4, lumpst;
 uniform float adsk_result_w, adsk_result_h;
 uniform float lumpsfiltersize;
-uniform bool recombine;
+uniform bool recombine, islin;
 const float pi = 3.141592653589793238462643383279502884197969;
-
-vec4 getcolour(vec2 xy) {
-    if(recombine) {
-        // Use node's colour input
-        return texture2D(colourt, xy);
-    } else {
-        // Use our calculated colour band
-        return texture2D(adsk_results_pass2, xy);
-    }
-}
 
 vec4 getlumps(vec2 xy) {
     if(recombine) {
         // Use node's lumps input
-        return texture2D(lumpst, xy);
+		if(islin) {
+			return texture2D(lumpst, xy) - vec4(0.18);
+		} else {
+			return texture2D(lumpst, xy) - vec4(0.5);
+		}
     } else {
         // Use our calculated lumps band
         return texture2D(adsk_results_pass4, xy) - texture2D(adsk_results_pass2, xy);
@@ -45,7 +39,7 @@ void main() {
 	}
 
 	// Centre sample
-	vec4 a = g.x * texture2D(front, xy * px);
+	vec4 a = g.x * getlumps(xy * px);
 	float energy = g.x;
 	g.xy *= g.yz;
 

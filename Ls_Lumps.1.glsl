@@ -1,7 +1,7 @@
 /* The three bands are made like this:
 		colour = colourblur
 		lumps = lumpsblur - colourblur
-		detail = original - lumpsblur
+		detail = front input - lumpsblur
 
   There are quite a few passes so here's a diagram of how they connect:
 
@@ -20,11 +20,11 @@
 │          ▼          │     ▼   ▼          │     ▼    ▼          │
 │  05 colourfilter h  │  07 lumpsfilter h  │  09 detailfilter h  │
 │          │          │         │          │          │          │
-│          ▼          │         ▼          │          │          │
-└► 06 colourfilter v  └► 08 lumpsfilter v ◄┘          │          │
-           │                    │                     │          │
-           │                    └──────────────────┐  │  ┌───────┘
-           │                                       ▼  ▼  ▼
+│          ▼          │         ▼          │───────┐  │          │
+└► 06 colourfilter v  └► 08 lumpsfilter v ◄┘       │  │          │
+           │                    │                  │  │          │
+           │                    └───────────────┐  │  │  ┌───────┘
+           │                                    ▼  ▼  ▼  ▼
            └────────────────────────────────► 10 detailfilter v,
                                                  combine and output
 
