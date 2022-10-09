@@ -31,7 +31,7 @@ void main() {
 	vec2 xy = gl_FragCoord.xy;
 	vec2 px = vec2(1.0) / vec2(adsk_result_w, adsk_result_h);
 
-	float sigma = detailfiltersize;
+	float sigma = abs(detailfiltersize);
 	int support = int(sigma * 3.0);
 
 	// Incremental coefficient calculation setup as per GPU Gems 3
@@ -59,7 +59,7 @@ void main() {
 	a /= energy;
 
 	vec4 filtered = a;
-	vec4 detailunfilt = getdetail(xy);
+	vec4 detailunfilt = getdetail(xy * px);
 	if(detailfiltersize < 0.0) {
 		// Sharpen rather than blur
 		filtered = detailunfilt + detailsharpenamnt * (detailunfilt - filtered);
@@ -80,13 +80,10 @@ void main() {
 	lumps *= slumps;
 	detail *= sdetail;
 
-	if(recombine) {
-		gl_FragColor = colour + lumps + detail;
-	} else {
-		vec4 o = vec4(islin ? 0.18 : 0.5);
-		if(outputcolour) o = colour;
-		if(outputlumps) o += lumps;
-		if(outputdetail) o += detail;
-		gl_FragColor = o;
-	}
+	vec4 o = vec4(islin ? 0.18 : 0.5);
+	if(outputcolour) o = colour;
+	if(outputlumps) o += lumps;
+	if(outputdetail) o += detail;
+	gl_FragColor = o;
+
 }

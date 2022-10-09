@@ -21,7 +21,7 @@ void main() {
 	vec2 xy = gl_FragCoord.xy;
 	vec2 px = vec2(1.0) / vec2(adsk_result_w, adsk_result_h);
 
-	float sigma = colourfiltersize;
+	float sigma = abs(colourfiltersize);
 	int support = int(sigma * 3.0);
 
 	// Incremental coefficient calculation setup as per GPU Gems 3
@@ -49,7 +49,7 @@ void main() {
 	a /= energy;
 
 	vec4 filtered = a;
-	vec4 colour = getcolour(xy);
+	vec4 colour = getcolour(xy * px);
 	if(colourfiltersize < 0.0) {
 		// Sharpen rather than blur
 		filtered = colour + coloursharpenamnt * (colour - filtered);
