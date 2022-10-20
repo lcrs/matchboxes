@@ -14,20 +14,20 @@
       <Uniform Row="1" Col="4" Page="0" Default="False" Tooltip="" Type="bool" ChannelName="Use colour" DisplayName="Use colour" Name="usecolour">
       </Uniform>
       <Uniform Inc="0.01" Tooltip="" Row="2" Col="4" Page="0" Action3DWidget="False" IconType="None" ValueType="Colour" Type="vec3" ChannelName="Colour" DisplayName="Colour" Name="screencolour">
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.1">
          </SubUniform>
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.8">
          </SubUniform>
-         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.1">
          </SubUniform>
       </Uniform>
       <Uniform Row="3" Col="4" Page="0" Default="False" Tooltip="" Type="bool" ChannelName="usecleanscreen" DisplayName="Use screen input" Name="usecleanscreen">
       </Uniform>
-      <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="front" InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="front">
+      <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="Front" InputType="Front" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="front">
       </Uniform>
-      <Uniform Index="1" NoInput="White" Tooltip="" DisplayName="strength" InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="strength">
+      <Uniform Index="1" NoInput="White" Tooltip="" DisplayName="Strength" InputColor="80, 80, 20" InputType="Selective" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="strength">
       </Uniform>
-      <Uniform Index="2" NoInput="Black" Tooltip="" DisplayName="cleanscreen" InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="cleanscreen">
+      <Uniform Index="2" NoInput="Black" Tooltip="" DisplayName="Screen colour" InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="cleanscreen">
       </Uniform>
    </Shader>
    <Shader Clear="0" GridSubdivision="1" OutputBitDepth="Output" Index="2">
@@ -55,13 +55,13 @@
          <Duplicate>
          </Duplicate>
       </Uniform>
-      <Uniform Index="1" Tooltip="" DisplayName="strength" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="strength">
+      <Uniform Index="1" Tooltip="" DisplayName="Strength" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="strength">
          <Duplicate>
          </Duplicate>
       </Uniform>
       <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass1">
       </Uniform>
-      <Uniform Index="2" Tooltip="" DisplayName="cleanscreen" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="cleanscreen">
+      <Uniform Index="2" Tooltip="" DisplayName="Screen colour" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="cleanscreen">
          <Duplicate>
          </Duplicate>
       </Uniform>
@@ -72,6 +72,8 @@
       <Col Name="Shape" Col="2" Page="0">
       </Col>
       <Col Name="Structuring element" Col="3" Page="0">
+      </Col>
+      <Col Name="Weight by colour" Col="4" Page="0">
       </Col>
    </Page>
 </ShaderNodePreset>

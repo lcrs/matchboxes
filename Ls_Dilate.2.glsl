@@ -15,7 +15,8 @@ void main(void) {
 
 	// Centre sample
 	vec3 best = texture2D(adsk_results_pass1, xy / res).rgb + sign(sizexy.y) * vec3(1.0);
-	float bestweight = 1.0;
+	float bestweight = sign(sizexy.y) * 1.0;
+	float bestdist = distance(best - vec3(bestweight), screencol);
 
 	// The rest
 	int support = int(abs(sizexy.y) * 3.0);
@@ -24,7 +25,7 @@ void main(void) {
 		float x = float(i) / abs(sizexy.y);
 		if(kernel == 0) {
 			// Box
-			weight = x < 1.0 ? 1.0 : 0.0;
+			weight = 1.0;
 		} else if(kernel == 1) {
 			// Box AA
 			if(x < 1.0) {
@@ -47,26 +48,29 @@ void main(void) {
 		vec3 a = texture2D(adsk_results_pass1, (xy - vec2(0.0, float(i))) / res).rgb + sign(sizexy.y) * vec3(weight);
 		vec3 b = texture2D(adsk_results_pass1, (xy + vec2(0.0, float(i))) / res).rgb + sign(sizexy.y) * vec3(weight);
 		if(usecolour) {
-			float bestdist = distance(best - vec3(bestweight), screencol);
-			float adist = distance(a - vec3(weight), screencol);
-			float bdist = distance(b - vec3(weight), screencol);
+			float adist = distance(a - vec3(sign(sizexy.y) * vec3(weight)), screencol);
+			float bdist = distance(b - vec3(sign(sizexy.y) * vec3(weight)), screencol);
 			if(sizexy.y > 0.0) {
-				if(adist > bestdist) {
-					best = a;
-					bestweight = weight;
-				}
-				if(bdist > bestdist) {
-					best = b;
-					bestweight = weight;
-				}
-			} else {
 				if(adist < bestdist) {
 					best = a;
-					bestweight = weight;
+					bestweight = sign(sizexy.y) * weight;
+					bestdist = adist;
 				}
 				if(bdist < bestdist) {
 					best = b;
-					bestweight = weight;
+					bestweight = sign(sizexy.y) * weight;
+					bestdist = bdist;
+				}
+			} else {
+				if(adist > bestdist) {
+					best = a;
+					bestweight = sign(sizexy.y) * weight;
+					bestdist = adist;
+				}
+				if(bdist > bestdist) {
+					best = b;
+					bestweight = sign(sizexy.y) * weight;
+					bestdist = bdist;
 				}
 			}
 		} else {
