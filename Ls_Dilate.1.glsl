@@ -1,5 +1,8 @@
 #version 120
 
+// Morphological dilate/erode using non-flat structuring elements
+//  (see https://www.mathworks.com/help/images/structuring-elements.html)
+
 uniform sampler2D front, strength, cleanscreen;
 uniform float size, stretch;
 uniform int kernel;
@@ -15,8 +18,11 @@ void main(void) {
 
 	// Centre sample
 	vec3 best = texture2D(front, xy / res).rgb + sign(sizexy.x) * vec3(1.0);
-	float bestweight = sign(sizexy.x) * 1.0;
-	float bestdist = distance(best - vec3(bestweight), screencol);
+	if(usecolour) {
+		// Ignore weighting if using colour
+		best -= sign(sizexy.x) * vec3(1.0);
+	}
+	float bestdist = distance(best, screencol);
 
 	// The rest
 	int support = int(abs(sizexy.x) * 3.0);
@@ -25,7 +31,7 @@ void main(void) {
 		float x = float(i) / abs(sizexy.x);
 		if(kernel == 0) {
 			// Box
-			weight = 1.0;
+			weight = x < 1.0 ? 1.0 : 0.0;
 		} else if(kernel == 1) {
 			// Box AA
 			if(x < 1.0) {
@@ -45,31 +51,34 @@ void main(void) {
 			// Gaussian
 			weight = exp(-0.5 * pow(x, 2));
 		}
+		// Add weights to pixel values before comparison
 		vec3 a = texture2D(front, (xy - vec2(float(i), 0.0)) / res).rgb + sign(sizexy.x) * vec3(weight);
 		vec3 b = texture2D(front, (xy + vec2(float(i), 0.0)) / res).rgb + sign(sizexy.x) * vec3(weight);
 		if(usecolour) {
-			float adist = distance(a - vec3(sign(sizexy.x) * vec3(weight)), screencol);
-			float bdist = distance(b - vec3(sign(sizexy.x) * vec3(weight)), screencol);
+			// Ignore outer parts of support to match non-colour mode box kernel size
+			if(x > 1.0) break;
+
+			// Ignore weighting if using colour
+			a -= sign(sizexy.x) * vec3(weight);
+			b -= sign(sizexy.x) * vec3(weight);
+			float adist = distance(a, screencol);
+			float bdist = distance(b, screencol);
 			if(sizexy.x > 0.0) {
 				if(adist < bestdist) {
 					best = a;
-					bestweight = sign(sizexy.x) * weight;
 					bestdist = adist;
 				}
 				if(bdist < bestdist) {
 					best = b;
-					bestweight = sign(sizexy.x) * weight;
 					bestdist = bdist;
 				}
 			} else {
 				if(adist > bestdist) {
 					best = a;
-					bestweight = sign(sizexy.x) * weight;
 					bestdist = adist;
 				}
 				if(bdist > bestdist) {
 					best = b;
-					bestweight = sign(sizexy.x) * weight;
 					bestdist = bdist;
 				}
 			}

@@ -15,8 +15,11 @@ void main(void) {
 
 	// Centre sample
 	vec3 best = texture2D(adsk_results_pass1, xy / res).rgb + sign(sizexy.y) * vec3(1.0);
-	float bestweight = sign(sizexy.y) * 1.0;
-	float bestdist = distance(best - vec3(bestweight), screencol);
+	if(usecolour) {
+		// Ignore weighting if using colour
+		best -= sign(sizexy.y) * vec3(1.0);
+	}
+	float bestdist = distance(best, screencol);
 
 	// The rest
 	int support = int(abs(sizexy.y) * 3.0);
@@ -25,7 +28,7 @@ void main(void) {
 		float x = float(i) / abs(sizexy.y);
 		if(kernel == 0) {
 			// Box
-			weight = 1.0;
+			weight = x < 1.0 ? 1.0 : 0.0;
 		} else if(kernel == 1) {
 			// Box AA
 			if(x < 1.0) {
@@ -45,31 +48,34 @@ void main(void) {
 			// Gaussian
 			weight = exp(-0.5 * pow(x, 2));
 		}
+		// Add weights to pixel values before comparison
 		vec3 a = texture2D(adsk_results_pass1, (xy - vec2(0.0, float(i))) / res).rgb + sign(sizexy.y) * vec3(weight);
 		vec3 b = texture2D(adsk_results_pass1, (xy + vec2(0.0, float(i))) / res).rgb + sign(sizexy.y) * vec3(weight);
 		if(usecolour) {
-			float adist = distance(a - vec3(sign(sizexy.y) * vec3(weight)), screencol);
-			float bdist = distance(b - vec3(sign(sizexy.y) * vec3(weight)), screencol);
-			if(sizexy.y > 0.0) {
+			// Ignore outer parts of support to match non-colour mode box kernel size
+			if(x > 1.0) break;
+
+			// Ignore weighting if using colour
+			a -= sign(sizexy.y) * vec3(weight);
+			b -= sign(sizexy.y) * vec3(weight);
+			float adist = distance(a, screencol);
+			float bdist = distance(b, screencol);
+			if(sizexy.x > 0.0) {
 				if(adist < bestdist) {
 					best = a;
-					bestweight = sign(sizexy.y) * weight;
 					bestdist = adist;
 				}
 				if(bdist < bestdist) {
 					best = b;
-					bestweight = sign(sizexy.y) * weight;
 					bestdist = bdist;
 				}
 			} else {
 				if(adist > bestdist) {
 					best = a;
-					bestweight = sign(sizexy.y) * weight;
 					bestdist = adist;
 				}
 				if(bdist > bestdist) {
 					best = b;
-					bestweight = sign(sizexy.y) * weight;
 					bestdist = bdist;
 				}
 			}
@@ -84,10 +90,13 @@ void main(void) {
 		}
 	}
 
-	if(sizexy.y > 0.0) {
-		best -= vec3(2.0);
-	} else {
-		best += vec3(2.0);
+	if(!usecolour) {
+		// Remove weights from final output
+		if(sizexy.y > 0.0) {
+			best -= vec3(2.0);
+		} else {
+			best += vec3(2.0);
+		}
 	}
 
 	gl_FragColor = vec4(best.r, best.g, best.b, 0.0);
