@@ -1,0 +1,30 @@
+<ShaderNodePreset SupportsAdaptiveDegradation="False" SupportsAction="False" SupportsTransition="False" SupportsTimeline="False" TimelineUseBack="False" MatteProvider="False" CommercialUsePermitted="True" ShaderType="Matchbox" SoftwareVersion="2017.0.0" LimitInputsToTexture="True" Version="2" Description="Attempts to remove the hot firefly pixel noise that appears in CG renders with bright lights hidden behind other objects
+
+Quick demo: https://www.youtube.com/watch?v=GuvRoN5WfM4
+
+lewis@lewissaunders.com" Name="Fireflies">
+   <Shader NbExecutions="12" Clear="0" GridSubdivision="1" OutputBitDepth="Output" Index="1">
+      <Uniform ResDependent="None" Max="1000000.0" Min="0.0" Default="5.0" Inc="0.01" Tooltip="Increase to remove more noise" Row="1" Col="2" Page="0" Type="float" ChannelName="Sensitivity" DisplayName="Sensitivity" Name="sensitivity">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1000000.0" Min="0.0" Default="0.0" Inc="0.01" Tooltip="Increase to remove some darker noise that wouldn't be detected otherwise" Row="2" Col="2" Page="0" Type="float" ChannelName="Trim noise" DisplayName="Trim noise" Name="trimnoise">
+      </Uniform>
+      <Uniform Row="1" Col="3" Page="0" Default="False" Tooltip="Apply the median-like filter to the whole image, with no noise detection" Type="bool" ChannelName="Show median only" DisplayName="Show median only" Name="showmedian">
+      </Uniform>
+      <Uniform Row="2" Col="3" Page="0" Default="False" Tooltip="Output just the detected noise" Type="bool" ChannelName="Show fireflies only" DisplayName="Show fireflies only" Name="showfireflies">
+      </Uniform>
+      <Uniform InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass1">
+      </Uniform>
+      <Uniform Index="0" NoInput="Error" Tooltip="" DisplayName="Front" InputType="Front" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="front">
+      </Uniform>
+      <Uniform Index="1" NoInput="White" Tooltip="" DisplayName="Strength" InputType="Selective" InputColor="80, 80, 20" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="strength">
+      </Uniform>
+      <Uniform Max="10" Min="0" Default="2" Inc="1" Tooltip="How many times to stack the median-of-median filtering - increase if some large fireflies aren't removed" Row="3" Col="2" Page="0" Type="int" ChannelName="Iterations" DisplayName="Iterations" Name="iterations">
+      </Uniform>
+   </Shader>
+   <Page Name="Fireflies" Page="0">
+      <Col Name="Process" Col="2" Page="0">
+      </Col>
+      <Col Name="Output" Col="3" Page="0">
+      </Col>
+   </Page>
+</ShaderNodePreset>
