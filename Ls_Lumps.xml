@@ -1,10 +1,12 @@
 <ShaderNodePreset Name="Lumps" SupportsAdaptiveDegradation="0" LimitInputsToTexture="True" Description="Frequency separation - split image into colour, lumps and detail, A.K.A. low, mid and high frequencies.  You can gain, filter and colour correct each band, or for more complex work use three copies of this shader to split out the three bands, then rebuild the image using a fourth shader with 'Recombine inputs' on and the three bands in inputs 2/3/4.
 
+When recombining inputs make sure all three Colour/Lumps/Detail buttons on the right are enabled so you see the full image!
+
 lewis@lewissaunders.com">
  <Shader OutputBitDepth="Output" Index="1">
   <Uniform Name="front"              DisplayName="Front"             Type="sampler2D"  InputType="Front" Index="0" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" Mipmaps="False" Tooltip="" NoInput="Error" GL_TEXTURE_MIN_FILTER="GL_LINEAR" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE"></Uniform>
   <Uniform Name="coloursize"         DisplayName="Colour size"       Page="0" Col="1" Row="1" Type="float"      Default="50.0"        Min="0.0" Max="1000000.0"  Inc="0.1"       ResDependent="None"       Tooltip="Size of colour band, i.e. upper limit of low pass filter.  Usually set so that you see colour and vague shapes in the colour output"></Uniform>
-  <Uniform Name="recombine"          DisplayName="Recombine inputs"  Page="0" Col="0" Row="1" Type="bool"       Default="False"                                                                            Tooltip="Combine inputs 2/3/4 into a whole image"></Uniform>
+  <Uniform Name="recombine"          DisplayName="Recombine inputs"  Page="0" Col="0" Row="1" Type="bool"       Default="False"                                                                            Tooltip="Combine inputs 2/3/4 into a whole image - enable all three Colour/Lumps/Detail buttons on the right when doing this!"></Uniform>
   <Uniform Name="mipmapcolour"       DisplayName="Use average for colour"  Page="0" Col="0" Row="3" Type="bool" Default="False"                                                                            Tooltip="Use an average of the entire frame for the Colour band, instead of blurring the input.  This is great for making tileable textures and is also faster"></Uniform>
  </Shader>
  <Shader OutputBitDepth="Output" Index="2">
